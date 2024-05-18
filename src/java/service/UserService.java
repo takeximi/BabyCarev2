@@ -1,7 +1,7 @@
 package service;
 
 import entity.User;
-import repository1.UserRepository;
+import repository.UserRepository;
 
 public class UserService {
 //    public static User addUser(User user){
