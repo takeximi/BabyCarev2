@@ -3,10 +3,11 @@ package controller;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import repository1.UserRepository;
-import service.MyRandom;
+import repository.UserRepository;
+import service.RandomGenerator;
 
 import java.io.IOException;
+import service.MyRandom;
 
 @WebServlet(name = "RegisterServlet", value = "/register")
 public class RegisterServlet extends HttpServlet {

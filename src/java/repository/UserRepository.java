@@ -1,4 +1,4 @@
-package repository1;
+package repository;
 
 import config.DBConnect;
 import entity.Account;

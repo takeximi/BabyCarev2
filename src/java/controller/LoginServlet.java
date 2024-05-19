@@ -5,7 +5,7 @@ import entity.User;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import repository1.AuthenticationRepository;
+import repository.AuthenticationRepository;
 
 import java.io.IOException;
 
