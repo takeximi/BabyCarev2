@@ -12,6 +12,9 @@ package entity;
 public class Dog {
     String name ;
     String id;
+    String abc;
+    
+    int abcd;
     public Dog() {
     }
 
