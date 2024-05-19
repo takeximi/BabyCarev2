@@ -11,7 +11,7 @@ package entity;
  */
 public class Dog {
     String name ;
-
+    String id;
     public Dog() {
     }
 
