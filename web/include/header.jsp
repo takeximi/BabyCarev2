@@ -115,7 +115,7 @@
                                             <a href="listdiscount"  class="dropdown-item">Quản lí mã giảm giá</a>
                                         </c:if>
                                             <c:if test="${sessionScope.user.userId.startsWith('C')}">
-                                                <a href="product-add.jsp" class="dropdown-item">Quản lí sản phẩm</a>
+                                                <a href="product-list-manager" class="dropdown-item">Quản lí sản phẩm</a>
                                             <a href="order-list-manager" class="dropdown-item">Quản lí đơn hàng</a>                                          
                                             <a href="listdiscount"  class="dropdown-item">Quản lí mã giảm giá</a>
                                             
