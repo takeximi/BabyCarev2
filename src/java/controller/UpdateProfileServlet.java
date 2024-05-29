@@ -78,19 +78,19 @@ public class UpdateProfileServlet extends HttpServlet {
        
     }
 
-    public boolean uploadFile(InputStream is, String path) {
-        boolean test = false;
-        try {
-            byte[] bytes = new byte[is.available()];
-            is.read(bytes);
-            try (FileOutputStream fos = new FileOutputStream(path)) {
-                fos.write(bytes);
-                fos.flush();
+        public boolean uploadFile(InputStream is, String path) {
+            boolean test = false;
+            try {
+                byte[] bytes = new byte[is.available()];
+                is.read(bytes);
+                try (FileOutputStream fos = new FileOutputStream(path)) {
+                    fos.write(bytes);
+                    fos.flush();
+                }
+                test = true;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            test = true;
-        } catch (Exception e) {
-            e.printStackTrace();
+            return test;
         }
-        return test;
-    }
 }

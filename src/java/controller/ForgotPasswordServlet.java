@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,15 +6,13 @@
 
 package controller;
 
-import static config.DBConnect.userID;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import repository1.UserRepository;
 
 /**
@@ -30,7 +27,6 @@ public class ForgotPasswordServlet extends HttpServlet {
      @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-      
         String email = request.getParameter("email");
         
         boolean codeVerified = UserRepository.sendVerifyCodeAndUpdatePassword(email);
@@ -42,12 +38,9 @@ public class ForgotPasswordServlet extends HttpServlet {
             } else {
                 // Nếu mã code không đúng, thông báo lỗi
                 request.setAttribute("thongbao", "Email không tồn tại");
-                UserRepository.deleteCustomer(userID);
                 request.getRequestDispatcher("forgotPass.jsp").forward(request, response);
             }
 
     }  
 
 }
-
-
