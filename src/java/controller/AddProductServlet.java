@@ -1,6 +1,5 @@
 package controller;
 
-import entity.Product;
 import entity.User;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,23 +18,36 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import repository1.ProductRepository;
 import service.MyRandom;
-import repository1.UserRepository;
+
 
 @WebServlet(name = "AddProductServlet", value = "/addproduct")
 @MultipartConfig // Annotation để hỗ trợ việc upload file
 public class AddProductServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(AddProductServlet.class.getName());
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Chưa phát triển
+        request.getRequestDispatcher("product-add.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("utf-8");
+        request.setCharacterEncoding("utf-8");
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
         User user = (User) session.getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
         String CTVID = user.getUserId();
         String productID = MyRandom.getRandomProductID();
-        
         String productName = request.getParameter("productName");
         double productPrice = 0;
         if (!request.getParameter("productPrice").isEmpty()) {
@@ -44,10 +56,25 @@ public class AddProductServlet extends HttpServlet {
         String productType = request.getParameter("productType");
         String productOrigin = request.getParameter("productOrigin");
         int productAmount = Integer.parseInt(request.getParameter("productAmount"));
-
+//        String productImg = request.getParameter("productImg");
         Part part = request.getPart("productImg");
+        logger.info("part: " + part);
+
+        if (part == null || part.getSize() == 0) {
+            logger.warning("Part 'productImg' is missing or empty.");
+            request.setAttribute("thongbao", "Vui lòng chọn hình ảnh sản phẩm.");
+            request.getRequestDispatcher("product-add.jsp").forward(request, response);
+            return;
+        }
+
         String filename = part.getSubmittedFileName();
+        logger.info("filename: " + filename);
         String productImg = filename; // Lưu trữ tên file ảnh vào biến productImg
+
+        File uploadDir = new File(getServletContext().getRealPath("/") + "img");
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
 
         if (filename != null && !filename.isEmpty()) {
             String path = getServletContext().getRealPath("/" + "img" + File.separator + filename);
@@ -55,21 +82,20 @@ public class AddProductServlet extends HttpServlet {
             try (InputStream is = part.getInputStream()) {
                 boolean success = uploadFile(is, path);
                 if (success) {
-                    System.out.println("Uploaded file successfully: " + filename);
+                    logger.info("Uploaded file successfully: " + filename);
                 } else {
-                    System.out.println("Failed to upload file: " + filename);
+                    logger.warning("Failed to upload file: " + filename);
                 }
             }   
         }
 
-        System.out.println("Thêm " + productID + " " + productName + " " + productPrice + " " + productType + " " + productImg + " " + productOrigin);
+        logger.info("Thêm " + productID + " " + productName + " " + productPrice + " " + productType + " " + productImg + " " + productOrigin + " "  + CTVID);
         try {
-           
             ProductRepository.addProduct(productID, productName, productType, productOrigin, productPrice, productAmount, productImg, CTVID);
         } catch (SQLException ex) {
-            Logger.getLogger(AddProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AddProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         request.setAttribute("thongbao", "Thêm thành công");
         request.getRequestDispatcher("product-add.jsp").forward(request, response);
@@ -91,3 +117,4 @@ public class AddProductServlet extends HttpServlet {
         return test;
     }
 }
+

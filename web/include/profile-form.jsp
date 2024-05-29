@@ -108,7 +108,7 @@
                             </div>
                         </div>
                                 <div>
-                                    <p>Đường dẫn lưu trữ ảnh: <%= request.getAttribute("imagePath") %></p>
+<!--                                    <p>Đường dẫn lưu trữ ảnh: <%= request.getAttribute("imagePath") %></p>-->
                                 </div>
                     </div>
                                
