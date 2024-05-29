@@ -140,8 +140,10 @@ public class Product {
        formattedValue= formattedValue.replace(",",".");
         return  formattedValue;
     }
+
     @Override
     public String toString() {
-        return "Product{" + "productId=" + productId + ", productName=" + productName + ", productType=" + productType + ", productPrice=" + productPrice + ", productAmount=" + productAmount + '}';
+        return "Product{" + "formatter=" + formatter + ", productId=" + productId + ", productName=" + productName + ", productType=" + productType + ", origin=" + origin + ", productPrice=" + productPrice + ", productAmount=" + productAmount + ", img=" + img + ", CTVID=" + CTVID + ", status=" + status + '}';
     }
+    
 }
