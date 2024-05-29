@@ -1,9 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<div class="container-fluid pt-5 ">
 
-    <div id="page-wrapper">
+<nav class="nav nav-pills nav-justified">
+    <a class="nav-item nav-link " href="product-list-manager">Danh sách sản phẩm</a>
+    <a class="nav-item nav-link active" href="#">Thêm sản phẩm mới</a>
+</nav>
         <div class="container">
-            <form class="needs-validation mt-3 col s12" novalidate action="addfood" method="post" enctype="multipart/form-data">
+            
+                <form  class="needs-validation" novalidate action="addproduct" method="post" enctype="multipart/form-data">
                 <div class="col-12" style="">
                     <h2>Thêm sản phẩm mới</h2>
                 </div>
@@ -11,7 +14,7 @@
                     <div class="input-field col s6">
                         
                         <div class="input-group">
-                            <input pattern="^.{1,50}$" type="text" class="form-control" id="foodName" placeholder="Tên sản phẩm" name="foodName" aria-describedby="inputGroupPrepend" required>
+                            <input pattern="^.{1,50}$" type="text" class="form-control" id="foodName" placeholder="Tên sản phẩm" name="productName" aria-describedby="inputGroupPrepend" required>
                             <div class="invalid-feedback">
                                 Tối đa từ 1-50 ký tự
                             </div>
@@ -22,7 +25,7 @@
                     <div class="input-field col s6">
                        
                         <div class="input-group">
-                            <input type="text" pattern="^\d{1,8}(.\d{1,2})?$" class="form-control" id="foodPrice" placeholder="Giá sản phẩm" name="foodPrice" aria-describedby="inputGroupPrepend" required>
+                            <input type="text" pattern="^\d{1,8}(.\d{1,2})?$" class="form-control" id="foodPrice" placeholder="Giá sản phẩm" name="productPrice" aria-describedby="inputGroupPrepend" required>
                             <div class="invalid-feedback">
                                 Giá tiền chỉ bao gồm chữ số
                             </div>
@@ -33,7 +36,7 @@
                     <div class="input-field col s6">
                        
                         <div class="input-group">
-                            <input type="text" pattern="^.{1,30}$" class="form-control" id="foodOrigin" placeholder="Loại sản phẩm" name="foodType" aria-describedby="inputGroupPrepend" required>
+                            <input type="text" pattern="^.{1,30}$" class="form-control" id="foodOrigin" placeholder="Loại sản phẩm" name="productType" aria-describedby="inputGroupPrepend" required>
                             <div class="invalid-feedback">
                                 Trường này là bắt buộc, độ dài tối đa 30 ký tự
                             </div>
@@ -44,7 +47,7 @@
                     <div class="input-field col s6">
                        
                         <div class="input-group">
-                            <input type="text" pattern="^.{1,30}$" class="form-control" id="foodOrigin" placeholder="Số lượng sản phẩm" name="foodType" aria-describedby="inputGroupPrepend" required>
+                            <input type="text" pattern="^.{1,30}$" class="form-control" id="foodOrigin" placeholder="Số lượng sản phẩm" name="productAmount" aria-describedby="inputGroupPrepend" required>
                             <div class="invalid-feedback">
                                 Trường này là bắt buộc, độ dài tối đa 30 ký tự
                             </div>
@@ -55,7 +58,7 @@
                     <div class="input-field col s6">
                        
                         <div class="input-group">
-                            <input type="text" pattern="^.{1,30}$" class="form-control" id="foodOrigin" placeholder="Xuất xứ sản phẩm" name="foodType" aria-describedby="inputGroupPrepend" required>
+                            <input type="text" pattern="^.{1,30}$" class="form-control" id="foodOrigin" placeholder="Xuất xứ sản phẩm" name="productOrigin" aria-describedby="inputGroupPrepend" required>
                             <div class="invalid-feedback">
                                 Trường này là bắt buộc, độ dài tối đa 30 ký tự
                             </div>
@@ -67,9 +70,8 @@
                         <label for="productImg">Đường dẫn ảnh</label>
                         <div class="input-group">
                             <input id="avatar" type="file" class="form-control" name="productImg" value="" required>
-                            <div class="invalid-feedback">
-                                Vui lòng chọn một tệp hình ảnh
-                            </div>
+<!--                              <input id="avatar" type="text" class="form-control" name="productImg" value="" required>-->
+                            
                         </div>
                     </div>
                 </div>
@@ -81,8 +83,6 @@
                 </div>
             </form>
         </div>
-    </div>
-</div>
 
 <!-- Contact End -->
 
