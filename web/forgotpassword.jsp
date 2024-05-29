@@ -1,155 +1,155 @@
-<%-- 
-    Document   : forgotPass
-    Created on : May 17, 2024, 12:25:06 AM
-    Author     : ADMIN
---%>
-<!--
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <div id="forgotPasswordModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Quên mật khẩu</h4>
-                </div>
-                <div class="modal-body">
-                    <form action="forgotPassword" method="post">
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email của bạn" required>
-                        </div>
-                        <h3 class="text-danger">${thongbao}</h3>
-                        <button type="submit" class="btn btn-primary">Gửi</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
-    </body>
-</html>-->
 
-<%-- 
-    Document   : forgotPass
-    Created on : May 17, 2024, 12:25:06 AM
-    Author     : ADMIN
---%>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quên mật khẩu</title>
+    <style>
+        $text-color: #30373B;
+        $success-color: #7AB55C;
+        $error-color: #C23628;
+        $border-color: #A7A7A7;
+        $body-font-size: 13px;
+        $title-font-size: 32px;
+        $subtitle-font-size: 20px;
+        $form-font-size: 16px;
+        *,
+        *:before,
+        *:after {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
 
-<!--<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Forgot Password</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-        <style>
-            body {
-                font-family: 'Roboto', sans-serif;
-                background-color:#ffecf2;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-/*                background: linear-gradient(45deg,#003cff,#00e1ff);*/
+        hr {
+            background: #4bc970;
+            height: 1px;
+            border: 0;
+            border-top: 1px solid #ccc;
+            padding: 0;
+            text-align: right;
+            width: 5%;
+            float: center;
+        }
+        span{
+            color: red;
+        }
+        label {
+            padding-top: 15px;
+            font-weight: bold;
+        }
+
+        body {
+            font-size: 13px;
+            font-family: 'Nunito', sans-serif;
+            color: #384047;
+            background-color: #380514;
+        }
+
+        form {
+            font-size: 16px;
+            max-width: 300px;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background: #380514;
+            border-radius: 0px;
+        }
+
+        h1 {
+            padding-top: 2em;
+            font-size: 32px;
+            margin: 0 0 30px 0;
+            text-align: center;
+        }
+
+        h3 {
+            padding-top: 1em;
+            font-size: 20px;
+            margin: 0 0 30px 0;
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="date"],
+        input[type="datetime"],
+        input[type="email"],
+        input[type="number"],
+        input[type="search"],
+        input[type="tel"],
+        input[type="time"],
+        input[type="url"],
+        textarea,
+        select {
+        //background: rgba(255,255,255,0.1);
+            border: none;
+            font-size: 16px;
+            height: auto;
+            margin: 0;
+            outline: 0;
+            padding: 15px;
+            width: 66%;
+        //background-color: #380514;
+            color: #8a97a0;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 12px 39px 13px 39px;
+            color: #FFF;
+            background-color: #380514;
+            font-size: 18px;
+            text-align: center;
+            font-style: normal;
+            border: 1px solid #3ac162;
+        //border-width: 1px 1px 3px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        @media screen and (min-width: 480px) {
+            form {
+                max-width: 480px;
             }
-            .modal-dialog {
-                max-width: 450px;
-                width: 100%;
-            }
-            .modal-header {
-                background-color: #007bff;
-                color: white;
-                border-bottom: none;
-                padding: 1.5rem 2rem;
-                border-top-left-radius: 0.5rem;
-                border-top-right-radius: 0.5rem;
-            }
-            .modal-title {
-                margin: 0 auto;
-                font-weight: 500;
-                font-size: 1.5rem;
-            }
-            .modal-body {
-                padding: 2rem;
-                background-color: #fff;
-                border-bottom-left-radius: 0.5rem;
-                border-bottom-right-radius: 0.5rem;
-            }
-            .form-control {
-                border-radius: 0.375rem;
-                padding: 0.75rem;
-                font-size: 1rem;
-                margin-bottom: 1rem;
-            }
-            .btn-primary {
-                background-color: #007bff;
-                border: none;
-                border-radius: 0.375rem;
-                font-size: 1rem;
-                padding: 0.75rem;
-                transition: background-color 0.3s ease;
-                width: 100%;
-                font-weight: 500;
-            }
-            .btn-primary:hover {
-                background-color: #0056b3;
-            }
-            .text-danger {
-                text-align: center;
-                margin-top: 1rem;
-                font-weight: 500;
-            }
-            .close {
-                color: white;
-                opacity: 1;
-                font-size: 1.25rem;
-            }
-            .close:hover {
-                color: #ccc;
-            }
-            .modal-content {
-                border-radius: 0.5rem;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                overflow: hidden;
-            }
-            .modal-backdrop {
-                background-color: rgba(0, 0, 0, 0.5);
-            }
+        }
         </style>
     </head>
     <body>
-         <div class="container-fluid"> 
-        <div class="row-fluid"> 
-            <div class="logo col-md-4">
-                <img class="img-fluid" src="images/logo.png" alt="">
-                <h1 class="navbar-brand text-primary display-6 " style="font-size: 46px; color: #ff4880">
-                    Baby<span class="text-secondary" style="color: #4d65f9">Care</span>
-                </h1>
+        
+        <div class="container-fluid"> 
+            <div class="row"> 
+                <div class="logo col-md-4">
+                    <img class="img-fluid" src="images/logo.png" alt="">
+                    <h1 class="navbar-brand text-primary display-6 " style="font-size: 46px; color: #ff4880">
+                        Baby<span class="text-secondary" style="color: #4d65f9">Care</span>
+                    </h1>
+                </div>
             </div>
+        </div>
+             <h1>Quên mật khẩu</h1>
+
         <div id="forgotPasswordModal" class="modal fade show" role="dialog" style="display: block;">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Quên mật khẩu</h4>
-                    </div>
+                    
                     <div class="modal-body">
                         <form action="forgotPassword" method="post">
-                            <div class="form-group">
+                            <div class="form-group" style="margin-left: 100px">
                                 <label for="email">Email:</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email của bạn" required>
                             </div>
                             <h3 class="text-danger">${thongbao}</h3>
-                            <button type="submit" class="btn btn-primary">Gửi</button>
+                            <button type="submit" class="btn btn-primary center" style="margin-left: 150px">Gửi</button>
                         </form>
                     </div>
                 </div>
@@ -163,130 +163,6 @@
                 $('#forgotPasswordModal').modal('show');
             });
         </script>
-    </body>
-</html>-->
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Forgot Password</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-        <style>
-            body {
-                font-family: 'Roboto', sans-serif;
-                background-color: #ffecf2;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-            }
-            .modal-dialog {
-                max-width: 450px;
-                width: 100%;
-            }
-            .modal-header {
-                background-color: #007bff;
-                color: white;
-                border-bottom: none;
-                padding: 1.5rem 2rem;
-                border-top-left-radius: 0.5rem;
-                border-top-right-radius: 0.5rem;
-            }
-            .modal-title {
-                margin: 0 auto;
-                font-weight: 500;
-                font-size: 1.5rem;
-            }
-            .modal-body {
-                padding: 2rem;
-                background-color: #ffecf2;
-                border-bottom-left-radius: 0.5rem;
-                border-bottom-right-radius: 0.5rem;
-            }
-            .form-control {
-                border-radius: 0.375rem;
-                padding: 0.75rem;
-                font-size: 1rem;
-                margin-bottom: 1rem;
-            }
-            .btn-primary {
-                background-color: #007bff;
-                border: none;
-                border-radius: 0.375rem;
-                font-size: 1rem;
-                padding: 0.75rem;
-                transition: background-color 0.3s ease;
-                width: 100%;
-                font-weight: 500;
-            }
-            .btn-primary:hover {
-                background-color: #0056b3;
-            }
-            .text-danger {
-                text-align: center;
-                margin-top: 1rem;
-                font-weight: 500;
-            }
-            .close {
-                color: white;
-                opacity: 1;
-                font-size: 1.25rem;
-            }
-            .close:hover {
-                color: #ccc;
-            }
-            .modal-content {
-                border-radius: 0.5rem;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                overflow: hidden;
-                background-color: #4d65f9; /* Match the background color of the page */
-            }
-            .modal-backdrop {
-                background-color: rgba(0, 0, 0, 0.5);
-            }
-            /*#ffecf2*/
-        </style>
-    </head>
-    <body>
-        <div class="container-fluid"> 
-            <div class="row-fluid"> 
-                <div class="logo col-md-4">
-                    <img class="img-fluid" src="images/logo.png" alt="">
-                    <h1 class="navbar-brand text-primary display-6 " style="font-size: 46px; color: #ff4880">
-                        Baby<span class="text-secondary" style="color: #4d65f9">Care</span>
-                    </h1>
-                </div>
-                <div id="forgotPasswordModal" class="modal fade show" role="dialog" style="display: block;">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Quên mật khẩu</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form action="forgotPassword" method="post">
-                                    <div class="form-group">
-                                        <label for="email">Email:</label>
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email của bạn" required>
-                                    </div>
-                                    <h3 class="text-danger">${thongbao}</h3>
-                                    <button type="submit" class="btn btn-primary">Gửi</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script>
-            $(document).ready(function(){
-                $('#forgotPasswordModal').modal('show');
-            });
-        </script>
+   
     </body>
 </html>
