@@ -1,15 +1,15 @@
 package entity;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 public class Service {
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     private String serviceID,   serviceName;
     private  double   servicePrice;
-    private String description;
-    private String img;
     private int status;
+    private String description;
+    private String listImg;
+    
     public Service() {
     }
 
@@ -20,15 +20,16 @@ public class Service {
         this.description = description;
     }
 
-    public Service(String serviceID, String serviceName, double servicePrice , int status, String description, String img) {
+    public Service(String serviceID, String serviceName, double servicePrice, int status, String description, String listImg) {
         this.serviceID = serviceID;
         this.serviceName = serviceName;
         this.servicePrice = servicePrice;
-        this.description = description;
-        this.img = img;
         this.status = status;
+        this.description = description;
+        this.listImg = listImg;
     }
 
+   
     public String getServiceID() {
         return serviceID;
     }
@@ -61,7 +62,16 @@ public class Service {
         this.description = description;
     }
 
-  
+    public String getListImg() {
+        return listImg;
+    }
+
+    public void setListImg(String listImg) {
+        this.listImg = listImg;
+    }
+
+   
+
     public int getStatus() {
         return status;
     }
@@ -76,7 +86,7 @@ public class Service {
             return "Đã thanh toán";
         } else if (this.status == 2) {
             return "Đã thanh toán";
-        } else if (this.status == 3) {
+        } else if (this.status == 3 ) {
             return "Đã hủy";
         } else {
             return "Lỗi";
@@ -89,7 +99,11 @@ public class Service {
 
     @Override
     public String toString() {
-        return "Service{" + "serviceID=" + serviceID + ", serviceName=" + serviceName + ", servicePrice=" + servicePrice + ", description=" + description + '}';
+        return "Service{" + "formatter=" + formatter + ", serviceID=" + serviceID + ", serviceName=" + serviceName + ", servicePrice=" + servicePrice + ", status=" + status + ", description=" + description + ", listImg=" + listImg + '}';
     }
+
+    
+
+    
 
 }
