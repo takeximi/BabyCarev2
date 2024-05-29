@@ -34,6 +34,7 @@ public class ProductListManagerServlet extends HttpServlet {
         ArrayList<Product> listProduct= ProductRepository.getListProductByCTVID(CTVID);
         request.setAttribute("listProduct",listProduct);
         request.getRequestDispatcher("product-list-manager.jsp").forward(request,response);
+       System.out.println(CTVID);
     }
 
     @Override
