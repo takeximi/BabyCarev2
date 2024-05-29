@@ -17,11 +17,11 @@ public class ProfileServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         System.out.println("Lay thong tin cua" + user);
-        String firstname = user.getFirstname(), lastname = user.getLastname(), address = user.getAddress(),avatar = user.getAvatar(),phone = user.getPhone();
+        String firstname = user.getFirstname(), lastname = user.getLastname(), address = user.getAddress(),avatar = user.getAvatar(), phone = user.getPhone();
         request.setAttribute("firstname", firstname);
         request.setAttribute("lastname", lastname);
         request.setAttribute("address", address);
-        request.setAttribute("avatar",avatar);
+        request.setAttribute("avatar", avatar);
         request.setAttribute("phone", phone);
         
         request.getRequestDispatcher("profile.jsp").forward(request, response);
