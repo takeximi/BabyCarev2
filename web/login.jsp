@@ -65,7 +65,7 @@
                         <div class="form-group"> 
                             <div class="col-md-12"> 
                                 <button type="submit" value="Login" class="btn btn-md btn-danger center-block">Đăng nhập</button>        
-                                <a href="#" class="text-center center-block" style="margin-top: 12px; display: block;">Quên mật khẩu?</a>   
+                                <a href="forgotPass.jsp" class="text-center center-block" style="margin-top: 12px; display: block;">Quên mật khẩu?</a>   
                             </div> 
                             
                         </div> 

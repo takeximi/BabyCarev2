@@ -72,18 +72,24 @@
                             <a href="index.html" class="nav-item nav-link active">Home</a>
                             <a href="about.html" class="nav-item nav-link">About</a>
                             <a href="service.html" class="nav-item nav-link">Services</a>
-                            <a href="program.html" class="nav-item nav-link">Programs</a>
+                            <a href="program.html" class="nav-item nav-link">Product</a>
                             <a href="event.html" class="nav-item nav-link">Events</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="blog.html" class="dropdown-item">Our Blog</a>
                                     <a href="team.html" class="dropdown-item">Our Team</a>
-                                    <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                                    <a href="#" class="dropdown-item">Trang bán hàng</a>
                                     <a href="404.html" class="dropdown-item">404 Page</a>
                                 </div>
                             </div>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <c:if test="${not sessionScope.user.userId.startsWith('E') and not sessionScope.user.userId.startsWith('C')}">
+                                <a href="registerctv.jsp" class="nav-item nav-link">Đăng kí CTV</a>
+                            </c:if>
+                            <c:if test="${not sessionScope.user.userId.startsWith('E') and not sessionScope.user.userId.startsWith('A')}">
+                                <a href="cart.jsp" class="nav-item nav-link">Giỏ Hàng</a>
+                            </c:if>
+                            
                         </div>
                         <div class="d-flex me-4">
                             <c:if test="${sessionScope.user==null}">
@@ -91,24 +97,33 @@
                                         class="bi bi-arrow-right"></i></a>
                             </c:if>
                             <c:if test="${sessionScope.user!=null}">
-                                <div class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle bg-primary text-white px-5 ms-lg-5"
-                                       data-bs-toggle="dropdown">${sessionScope.user.firstname} ${sessionScope.user.lastname}</a>
-                                    <div class="dropdown-menu m-0">
+                                
+                                <div class="nav-item dropdown" >
+                                    <div class=" d-flex align-items-center" data-bs-toggle="dropdown">
+                                        <img class="img-avatar text-white ms-lg-5" style="width: 50px; height: 83%; border-radius: 50%; margin-top: 5px;" src="img/${sessionScope.user.avatar}" alt="">
+                                        <a href="#" class="nav-link bg-primary text-white px-5 ms-lg-3">
+                                            ${sessionScope.user.firstname} ${sessionScope.user.lastname}
+                                        </a>
+                                    </div>           
+                                        <div class="dropdown-menu m-0" style="left: 131px;">
                                         <a href="profile" class="dropdown-item">Quản lí thông tin cá nhân</a>
+                                        <a href="changepass" class="dropdown-item">Đổi mật khẩu</a>
+                                        <a href="cart.jsp" class="dropdown-item">Giỏ hàng</a>
 
                                         <c:if test="${sessionScope.user.userId.startsWith('E')}">
-                                            <a href="order-list-manager" class="dropdown-item">Quản lí đơn hàng</a>                                          
+                                            <a href="order-list-manager" class="dropdown-item">Quản lí dịch vụ</a>                                          
                                             <a href="listdiscount"  class="dropdown-item">Quản lí mã giảm giá</a>
                                         </c:if>
-                                        <c:if test="${sessionScope.user.userId.startsWith('U')}">
-                                            <a href="cart.jsp" class="dropdown-item">Giỏ hàng</a>
-                                            <a href="getorderhistory" class="dropdown-item">Lịch sử đặt hàng</a>                   
+                                            <c:if test="${sessionScope.user.userId.startsWith('C')}">
+                                                <a href="product-add.jsp" class="dropdown-item">Quản lí sản phẩm</a>
+                                            <a href="order-list-manager" class="dropdown-item">Quản lí đơn hàng</a>                                          
+                                            <a href="listdiscount"  class="dropdown-item">Quản lí mã giảm giá</a>
+                                            
                                         </c:if>
+                                        
                                         <c:if test="${sessionScope.user.userId.startsWith('A')}">                           
                                             <a href="manage-emp-account" class="dropdown-item">Quản lí tài khoản nhân viên</a>
                                             <a href="manage-cus-account" class="dropdown-item">Quản lí tài khoản khách hàng</a>
-                                            <a href="food-add.jsp" class="dropdown-item">Quản lí sản phẩm</a>
                                             <a href="statistics"  class="dropdown-item">Thống kê bán hàng</a>
                                         </c:if>
 
