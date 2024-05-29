@@ -1,10 +1,13 @@
 package service;
-
-import repository.ProductRepository;
-import repository.UserRepository;
+import config.DBConnect;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import repository1.UserRepository;
 
 import java.util.Locale;
 import java.util.Random;
+import repository1.ProductRepository;
 
 public class MyRandom {
     private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -38,77 +41,48 @@ public class MyRandom {
         while(UserRepository.checkExistID(sb.toString()));
         return sb.toString();
     }
-
-//    public static String getRandomPetID(){
-//        StringBuilder sb ;
-//        do {
-//            sb = new StringBuilder();
-//            sb.append("P");
-//
-//            for (int i = 1; i <= LENGTH; i++) {
-//                sb.append(new Random().nextInt(10));
-//            }
-//        }
-//        while(ProductRepository.checkExistPetID(String.valueOf(sb)));
-//        return sb.toString();
-//    }
-//    public static String getRandomFoodID(){
-//        StringBuilder sb ;
-//        do {
-//            sb = new StringBuilder();
-//            sb.append("F");
-//
-//            for (int i = 1; i <= LENGTH; i++) {
-//                sb.append(new Random().nextInt(10));
-//            }
-//        }
-//        while(ProductRepository.checkExistFoodID(String.valueOf(sb)));
-//        return sb.toString();
-//    }
-    public static String getRandomOTP(){
+    public static String getRandomCTVID() {
         StringBuilder sb ;
-
+        do {
             sb = new StringBuilder();
-            sb.append("F");
+            sb.append("C");
 
             for (int i = 1; i <= LENGTH; i++) {
-                sb.append(ALPHABET.charAt(new Random().nextInt(26)));
+                sb.append(new Random().nextInt(10));
             }
-
-        return sb.toString();
-    }
-   
-    public static String getRandomServiceBillID() {
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder(20);
-
-        for (int i = 0; i < 20; i++) {
-            int randomIndex = random.nextInt(CHARACTERS.length());
-            char randomChar = CHARACTERS.charAt(randomIndex);
-            sb.append(randomChar);
         }
-
+        while(UserRepository.checkExistID(sb.toString()));
         return sb.toString();
     }
+    public static String getRandomBrandID() {
+        StringBuilder sb ;
+        do {
+            sb = new StringBuilder();
+            sb.append("B");
 
-     public static String getRandomDiscount() {
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder(5);
-        
-        // Thêm "DC" vào đầu chuỗi
-        sb.append("DC");
-
-        // Thêm 3 chữ số ngẫu nhiên vào chuỗi
-        for (int i = 0; i < 3; i++) {
-            int randomNumber = random.nextInt(10); // Số ngẫu nhiên từ 0 đến 9
-            sb.append(randomNumber);
+            for (int i = 1; i <= LENGTH; i++) {
+                sb.append(new Random().nextInt(10));
+            }
         }
-
+        while(UserRepository.checkExistID(sb.toString()));
         return sb.toString();
     }
-     
-      public static void main(String[] args) {
-        System.out.println(getRandomDiscount());
+    
+    public static String getRandomProductID(){
+        StringBuilder sb ;
+        do {
+            sb = new StringBuilder();
+            sb.append("P");
+
+            for (int i = 1; i <= LENGTH; i++) {
+                sb.append(new Random().nextInt(10));
+            }
+        }
+        while(ProductRepository.checkExistProductID(String.valueOf(sb)));
+        return sb.toString();
+    }
+   public static void main(String[] args) {
+
     }
      
 }

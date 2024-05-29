@@ -18,21 +18,6 @@ public class DBConnect {
         return DriverManager.getConnection(url, userID, password);
     }
 
-    public static void getAll() {
-        try {
-            String query = "select * from tbltest"; //fix
-            Connection con = DBConnect.getConnection();
-            PreparedStatement stmt = con.prepareStatement(query);
-            ResultSet results = stmt.executeQuery();
-            while (results.next()) {
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
     //    Test connection
     public static void main(String[] args) {
         try {
