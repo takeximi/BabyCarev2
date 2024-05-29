@@ -7,7 +7,7 @@ public class Account {
     private String lastname;
     private String phone;
     private String email;
-   private  int status;
+    private  int status;
     public Account() {
     }
 

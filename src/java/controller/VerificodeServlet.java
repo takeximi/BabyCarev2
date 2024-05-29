@@ -13,7 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import repository.UserRepository;
+import repository1.UserRepository;
 
 /**
  *
@@ -38,6 +38,7 @@ public class VerificodeServlet extends HttpServlet {
             } else {
                 // Nếu mã code không đúng, thông báo lỗi
                 request.setAttribute("thongbao", "Mã xác minh không hợp lệ");
+                UserRepository.deleteCustomer(userID);
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             }
 

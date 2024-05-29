@@ -8,7 +8,7 @@ public class Service {
     private String serviceID,   serviceName;
     private  double   servicePrice;
     private String description;
-    private ArrayList<Image> listImg;
+    private String img;
     private int status;
     public Service() {
     }
@@ -20,12 +20,12 @@ public class Service {
         this.description = description;
     }
 
-    public Service(String serviceID, String serviceName, double servicePrice , int status, String description, ArrayList<Image> listImg) {
+    public Service(String serviceID, String serviceName, double servicePrice , int status, String description, String img) {
         this.serviceID = serviceID;
         this.serviceName = serviceName;
         this.servicePrice = servicePrice;
         this.description = description;
-        this.listImg = listImg;
+        this.img = img;
         this.status = status;
     }
 
@@ -61,14 +61,7 @@ public class Service {
         this.description = description;
     }
 
-    public ArrayList<Image> getListImg() {
-        return listImg;
-    }
-
-    public void setListImg(ArrayList<Image> listImg) {
-        this.listImg = listImg;
-    }
-
+  
     public int getStatus() {
         return status;
     }

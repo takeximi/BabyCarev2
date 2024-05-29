@@ -14,7 +14,7 @@
                         <div class="col-12" style="background-color:#ff4880;border-radius: 10px ">
                             <h2 style="text-align: center">Đăng kí thành viên mới</h2>
                         </div>
-
+                         <h3 class="text-danger">${thongbao}</h3>
 
                         <%--input username--%>
                         <div class="col-md-6 offset-3 mb-3">
@@ -35,9 +35,9 @@
                             <div class="input-group">
                                 <input type="password" class="form-control" id="password" placeholder="Mật khẩu"
                                        name="password"
-                                       aria-describedby="inputGroupPrepend" pattern="^[a-zA-Z0-9]{7,32}$" required>
+                                       aria-describedby="inputGroupPrepend" pattern="^[a-zA-Z0-9]{6,32}$" required>
                                 <div class="invalid-feedback">
-                                    Mật khẩu chứa số hoặc chữ cái độ dài từ 7 đến 32 kí tự
+                                    Mật khẩu chứa số hoặc chữ cái độ dài từ 6 đến 32 kí tự
                                 </div>
                             </div>
                         </div>
@@ -119,13 +119,13 @@
 
                     <div class="row">
                         <div class="col-3 offset-3">
-                            <button class="btn btn-primary" type="submit">Đăng kí</button>
+                            <button id="registerBtn" class="btn btn-primary" type="submit">Đăng kí</button>
                         </div>
 
                     </div>
 
                 </form>
-                <h3 class="text-danger">${thongbao}</h3>
+                
             </div>
             </div>
     </div>

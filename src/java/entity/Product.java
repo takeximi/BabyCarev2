@@ -9,20 +9,17 @@ public class Product {
     protected String productId;
     protected String productName;
     protected String productType;
+    protected String origin;
     protected double productPrice;
     protected int productAmount;
-    protected ArrayList<Image> listImg;
+    protected String img;
+    protected String CTVID;
+
     protected int status;
     public Product() {
     }
 
-    public ArrayList<Image> getListImg() {
-        return listImg;
-    }
-
-    public void setListImg(ArrayList<Image> listImg) {
-        this.listImg = listImg;
-    }
+   
 
     public int getStatus() {
         return status;
@@ -38,14 +35,26 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    public Product(String productId, String productName, String productType, double productPrice, int productAmount, ArrayList<Image> listImg, int status) {
+    public Product(String productId, String productName, String productType, String origin, double productPrice, int productAmount, String img, int status) {
         this.productId = productId;
         this.productName = productName;
+        this.origin = origin;
         this.productType = productType;
         this.productPrice = productPrice;
         this.productAmount = productAmount;
-        this.listImg = listImg;
+        this.img = img;
         this.status = status;
+    }
+    public Product(String productId, String productName, String productType, String origin, double productPrice, int productAmount,String img, int status,String CTVID) {
+        this.productId = productId;
+        this.productName = productName;
+        this.origin = origin;
+        this.productType = productType;
+        this.productPrice = productPrice;
+        this.productAmount = productAmount;
+        this.status = status;
+        this.img = img;
+        this.CTVID = CTVID;
     }
 
     public Product(String productId, String productName, String productType, double productPrice, int productAmount) {
@@ -56,6 +65,30 @@ public class Product {
         this.productAmount = productAmount;
     }
 
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getCTVID() {
+        return CTVID;
+    }
+
+    public void setCTVID(String CTVID) {
+        this.CTVID = CTVID;
+    }
+    
     public int getProductAmount() {
         return productAmount;
     }
