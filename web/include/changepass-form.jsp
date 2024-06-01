@@ -19,10 +19,7 @@
                     <i class="glyphicon glyphicon-user icon"></i>
                     <span class="text">Profile</span>
                 </a>
-                <a href="changepass" class="icon-link">
-                    <i class="glyphicon glyphicon-cloud icon"></i>
-                    <span class="text">Change password</span>
-                </a>
+                
             </section>
         </div>
         <div class="col-md-9" style="background-color: hwb(319 83% 3%);
