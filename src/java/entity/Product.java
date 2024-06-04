@@ -16,6 +16,7 @@ public class Product {
     protected String CTVID;
 
     protected int status;
+    protected String productDescription;
     public Product() {
     }
 
@@ -45,7 +46,7 @@ public class Product {
         this.img = img;
         this.status = status;
     }
-    public Product(String productId, String productName, String productType, String origin, double productPrice, int productAmount,String img, int status,String CTVID) {
+    public Product(String productId, String productName, String productType, String origin, double productPrice, int productAmount,String img, int status,String CTVID, String productDescription) {
         this.productId = productId;
         this.productName = productName;
         this.origin = origin;
@@ -55,6 +56,7 @@ public class Product {
         this.status = status;
         this.img = img;
         this.CTVID = CTVID;
+        this.productDescription = productDescription;
     }
 
     public Product(String productId, String productName, String productType, double productPrice, int productAmount) {
@@ -76,6 +78,23 @@ public class Product {
     public String getImg() {
         return img;
     }
+
+    public DecimalFormat getFormatter() {
+        return formatter;
+    }
+
+    public void setFormatter(DecimalFormat formatter) {
+        this.formatter = formatter;
+    }
+
+    public String getProductDescription() {
+        return productDescription;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+    }
+    
 
     public void setImg(String img) {
         this.img = img;
@@ -143,7 +162,9 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + "formatter=" + formatter + ", productId=" + productId + ", productName=" + productName + ", productType=" + productType + ", origin=" + origin + ", productPrice=" + productPrice + ", productAmount=" + productAmount + ", img=" + img + ", CTVID=" + CTVID + ", status=" + status + '}';
+        return "Product{" + "productId=" + productId + ", productName=" + productName + ", productType=" + productType + ", origin=" + origin + ", productPrice=" + productPrice + ", productAmount=" + productAmount + ", img=" + img + ", CTVID=" + CTVID + ", status=" + status + ", productDescription=" + productDescription + '}';
     }
+
+    
     
 }

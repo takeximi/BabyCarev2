@@ -1,5 +1,6 @@
 package controller;
 
+import entity.Cart;
 import entity.User;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -8,6 +9,7 @@ import repository1.AuthenticationRepository;
 import repository1.UserRepository;
 
 import java.io.IOException;
+import repository1.CartRepository;
 
 @WebServlet(name = "LoginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
@@ -36,8 +38,10 @@ public class LoginServlet extends HttpServlet {
                 passCookies.setMaxAge(60 * 60 * 24);
                 response.addCookie(userCookies);
                 response.addCookie(passCookies);
+                 Cart cart = CartRepository.loadCartByUserId(user.getUserId());
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
+                session.setAttribute("cart", cart);
                 System.out.println("Đăng nhập thành công");
 
                 // Chuyển hướng đến trang admin.jsp nếu tên người dùng là "Admin"

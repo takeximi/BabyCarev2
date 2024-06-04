@@ -23,8 +23,21 @@ public class AddBrandServlet extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(AddBrandServlet.class.getName());
 
-    @Override
+     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        // Check if user is not logged in
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        String userID = user.getUserId();
+        boolean hasPending = UserRepository.hasPendingRegistration(userID);
+        System.out.println(hasPending);
+        request.setAttribute("hasPending", hasPending);
         request.getRequestDispatcher("registerctv.jsp").forward(request, response);
     }
 
@@ -35,15 +48,16 @@ public class AddBrandServlet extends HttpServlet {
         request.setCharacterEncoding("utf-8");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-
         // Check user
         if (user == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
+
         String userID = user.getUserId();
-        
+       
+
         String brandName = request.getParameter("brandName");
         System.out.println(brandName);
         String brandDescription = request.getParameter("brandDescription");
@@ -79,9 +93,8 @@ public class AddBrandServlet extends HttpServlet {
 
                 logger.info("Registering Brand: " + brandID + " " + brandName + " " + brandDescription + " " );
                 boolean added = UserRepository.addBrand(brandID, brandName, brandDescription, brandAddress, userID);
-                if (added) {
-                    request.setAttribute("thongbao", "Thông tin đăng kí cửa hàng đã được tiếp nhận. Chúng tôi sẽ thông báo qua email của bạn trong vòng 7 ngày.");
-                } else {
+                
+                if (added == false) {              
                     request.setAttribute("thongbao", "Có lỗi xảy ra khi đăng kí cửa hàng. Vui lòng thử lại.");
                 }
                 request.getRequestDispatcher("registerctv.jsp").forward(request, response);

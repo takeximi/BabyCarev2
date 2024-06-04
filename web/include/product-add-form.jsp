@@ -14,9 +14,9 @@
                     <div class="input-field col s6">
                         
                         <div class="input-group">
-                            <input pattern="^.{1,50}$" type="text" class="form-control" id="foodName" placeholder="Tên sản phẩm" name="productName" aria-describedby="inputGroupPrepend" required>
+                            <input pattern="^.{1,100}$" type="text" class="form-control" id="foodName" placeholder="Tên sản phẩm" name="productName" aria-describedby="inputGroupPrepend" required>
                             <div class="invalid-feedback">
-                                Tối đa từ 1-50 ký tự
+                                Tối đa từ 1-100 ký tự
                             </div>
                         </div>
                     </div>
@@ -65,6 +65,14 @@
                         </div>
                     </div>
                 </div>
+             <div class="row">
+                <div class="input-field col s6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="productDescription" placeholder="Mô tả sản phẩm" name="productDescription" aria-describedby="inputGroupPrepend">
+                    </div>
+                </div>
+            </div>
+
                 <div class="row">
                     <div class="input-field col s6">
                         <label for="productImg">Đường dẫn ảnh</label>

@@ -1,13 +1,11 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>JSP Page</title>
+    <title>Verification Code</title>
     
     <style>
         .verificode-form {
-            display: hidden;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -22,28 +20,29 @@
 </head>
 <body>
 <%@include file="include/header.jsp" %>
-<%@include file="include/register-form.jsp" %>
-
 
 <div class="verificode-form" id="verificodeForm">
-        <span>Hệ thống đã gửi ma kích hoạt đen Email cua ban. </span>
-        <span>Xin vui lòng kiem tra Email đe lay ma kich hoat tai khoan cua ban. </span>
-            <form action="VerificodeServlet" method="post" class="Log-reg-block sky-form">
+    <span>Hệ thống đã gửi mã kích hoạt đến Email của bạn. </span>
+    <span>Xin vui lòng kiểm tra Email để lấy mã kích hoạt tài khoản của bạn. </span>
+    <form action="VerificodeServlet" method="post" class="Log-reg-block sky-form">
         <div class="input-group">
-        <input type="text" name="authcode" class="form-control margin-top-20" >
+            <input type="text" name="authcode" class="form-control margin-top-20" >
         </div>
-        <input type="submit" value="Kich hoat" class="btn-u btn-u-sea-shop margin-top-20">
-            </form>
-        <h3 class="text-danger">${thongbao}</h3>
-    </div>
+        <input type="submit" value="Kích hoạt" class="btn-u btn-u-sea-shop margin-top-20">
+    </form>
+
+    <form action="ResendCodeServlet" method="post" class="Log-reg-block sky-form">
+        <input type="hidden" name="userID" value="<%= request.getSession().getAttribute("userID") %>">
+        <input type="submit" value="Gửi lại mã" class="btn-u btn-u-sea-shop margin-top-20">
+    </form>
     
-    <script>
+    <h3 class="text-danger">${thongbao}</h3>
+</div>
+ <script>
         document.getElementById('registerBtn').addEventListener('click', function() {
             document.getElementById('overlay').style.display = 'block'; // Hiển thị overlay
             document.getElementById('verificodeForm').style.display = 'block'; // Hiển thị form đăng ký
         });
     </script>
-    
-    
 </body>
 </html>

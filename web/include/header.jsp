@@ -72,7 +72,7 @@
                             <a href="index.html" class="nav-item nav-link active">Home</a>
                             <a href="about.html" class="nav-item nav-link">About</a>
                             <a href="service.html" class="nav-item nav-link">Services</a>
-                            <a href="program.html" class="nav-item nav-link">Product</a>
+                            <a href="product" class="nav-item nav-link">Sản Phẩm</a>
                             <a href="event.html" class="nav-item nav-link">Events</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
@@ -83,8 +83,8 @@
                                     <a href="404.html" class="dropdown-item">404 Page</a>
                                 </div>
                             </div>
-                            <c:if test="${not sessionScope.user.userId.startsWith('E') and not sessionScope.user.userId.startsWith('C')}">
-                                <a href="registerctv.jsp" class="nav-item nav-link">Đăng kí CTV</a>
+                            <c:if test="${not sessionScope.user.userId.startsWith('E') and not sessionScope.user.userId.startsWith('C') and not sessionScope.user.userId.startsWith('A')}">
+                                <a href="addBrand" class="nav-item nav-link">Đăng kí CTV</a>
                             </c:if>
                             <c:if test="${not sessionScope.user.userId.startsWith('E') and not sessionScope.user.userId.startsWith('A')}">
                                 <a href="cart.jsp" class="nav-item nav-link">Giỏ Hàng</a>
