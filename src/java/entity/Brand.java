@@ -9,6 +9,7 @@ public class Brand {
     private String brandAddess;
     private String CTVID;
     private int Status;
+    
     public Brand() {
     }
 

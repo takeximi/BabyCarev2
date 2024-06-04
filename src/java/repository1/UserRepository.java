@@ -434,7 +434,7 @@ public class UserRepository {
     }
 
     // Thêm khách hàng và gửi mã code
-    public static boolean addCustomer(String userID, String firstname, String lastname, String address, String phone, String username, String password, String email) {
+       public static boolean addCustomer(String userID, String firstname, String lastname, String address, String phone, String username, String password, String email) {
         try {
             String code = generateRandomCode();
 
@@ -499,6 +499,44 @@ public class UserRepository {
             return false;
         }
     }
+     public static boolean resendVerificationCode(String userID) {
+        try {
+            String newCode = generateRandomCode();
+
+            // Update the code in the database
+            String query = "update tblAccount set Code=? where UserID=?";
+            Connection con = DBConnect.getConnection();
+            PreparedStatement preSt = con.prepareStatement(query);
+            preSt.setString(1, newCode);
+            preSt.setString(2, userID);
+            int rowsUpdated = preSt.executeUpdate();
+            con.close();
+
+            if (rowsUpdated > 0) {
+                // Get the email of the user
+                query = "select Email from tblAccount where UserID=?";
+                con = DBConnect.getConnection();
+                preSt = con.prepareStatement(query);
+                preSt.setString(1, userID);
+                ResultSet rs = preSt.executeQuery();
+                String email = null;
+                if (rs.next()) {
+                    email = rs.getString("Email");
+                }
+                con.close();
+
+                if (email != null) {
+                    // Send the new code to the email
+                    sendCodeToEmail(email, newCode);
+                    return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public static boolean deleteCustomer(String customerID) {
         try {
@@ -544,6 +582,7 @@ public class UserRepository {
             Connection con = DBConnect.getConnection();
             String query = "UPDATE tblAccount SET PasswordAcc = ? WHERE Email = ?";
             PreparedStatement preSt = con.prepareStatement(query);
+            newPassword = UserRepository.MaHoa(newPassword);
             preSt.setString(1, newPassword);
             preSt.setString(2, email);
             int rowsUpdated = preSt.executeUpdate();
@@ -755,6 +794,23 @@ public class UserRepository {
         }
         return result;
     }
+   
+    public static boolean hasPendingRegistration(String userId) {
+        boolean hasPending = false;
+        try {
+            String query = "SELECT Status FROM tblBrand WHERE CTVID = ? AND Status = 0";
+            Connection con = DBConnect.getConnection();
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            hasPending = rs.next(); 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hasPending;
+    }
+
+
      public static ArrayList<Brand> getListBrandsWithStatusZero() {
     ArrayList<Brand> listBrands;
     try {
@@ -885,24 +941,29 @@ public class UserRepository {
 //        }else{
 //            System.out.println("fail");
 //        }
-        String oldUserID = "U3853";
+//        String oldUserID = "U3853";
+//
+//            boolean result = updateCustomerToCTV(oldUserID);
+//
+//            if (result) {
+//                System.out.println("Customer to CTV update successful.");
+//            } else {
+//                System.out.println("Customer to CTV update failed.");
+//            }
+//    ArrayList<Brand> brands = getListBrandsWithStatusZero();
+//            if (brands != null) {
+//                for (Brand brand : brands) {
+//                    System.out.println(brand);
+//                }
+//            } else {
+//                System.out.println("No brands found or an error occurred.");
+//            }
 
-            boolean result = updateCustomerToCTV(oldUserID);
-
-            if (result) {
-                System.out.println("Customer to CTV update successful.");
-            } else {
-                System.out.println("Customer to CTV update failed.");
-            }
-    ArrayList<Brand> brands = getListBrandsWithStatusZero();
-            if (brands != null) {
-                for (Brand brand : brands) {
-                    System.out.println(brand);
-                }
-            } else {
-                System.out.println("No brands found or an error occurred.");
-            }
+        boolean a = UserRepository.hasPendingRegistration("U6772");
+        System.out.println(a);
         }
+
+    
     
 }
 

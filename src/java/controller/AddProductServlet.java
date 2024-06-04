@@ -50,16 +50,21 @@ public class AddProductServlet extends HttpServlet {
         String productID = MyRandom.getRandomProductID();
         String productName = request.getParameter("productName");
         double productPrice = 0;
-        if (!request.getParameter("productPrice").isEmpty()) {
+       
+        if (request.getParameter("productPrice").isEmpty()) {
+        } else {
             productPrice = Double.parseDouble(request.getParameter("productPrice"));
         }
         String productType = request.getParameter("productType");
-        String productOrigin = request.getParameter("productOrigin");
+        String productOrigin = request.getParameter("productOrigin");          
+
         int productAmount = Integer.parseInt(request.getParameter("productAmount"));
+        
+        String productDescription = request.getParameter("productDescription");  
 //        String productImg = request.getParameter("productImg");
         Part part = request.getPart("productImg");
         logger.info("part: " + part);
-
+        
         if (part == null || part.getSize() == 0) {
             logger.warning("Part 'productImg' is missing or empty.");
             request.setAttribute("thongbao", "Vui lòng chọn hình ảnh sản phẩm.");
@@ -91,7 +96,7 @@ public class AddProductServlet extends HttpServlet {
 
         logger.info("Thêm " + productID + " " + productName + " " + productPrice + " " + productType + " " + productImg + " " + productOrigin + " "  + CTVID);
         try {
-            ProductRepository.addProduct(productID, productName, productType, productOrigin, productPrice, productAmount, productImg, CTVID);
+            ProductRepository.addProduct(productID, productName, productType, productOrigin, productPrice, productAmount, productImg, CTVID,productDescription);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
