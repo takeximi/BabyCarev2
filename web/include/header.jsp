@@ -93,7 +93,7 @@
                         </div>
                         <div class="d-flex me-4">
                             <c:if test="${sessionScope.user==null}">
-                                <a href="login.jsp" class="nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5">Đăng nhập<i
+                                <a href="login" class="nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5">Đăng nhập<i
                                         class="bi bi-arrow-right"></i></a>
                             </c:if>
                             <c:if test="${sessionScope.user!=null}">
