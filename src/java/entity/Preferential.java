@@ -2,37 +2,46 @@ package entity;
 
 public class Preferential {
 
-    private String id;
-    private String preferentialName;
-    private String startDay;
-    private String endDay;
-    private double rate;
+    protected String preferential;
+    protected String preferentialName;
+    protected String startDay;
+    protected String endDay;
+    protected double quantity;
+    protected String preferentiaDescription;
+    protected String preferentiaImg;
+    protected String CTVID;
 
-    public Preferential() {
-    }
-
-    public Preferential(String id, String preferentialName, String startDay, String endDay, double rate) {
-        this.id = id;
+    public Preferential(String preferential, String preferentialName, String startDay, String endDay, double quantity, String preferentiaDescription, String preferentiaImg, String CTVID) {
+        this.preferential = preferential;
         this.preferentialName = preferentialName;
         this.startDay = startDay;
         this.endDay = endDay;
-        this.rate = rate;
+        this.quantity = quantity;
+        this.preferentiaDescription = preferentiaDescription;
+        this.preferentiaImg = preferentiaImg;
+        this.CTVID = CTVID;
     }
 
-    public double getRate() {
-        return rate;
+    public Preferential(String name, String description, int discount) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void setRate(double rate) {
-        this.rate = rate;
+    public Preferential(String preferential, String preferentialName, String startDay, String endDay, double quantity, String preferentiaDescription, String preferentiaImg) {
+              this.preferential = preferential;
+        this.preferentialName = preferentialName;
+        this.startDay = startDay;
+        this.endDay = endDay;
+        this.quantity = quantity;
+        this.preferentiaDescription = preferentiaDescription;
+        this.preferentiaImg = preferentiaImg;
     }
 
-    public String getId() {
-        return id;
+    public String getPreferential() {
+        return preferential;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPreferential(String preferential) {
+        this.preferential = preferential;
     }
 
     public String getPreferentialName() {
@@ -59,13 +68,45 @@ public class Preferential {
         this.endDay = endDay;
     }
 
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getPreferentiaDescription() {
+        return preferentiaDescription;
+    }
+
+    public void setPreferentiaDescription(String preferentiaDescription) {
+        this.preferentiaDescription = preferentiaDescription;
+    }
+
+    public String getPreferentiaImg() {
+        return preferentiaImg;
+    }
+
+    public void setPreferentiaImg(String preferentiaImg) {
+        this.preferentiaImg = preferentiaImg;
+    }
+
+    public String getCTVID() {
+        return CTVID;
+    }
+
+    public void setCTVID(String CTVID) {
+        this.CTVID = CTVID;
+    }
+
     @Override
     public String toString() {
-        return "Preferential{" +
-                "id='" + id + '\'' +
-                ", preferentialName='" + preferentialName + '\'' +
-                ", startDay='" + startDay + '\'' +
-                ", endDay='" + endDay + '\'' +
-                '}';
+        return "Preferential{" + "preferential=" + preferential + ", preferentialName=" + preferentialName + ", startDay=" + startDay + ", endDay=" + endDay + ", Quantity=" + quantity + ", preferentiaDescription=" + preferentiaDescription + ", preferentiaImg=" + preferentiaImg + ", CTVID=" + CTVID + '}';
     }
+
+
+    public Preferential() {
+    }
+    
 }

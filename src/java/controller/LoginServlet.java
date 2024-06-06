@@ -14,10 +14,17 @@ import repository1.CartRepository;
 @WebServlet(name = "LoginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect("login.jsp");
+     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false); // Lấy session hiện tại nếu có, không tạo mới
+        User user = (User) session.getAttribute("user");
+        
+        // Nếu người dùng đã đăng nhập, chuyển hướng đến trang chủ
+        if (user != null) {
+            response.sendRedirect("index.jsp");
+        } else {
+            response.sendRedirect("login.jsp");
+        }
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
@@ -46,7 +53,7 @@ public class LoginServlet extends HttpServlet {
 
                 // Chuyển hướng đến trang admin.jsp nếu tên người dùng là "Admin"
                 if ("Admin".equalsIgnoreCase(username)) {
-                    response.sendRedirect("admin.jsp");
+                    response.sendRedirect("admin");
                 } else {
                     response.sendRedirect("index.jsp");
                 }
