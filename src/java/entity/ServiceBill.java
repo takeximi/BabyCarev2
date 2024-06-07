@@ -1,45 +1,41 @@
 package entity;
 
-public class ServiceBill {
-    private String billID;
-    private String employeeID;
-    private String customerID;
-    private String dateCreate;
-    private String shiftID;
-    private String serviceID;
-    private String day;
-    private int status;
-    private int amount;
+import java.util.Date;
 
+
+public class ServiceBill {
+    private int billID;
+    private int bookingID;
+    private String customerID;
+    private Date billDate;
+    private double totalAmount;
+    private int billStatus;
     public ServiceBill() {
     }
 
-    public ServiceBill(String billID, String employeeID, String customerID, String dateCreate, String shiftID, String serviceID, String day, int status, int amount) {
+    public ServiceBill(int billID, int bookingID, String customerID, Date billDate, double totalAmount, int billStatus) {
         this.billID = billID;
-        this.employeeID = employeeID;
+        this.bookingID = bookingID;
         this.customerID = customerID;
-        this.dateCreate = dateCreate;
-        this.shiftID = shiftID;
-        this.serviceID = serviceID;
-        this.day = day;
-        this.status = status;
-        this.amount = amount;
+        this.billDate = billDate;
+        this.totalAmount = totalAmount;
+        this.billStatus = billStatus;
     }
 
-    public String getBillID() {
+    public int getBillID() {
         return billID;
     }
 
-    public void setBillID(String billID) {
+    public void setBillID(int billID) {
         this.billID = billID;
     }
 
-    public String getEmployeeID() {
-        return employeeID;
+    public int getBookingID() {
+        return bookingID;
     }
 
-    public void setEmployeeID(String employeeID) {
-        this.employeeID = employeeID;
+    public void setBookingID(int bookingID) {
+        this.bookingID = bookingID;
     }
 
     public String getCustomerID() {
@@ -50,66 +46,36 @@ public class ServiceBill {
         this.customerID = customerID;
     }
 
-    public String getDateCreate() {
-        return dateCreate;
+    public Date getBillDate() {
+        return billDate;
     }
 
-    public void setDateCreate(String dateCreate) {
-        this.dateCreate = dateCreate;
+    public void setBillDate(Date billDate) {
+        this.billDate = billDate;
     }
 
-    public String getShiftID() {
-        return shiftID;
+    public double getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setShiftID(String shiftID) {
-        this.shiftID = shiftID;
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
-    public String getServiceID() {
-        return serviceID;
+    public int getBillStatus() {
+        return billStatus;
     }
 
-    public void setServiceID(String serviceID) {
-        this.serviceID = serviceID;
-    }
-
-    public String getDay() {
-        return day;
-    }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setBillStatus(int billStatus) {
+        this.billStatus = billStatus;
     }
 
     @Override
     public String toString() {
-        return "ServiceBill{" +
-                "billID='" + billID + '\'' +
-                ", employeeID='" + employeeID + '\'' +
-                ", customerID='" + customerID + '\'' +
-                ", dateCreate='" + dateCreate + '\'' +
-                ", shiftID='" + shiftID + '\'' +
-                ", serviceID='" + serviceID + '\'' +
-                ", day='" + day + '\'' +
-                ", status=" + status +
-                ", amount=" + amount +
-                '}';
+        return "ServiceBill{" + "billID=" + billID + ", bookingID=" + bookingID + ", customerID=" + customerID + ", billDate=" + billDate + ", totalAmount=" + totalAmount + ", billStatus=" + billStatus + '}';
     }
+
+   
+
+   
 }
