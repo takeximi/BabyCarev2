@@ -77,12 +77,9 @@
                         <li>
                             <a href="statistics"  class="dropdown-item">Thống kê bán hàng</a>       
                         </li>         
-                        <li>
-                            <a href="manage-emp-account" class="dropdown-item">Quản lí tài khoản nhân viên</a>
-                        </li>
-                        <li>
+<!--                        <li>
                             <a href="order-list-manager" class="dropdown-item">Quản lí dịch vụ</a> 
-                        </li>
+                        </li>-->
 
                         <li>
                             <a href="manage-cus-account" class="dropdown-item">Quản lí tài khoản khách hàng</a>

@@ -198,7 +198,7 @@
                             <div>
                                 <input name="id" type="text" hidden="" value="${product.productId}">
                                 <input class="btn btn-primary" type="submit" value="Thêm Vào Giỏ Hàng">
-                                <a href="" class="btn btn-primary">Mua Ngay</a>
+                                <!--<a href="cart.jsp" class="btn btn-primary" value="Thêm Vào Giỏ Hàng">Mua Ngay</a>-->
                             </div>
                             <h3>${message}</h3>
                         </div>

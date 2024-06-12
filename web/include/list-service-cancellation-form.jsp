@@ -13,6 +13,7 @@
     <a class="nav-item nav-link " href="ListBookingEmploye">Danh Sách khách hàng đặt lịch</a>
     <a class="nav-item nav-link  " href="ListBillService">Danh sách đã xác nhận </a>
     <a class="nav-item nav-link " href="ListCustomerPayment">Danh sách  Thanh Toán</a>
+     <a class="nav-item nav-link " href="ListConfirmedServices">Danh sách  Hoàn thành </a>
     <a class="nav-item nav-link  active" href="ListServiceCancellation">Danh sách khách hàng hủy dịch vụ</a>
 </nav>
 
