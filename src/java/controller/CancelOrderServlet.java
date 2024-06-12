@@ -21,6 +21,7 @@ public class CancelOrderServlet extends HttpServlet {
         HttpSession session=request.getSession();
         User user=(User) session.getAttribute("user");
         OrderRepository.cancelOrder(id,user.getUserId());
+        OrderRepository.updateProductByCancelOrder(id, user.getUserId());
         response.sendRedirect("order-list-manager?thongbao=0");
     }
 

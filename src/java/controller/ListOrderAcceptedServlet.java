@@ -22,10 +22,10 @@ public class ListOrderAcceptedServlet extends HttpServlet {
         try{
             if(!request.getParameter("thongbao").equals(null)){
                 if(request.getParameter("thongbao").equals("1")){
-                    thongbao="Xác nhận đơn hàng thành công";
+                    thongbao="Xác nhận thanh toán đơn hàng thành công";
                 }
                 else {
-                    thongbao = "Đơn hàng không hợp lệ vui lòng hủy đơn hàng";
+                    thongbao = "Hủy đơn hàng thành công";
                 }
                 request.setAttribute("thongbao",thongbao);
             }

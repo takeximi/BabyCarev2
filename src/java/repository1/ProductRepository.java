@@ -236,7 +236,96 @@ public class ProductRepository {
         }
         return comments;
     }
+    
+    public int count(String txtSearch) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        int count = 0;
 
+        try {
+            // SQL query to count products
+            String query = "SELECT COUNT(*) FROM tblProduct WHERE ProductName LIKE ?";
+            // Get database connection
+            connection = DBConnect.getConnection();
+            // Prepare the statement
+            statement = connection.prepareStatement(query);
+            // Set the search parameter
+            statement.setString(1, "%" + txtSearch + "%");
+            // Execute the query
+            resultSet = statement.executeQuery();
+            // Get the count result
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return count;
+    }
+        public List<Product> search(String txtSearch, int index, int size) {
+        List<Product> productList = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBConnect.getConnection();
+            String query = "with x as (select ROW_NUMBER () over (order by ProductName) as r, * from tblProduct where ProductName like ?) "
+                    + "select * from x where r between (? * 3 - 2) and (? * 3)";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, "%" + txtSearch + "%");
+            statement.setInt(2, index);
+            statement.setInt(3, size);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Product product = new Product();
+                product.setProductId(resultSet.getString("ProductID"));
+                product.setProductName(resultSet.getString("ProductName"));
+                product.setProductType(resultSet.getString("ProductType"));
+                product.setProductPrice(resultSet.getDouble("ProductPrice"));
+                product.setImg(resultSet.getString("ProductImage"));
+                product.setProductAmount(resultSet.getInt("Amount"));
+                product.setStatus(resultSet.getInt("StatusProduct"));
+                product.setCTVID(resultSet.getString("CTVID"));
+                product.setOrigin(resultSet.getString("ProductOrigin"));
+                product.setProductDescription(resultSet.getString("ProductDescription"));
+                productList.add(product);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return productList;
+    }
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
 //        String productID = "P004";
@@ -271,19 +360,19 @@ public class ProductRepository {
 //        } else {
 //            System.out.println("Brand not found!");
 //        }
-        CommentProduct comment = new CommentProduct();
-        comment.setCommentID("Cm124");
-        comment.setProductID("P9003");
-        comment.setComment("This is a test comment.");
-        comment.setUserID("U8516");
-        comment.setCommentImg("image.jpg");
-        comment.setCreatedAt(new Date(System.currentTimeMillis()));
-
-        // Gọi phương thức addComment từ ProductRepository
-        ProductRepository.addComment(comment);
+//        CommentProduct comment = new CommentProduct();
+//        comment.setCommentID("Cm124");
+//        comment.setProductID("P9003");
+//        comment.setComment("This is a test comment.");
+//        comment.setUserID("U8516");
+//        comment.setCommentImg("image.jpg");
+//        comment.setCreatedAt(new Date(System.currentTimeMillis()));
+//
+//        // Gọi phương thức addComment từ ProductRepository
+//        ProductRepository.addComment(comment);
 
         // In ra thông báo khi thêm bình luận thành công
-        System.out.println("Comment added successfully.");
+//        System.out.println("Comment added successfully.");
 
 //try {
 //        // Gọi phương thức listCommentsByProductId từ ProductRepository
@@ -296,5 +385,30 @@ public class ProductRepository {
 //    } catch (SQLException | ClassNotFoundException e) {
 //        e.printStackTrace();
 //    }
+
+         ProductRepository productRepository = new ProductRepository();
+        
+        // Thay thế "txtSearch" bằng từ khóa tìm kiếm thực tế của bạn
+        String txtSearch = "SỮA";
+        int index = 1; // Trang đầu tiên
+        int size = 10; // Số lượng sản phẩm mỗi trang
+
+        List<Product> products = productRepository.search(txtSearch, index, size);
+        
+        // In kết quả ra màn hình
+        for (Product product : products) {
+            System.out.println("ProductID: " + product.getProductId());
+            System.out.println("ProductName: " + product.getProductName());
+            System.out.println("ProductType: " + product.getProductType());
+            System.out.println("ProductPrice: " + product.getProductPrice());
+            System.out.println("ProductImage: " + product.getImg());
+            System.out.println("Amount: " + product.getProductAmount());
+            System.out.println("StatusProduct: " + product.getStatus());
+            System.out.println("CTVID: " + product.getCTVID());
+            System.out.println("ProductOrigin: " + product.getOrigin());
+            System.out.println("ProductDescription: " + product.getProductDescription());
+            System.out.println("----------------------------------------");
+        }
+    
     }
 }

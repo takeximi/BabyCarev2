@@ -7,6 +7,7 @@ import entity.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class CartRepository {
 
@@ -42,6 +43,40 @@ public class CartRepository {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    public static boolean updateProductQuantity(String productId, int Amount) throws ClassNotFoundException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        
+        try {
+            // Kết nối đến cơ sở dữ liệu
+            connection = DBConnect.getConnection();
+            
+            // Chuẩn bị câu truy vấn SQL
+            String query = "UPDATE tblProduct SET Amount = Amount - ? WHERE ProductID = ?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, Amount);
+            statement.setString(2, productId);
+            
+            // Thực thi truy vấn
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            // Đóng kết nối, câu lệnh
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
     public static void removeCartItemFromDatabase(String userId, String productId) {
