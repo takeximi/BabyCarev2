@@ -16,7 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import repository1.CartRepository;
+import repository1.ProductRepository;
 
 @WebServlet(name = "MakeOrderServlet", value = "/makeorder")
 public class MakeOrderServlet extends HttpServlet {
@@ -52,7 +55,6 @@ public class MakeOrderServlet extends HttpServlet {
                 if (orderId != null) {
                     orderIds.add(orderId);
                     System.out.println("Order created with ID: " + orderId);
-
                     // Retrieve the cart items for the current order
                     List<Items> orderItems = OrderRepository.getOrdersByBillId(orderId);
                     if (orderItems != null && !orderItems.isEmpty()) {
@@ -62,7 +64,20 @@ public class MakeOrderServlet extends HttpServlet {
                         orderItemsMap.put(orderId, new ArrayList<>());
                         System.out.println("No items found for order " + orderId);
                     }
-
+                    
+                     for (Items item : ctvItems) {
+                        try {
+                            boolean isUpdated = CartRepository.updateProductQuantity(item.getProduct().getProductId(), item.getAmount());
+                            if (!isUpdated) {
+                                System.out.println("Failed to update quantity for product ID: " + item.getProduct().getProductId());
+                                allOrdersCreated = false;
+                                break;
+                            }
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(MakeOrderServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    
                     // Tính tổng số tiền cho đơn hàng
                     double totalPrice = calculateTotalPrice(ctvItems);
                     request.setAttribute("totalPrice", totalPrice);

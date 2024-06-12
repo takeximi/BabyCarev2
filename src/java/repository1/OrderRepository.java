@@ -6,6 +6,7 @@ import service.Isvalid;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import service.MyRandom;
@@ -302,6 +303,60 @@ public class OrderRepository {
         }
         return true;
     }
+    
+     public static boolean updateProductByCancelOrder(String orderId, String userId) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        
+        try {
+            connection = DBConnect.getConnection();
+            
+            // Lấy danh sách sản phẩm và số lượng từ đơn hàng
+            String querySelect = "SELECT ProductID, AmountProduct FROM tblOrderDetails WHERE BillID = ?";
+            statement = connection.prepareStatement(querySelect);
+            statement.setString(1, orderId);
+            resultSet = statement.executeQuery();
+            
+            List<Items> itemsList = new ArrayList<>();
+            
+            while (resultSet.next()) {
+                Items item = new Items();
+                item.setProduct(new Product(resultSet.getString("ProductID")));
+                item.setAmount(resultSet.getInt("AmountProduct"));
+                itemsList.add(item);
+            }
+            
+            // Cộng lại số lượng sản phẩm vào kho
+            for (Items item : itemsList) {
+                String queryUpdate = "UPDATE tblProduct SET Amount = Amount + ? WHERE ProductID = ?";
+                PreparedStatement updateStatement = connection.prepareStatement(queryUpdate);
+                updateStatement.setInt(1, item.getAmount());
+                updateStatement.setString(2, item.getProduct().getProductId());
+                updateStatement.executeUpdate();
+            }
+  
+            
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
     public static boolean acceptOrder1(String orderId, String CTVID) {
     try {
         Connection con = DBConnect.getConnection();
@@ -581,13 +636,13 @@ public class OrderRepository {
         return discountCode;
     }
 
-    public static boolean paidOrder(String orderId, String employeeID) {
+    public static boolean paidOrder(String orderId, String CTVID) {
 
         try {
             Connection con = DBConnect.getConnection();
-            String query = "update tblBill set StatusBill=N'Đã thanh toán',employeeID=?  where BillID=?";
+            String query = "update tblBill set StatusBill=N'Đã thanh toán', CTVID=?  where BillID=?";
             PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, employeeID);
+            stmt.setString(1, CTVID);
             stmt.setString(2, orderId);
             stmt.executeUpdate();
             con.close();
@@ -709,56 +764,56 @@ public class OrderRepository {
 
     }
 
-    public static ArrayList<Preferential> getListDiscount() {
+//    public static ArrayList<Preferential> getListDiscount() {
+//
+//        ArrayList<Preferential> listP;
+//        try {
+//            Connection con = DBConnect.getConnection();
+//            String query = "select * from tblPreferential";
+//            PreparedStatement stmt = con.prepareStatement(query);
+//            ResultSet rs = stmt.executeQuery();
+//            listP = new ArrayList<Preferential>();
+//            while (rs.next()) {
+//                String id = rs.getString(1);
+//                String preferentialName = rs.getString(2);
+//                String startDay = rs.getString(3);
+//                String endDay = rs.getString(4);
+//                double rate = rs.getDouble(5);
+//                Preferential newP = new Preferential(id, preferentialName, startDay, endDay, rate);
+//                listP.add(newP);
+//            }
+//
+//            con.close();
+//        } catch (Exception e) {
+//            System.out.println("==========>ERROR : getListDiscount()<=============");
+//            return null;
+//        }
+//        return listP;
+//
+//    }
 
-        ArrayList<Preferential> listP;
-        try {
-            Connection con = DBConnect.getConnection();
-            String query = "select * from tblPreferential";
-            PreparedStatement stmt = con.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            listP = new ArrayList<Preferential>();
-            while (rs.next()) {
-                String id = rs.getString(1);
-                String preferentialName = rs.getString(2);
-                String startDay = rs.getString(3);
-                String endDay = rs.getString(4);
-                double rate = rs.getDouble(5);
-                Preferential newP = new Preferential(id, preferentialName, startDay, endDay, rate);
-                listP.add(newP);
-            }
-
-            con.close();
-        } catch (Exception e) {
-            System.out.println("==========>ERROR : getListDiscount()<=============");
-            return null;
-        }
-        return listP;
-
-    }
-
-    public static boolean createDiscount(Preferential p) {
-        try {
-            Connection con = DBConnect.getConnection();
-            String query = "insert into tblPreferential\n"
-                    + "(Preferential,PreferentialName,StartDay,EndDay,Quantity)\n"
-                    + "values (?,?,?,?,?)";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, p.getId());
-            stmt.setString(2, p.getPreferentialName());
-            stmt.setString(3, p.getStartDay());
-            stmt.setString(4, p.getEndDay());
-            stmt.setDouble(5, p.getRate() / 100);
-            stmt.executeUpdate();
-
-            con.close();
-        } catch (Exception e) {
-            System.out.println("==========>ERROR : checkValidAmountOfPet()<=============");
-            return false;
-        }
-        return true;
-
-    }
+//    public static boolean createDiscount(Preferential p) {
+//        try {
+//            Connection con = DBConnect.getConnection();
+//            String query = "insert into tblPreferential\n"
+//                    + "(Preferential,PreferentialName,StartDay,EndDay,Quantity)\n"
+//                    + "values (?,?,?,?,?)";
+//            PreparedStatement stmt = con.prepareStatement(query);
+//            stmt.setString(1, p.getId());
+//            stmt.setString(2, p.getPreferentialName());
+//            stmt.setString(3, p.getStartDay());
+//            stmt.setString(4, p.getEndDay());
+//            stmt.setDouble(5, p.getRate() / 100);
+//            stmt.executeUpdate();
+//
+//            con.close();
+//        } catch (Exception e) {
+//            System.out.println("==========>ERROR : checkValidAmountOfPet()<=============");
+//            return false;
+//        }
+//        return true;
+//
+//    }
 
     public static User getUserByBillID(String billID) {
         User user = null;
@@ -913,20 +968,30 @@ public class OrderRepository {
 //        } else {
 //            System.out.println("Failed to create order.");
 //        }
-ArrayList<OrderAccept> orders = getAllOrderByCTVId("C7344");
-        if (orders != null) {
-            for (OrderAccept order : orders) {
-                System.out.println(order);
-            }
-        } else {
-            System.out.println("No orders found for the given CTVId.");
-        }
-        
-        boolean result = OrderRepository.acceptOrder1("1uN6Un8I2n", "C7344");
+//        ArrayList<OrderAccept> orders = getAllOrderByCTVId("C7344");
+//        if (orders != null) {
+//            for (OrderAccept order : orders) {
+//                System.out.println(order);
+//            }
+//        } else {
+//            System.out.println("No orders found for the given CTVId.");
+//        }
+//        
+//        boolean result = OrderRepository.acceptOrder1("1uN6Un8I2n", "C7344");
+//        if (result) {
+//            System.out.println("succsess");
+//        }else{
+//            System.out.println("fail");
+//        }
+
+String orderId = "R5Gk4HEmfG";
+        String userId = "U8516";
+
+        boolean result = updateProductByCancelOrder(orderId, userId);
         if (result) {
-            System.out.println("succsess");
-        }else{
-            System.out.println("fail");
+            System.out.println("Order cancellation and product update were successful.");
+        } else {
+            System.out.println("Order cancellation or product update failed.");
         }
     }
 

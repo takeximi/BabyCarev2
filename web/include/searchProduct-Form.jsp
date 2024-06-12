@@ -53,12 +53,12 @@
     <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
       <h6 class="text-primary text-uppercase">Sản Phẩm</h6>
       <form action="SearchControl?index=1" method="post">
-          <input class="searchBox" type="text" name="txtSearch" size="15" required>
+          <input class="searchBox" type="text" name="txtSearch" size="30" required>
           <input class="serachButton" type="submit" name="btnGo" value="Go">
       </form>
     </div>
     <div class="row g-5" id="productContainer">
-      <c:forEach var="product" items="${listProduct}">
+      <c:forEach var="product" items="${productList}">
           <div class="col-lg-2 col-md-4 col-sm-6" style="margin-top :12px">
           <a href="getProductDetail?id=${product.productId}" class="product-item-link">
             <div class="product-item position-relative bg-white d-flex flex-column text-center">

@@ -71,7 +71,7 @@
                         <div class="navbar-nav mx-auto">
                             <a href="index.html" class="nav-item nav-link active">Home</a>
                             <a href="about.html" class="nav-item nav-link">About</a>
-                            <a href="service.html" class="nav-item nav-link">Services</a>
+                            <a href="listService" class="nav-item nav-link">Services</a>
                             <a href="product" class="nav-item nav-link">Sản Phẩm</a>
                             <a href="event.html" class="nav-item nav-link">Events</a>
                             <div class="nav-item dropdown">
@@ -111,8 +111,9 @@
                                         <a href="cart.jsp" class="dropdown-item">Giỏ hàng</a>
 
                                         <c:if test="${sessionScope.user.userId.startsWith('E')}">
-                                            <a href="order-list-manager" class="dropdown-item">Quản lí dịch vụ</a>                                          
+                                                                                    
                                             <a href="listdiscount"  class="dropdown-item">Quản lí mã giảm giá</a>
+                                            <a href="ListBookingEmploye" class="dropdown-item">Quản lí dịch vụ</a>
                                         </c:if>
                                             <c:if test="${sessionScope.user.userId.startsWith('C')}">
                                                 <a href="product-list-manager" class="dropdown-item">Quản lí sản phẩm</a>
@@ -125,6 +126,11 @@
                                             <a href="manage-emp-account" class="dropdown-item">Quản lí tài khoản nhân viên</a>
                                             <a href="manage-cus-account" class="dropdown-item">Quản lí tài khoản khách hàng</a>
                                             <a href="statistics"  class="dropdown-item">Thống kê bán hàng</a>
+                                        </c:if>
+                                            
+                                        <c:if test="${sessionScope.user.userId.startsWith('U')}">
+                                            <a href="ListBookingCustomerIDServlet" class="dropdown-item">Quản lí dich vụ</a>
+                                            <a href="getorderhistory" class="dropdown-item">Lịch sử đặt hàng dịch vụ</a>                   
                                         </c:if>
 
                                         <a href="logout" class="dropdown-item text-danger">Đăng xuất</a>

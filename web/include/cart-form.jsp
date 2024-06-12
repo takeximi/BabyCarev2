@@ -317,8 +317,6 @@
                                             </div>
                                         </c:if>
                                     </form>
-                                
-                                    </form>
                                     <p>Tạm tính: <span>${sessionScope.cart.getThanhTienString(0)}</span></p>
                                     <p>Tiền ship: <span>30000</span></p>
                                     <c:if test="${sessionScope.cart.discountCode == null}">
