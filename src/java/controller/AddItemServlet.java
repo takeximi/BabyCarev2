@@ -31,7 +31,7 @@ public class AddItemServlet extends HttpServlet {
 
     try {
         String id = request.getParameter("id");
-        String ammout = request.getParameter("ammount");
+        String amount = request.getParameter("amount");
         Product p = ProductRepository.getProductById(id);
 
         Cart cart = (Cart) session.getAttribute("cart");
@@ -41,9 +41,9 @@ public class AddItemServlet extends HttpServlet {
             for (Items item : cart.getCart()) {
                 if (item.getProduct().getProductId().equals(id)) {
                     // If the product already exists in the cart, update the quantity
-                    int quantity = item.getAmmout() + Integer.parseInt(ammout);
-                    item.setAmmout(quantity);
-                    CartRepository.updateCartItemQuantity(userID, id, item.getAmmout());
+                    int quantity = item.getAmount()+ Integer.parseInt(amount);
+                    item.setAmount(quantity);
+                    CartRepository.updateCartItemQuantity(userID, id, item.getAmount());
                     productExistsInCart = true;
                     break;
                 }
@@ -54,7 +54,7 @@ public class AddItemServlet extends HttpServlet {
 
                 // Sau khi cập nhật hoặc thêm sản phẩm vào giỏ hàng
         if (!productExistsInCart) {
-            Items item = new Items(p, Integer.parseInt(ammout));
+            Items item = new Items(p, Integer.parseInt(amount));
             cart.addItems(item);
             CartRepository.saveCart(cart);
         }

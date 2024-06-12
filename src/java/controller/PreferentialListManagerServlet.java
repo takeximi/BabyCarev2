@@ -37,11 +37,11 @@ public class PreferentialListManagerServlet extends HttpServlet {
             return;
         }
         
-        String CTVID = user.getUserId();
-        ArrayList<Preferential> listPreferential = PreferentialRepository.getListPreferentialByCTVID(CTVID);
+        String EmployeeID = user.getUserId();
+        ArrayList<Preferential> listPreferential = PreferentialRepository.getListPreferentialByEmployeeID(EmployeeID);
         request.setAttribute("preferentialList", listPreferential);
         request.getRequestDispatcher("preferential-list-manager.jsp").forward(request, response);
-        System.out.println("CTVID: " + CTVID);
+        System.out.println("EmployeeID: " + EmployeeID);
         System.out.println("List Size: " + listPreferential.size()); // Logging
     }
 

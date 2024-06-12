@@ -52,7 +52,10 @@
   <div class="container">
     <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
       <h6 class="text-primary text-uppercase">Sản Phẩm</h6>
-      <input class="form-control" id="myInput" type="text" placeholder="Tìm kiếm">
+      <form action="SearchControl?index=1" method="post">
+          <input class="searchBox" type="text" name="txtSearch" size="15" required>
+          <input class="serachButton" type="submit" name="btnGo" value="Go">
+      </form>
     </div>
     <div class="row g-5" id="productContainer">
       <c:forEach var="product" items="${listProduct}">

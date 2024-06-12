@@ -20,6 +20,10 @@ public class Product {
     public Product() {
     }
 
+   public Product(String productId) {
+        this.productId = productId;
+    }
+
    
 
     public int getStatus() {

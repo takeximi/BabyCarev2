@@ -1,12 +1,16 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: PC
-  Date: 19/07/2023
-  Time: 5:10 CH
-  To change this template use File | Settings | File Templates.
---%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<nav class="nav nav-pills nav-justified">
+  <a class="nav-item nav-link " href="order-list-manager">Đơn hàng đang chờ</a>
+  <a class="nav-item nav-link " href="list-order-accepted">Đơn hàng đã xác nhận</a>
+  <a class="nav-item nav-link active" href="#">Đơn hàng đã thanh toán</a>
+  <a class="nav-item nav-link  " href="list-order-cancel">Đơn hàng đã hủy</a>
+
+</nav>
 <style>
   #pagination {
     margin-top: 10px;
@@ -26,49 +30,33 @@
   }
 
 </style>
-
-
-
 <div class="container mt-3">
-  <h2>Quản lí danh sách tài khoản khách hàng</h2>
-  <p>Admin có thể xem được danh sách tài khoản khách hàng ở đây</p>
+  <h2>Quản lí danh sách đơn đã thanh toán</h2>
+  <p>Nhân viên có thể xem được danh sách đơn đã thanh toán ở đây</p>
   <input class="form-control" id="myInput" type="text" placeholder="Tìm kiếm">
   <br>
   <table class="table table-bordered" id="data-table">
     <thead>
     <tr>
-      <th>Username</th>
+      <th>Mã số đơn hàng</th>
       <th>ID khách hàng</th>
-      <th>Họ</th>
-      <th>Tên</th>
-      <th>Số điện thoại</th>
-      <th>Email</th>
-      <th></th>
+      <th>Địa chỉ</th>
+      <th>Ngày đặt</th>
+      <th>Mã giảm giá</th>
+      <th>Trạng thái</th>
     </tr>
     </thead>
     <tbody id="myTable">
 
-    <c:forEach var="acc" items="${listCusAcc}">
-
-
-
+    <c:forEach var="order" items="${listOrder}">
       <tr>
-        <td>${acc.username}</td>
-        <td>${acc.userID}</td>
-        <td>${acc.firstname}</td>
-        <td>${acc.lastname}</td>
-        <td>${acc.phone}</td>
-        <td>${acc.email}</td>
-        <c:if test="${acc.status==1}">
-          <td>
-            <a href="lockcustomer?empID=${acc.userID}" class="btn btn-danger"><i class="fa fa-lock" aria-hidden="true"></i> Khóa</a>
-          </td>
-        </c:if>
-        <c:if test="${acc.status==0}">
-          <td>
-            <a href="unlockcustomer?empID=${acc.userID}" class="btn btn-success"><i class="fa fa-unlock-alt" aria-hidden="true"> Mở</i></a>
-          </td>
-        </c:if>
+        <td><a href="getordereddetailemp?orderId=${order.idOrder}">${order.idOrder}</a></td>
+        <td>${order.username}</td>
+        <td>${order.address}</td>
+        <td>${order.date}</td>
+        <td>${order.discountId}</td>
+        <td>${order.orderStatus}</td>
+
 
       </tr>
 
@@ -77,9 +65,9 @@
     </tbody>
   </table>
 
-  <div id="pagination" class="text-center"></div>
-</div>
 
+</div>
+<div id="pagination" class="text-center"></div>
 <script>
   $(document).ready(function () {
     $("#myInput").on("keyup", function () {

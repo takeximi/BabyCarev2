@@ -6,12 +6,12 @@ public class Preferential {
     protected String preferentialName;
     protected String startDay;
     protected String endDay;
-    protected double quantity;
+    protected int quantity;
     protected String preferentiaDescription;
     protected String preferentiaImg;
-    protected String CTVID;
+    protected String employeeID;
 
-    public Preferential(String preferential, String preferentialName, String startDay, String endDay, double quantity, String preferentiaDescription, String preferentiaImg, String CTVID) {
+    public Preferential(String preferential, String preferentialName, String startDay, String endDay, int quantity, String preferentiaDescription, String preferentiaImg, String CTVID) {
         this.preferential = preferential;
         this.preferentialName = preferentialName;
         this.startDay = startDay;
@@ -19,14 +19,14 @@ public class Preferential {
         this.quantity = quantity;
         this.preferentiaDescription = preferentiaDescription;
         this.preferentiaImg = preferentiaImg;
-        this.CTVID = CTVID;
+        this.employeeID = employeeID;
     }
 
     public Preferential(String name, String description, int discount) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Preferential(String preferential, String preferentialName, String startDay, String endDay, double quantity, String preferentiaDescription, String preferentiaImg) {
+    public Preferential(String preferential, String preferentialName, String startDay, String endDay, int quantity, String preferentiaDescription, String preferentiaImg) {
               this.preferential = preferential;
         this.preferentialName = preferentialName;
         this.startDay = startDay;
@@ -68,11 +68,11 @@ public class Preferential {
         this.endDay = endDay;
     }
 
-    public double getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
@@ -93,16 +93,18 @@ public class Preferential {
     }
 
     public String getCTVID() {
-        return CTVID;
+        return employeeID;
     }
 
     public void setCTVID(String CTVID) {
-        this.CTVID = CTVID;
+        this.employeeID = CTVID;
     }
 
     @Override
     public String toString() {
-        return "Preferential{" + "preferential=" + preferential + ", preferentialName=" + preferentialName + ", startDay=" + startDay + ", endDay=" + endDay + ", Quantity=" + quantity + ", preferentiaDescription=" + preferentiaDescription + ", preferentiaImg=" + preferentiaImg + ", CTVID=" + CTVID + '}';
+        return "Preferential{" + "preferential=" + preferential + ", preferentialName=" + preferentialName + ", startDay=" + startDay 
+                + ", endDay=" + endDay + ", Quantity=" + quantity + ", preferentiaDescription=" + preferentiaDescription + ", preferentiaImg="
+                + preferentiaImg + ", employeeID=" + employeeID + '}';
     }
 
 

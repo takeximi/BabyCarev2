@@ -2,7 +2,7 @@ package entity;
 
 public class OrderAccept {
     private String idOrder,username,date,discountId,total,orderStatus;
-    private String address,employeeID;
+    private String address,CTVID;
 
 
 
@@ -73,12 +73,12 @@ public class OrderAccept {
         this.address = address;
     }
 
-    public String getEmployeeID() {
-        return employeeID;
+    public String getCTVID() {
+        return CTVID;
     }
 
-    public void setEmployeeID(String employeeID) {
-        this.employeeID = employeeID;
+    public void setCTVID(String employeeID) {
+        this.CTVID = employeeID;
     }
 
     @Override

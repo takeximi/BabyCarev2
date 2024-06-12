@@ -49,7 +49,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand waves-effect waves-dark" href="index.html"><i class="large material-icons">track_changes</i> <strong>target</strong></a>
+                    <a class="navbar-brand waves-effect waves-dark" href="admin"><i class="large material-icons">track_changes</i> <strong>BabyCare ADMIN</strong></a>
 
                     <div id="sideNav" href=""><i class="material-icons dp48">toc</i></div>
                 </div>
@@ -75,21 +75,8 @@
                     <ul class="nav" id="main-menu">
 
                         <li>
-                            <a href="statistics"  class="dropdown-item">Thống kê bán hàng</a>       
+                            <a href="#"  class="dropdown-item">Thống kê bán hàng</a>       
                         </li>         
-                        <li>
-                            <a href="manage-emp-account" class="dropdown-item">Quản lí tài khoản nhân viên</a>
-                        </li>
-                        <li>
-                            <a href="order-list-manager" class="dropdown-item">Quản lí dịch vụ</a> 
-                        </li>
-
-                        <li>
-                            <a href="manage-cus-account" class="dropdown-item">Quản lí tài khoản khách hàng</a>
-                        </li>
-                        <li>
-                            <a href="profile" class="dropdown-item">Quản lí thông tin cá nhân</a>
-                        </li>
 
 
                         <li>

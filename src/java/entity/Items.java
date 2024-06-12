@@ -6,15 +6,28 @@ import repository1.OrderRepository;
 
 public class Items {
     private Product product;
-    private int ammout;
+    private int amount;
     DecimalFormat formatter = new DecimalFormat("#,###,###");
+    private boolean selected;  // Thêm thuộc tính này
+    private String OrderId;
+
+    
+
+    public String getOrderID() {
+        return OrderId;
+    }
+
+    public void setOrderID(String OrderId) {
+        this.OrderId = OrderId;
+    }
+    
 
     public Items() {
     }
 
     public Items(Product product, int ammout) {
         this.product = product;
-        this.ammout = ammout;
+        this.amount = ammout;
     }
 
     public Product getProduct() {
@@ -25,18 +38,27 @@ public class Items {
         this.product = product;
     }
 
-    public int getAmmout() {
-        return ammout;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setAmmout(int ammout) {
-        this.ammout = ammout;
+    public void setAmount(int ammout) {
+        this.amount = ammout;
     }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+    
 
     public double getPrice() {
-        return product.getProductPrice() * ammout;
+        return product.getProductPrice() * amount;
     }
-    public double getPriceAfterPurchase (String OrderId) {
+    public double getPriceAfterPurchase(String OrderId) {
         for (int i = 0 ; i < 10 ; i ++) {
             System.out.println(OrderId);
             System.out.println(product.getProductId());
@@ -61,7 +83,7 @@ public class Items {
     public String toString() {
         return "Items{" +
                 "product=" + product +
-                ", ammout=" + ammout +
+                ", ammout=" + amount +
                 ", formatter=" + formatter +
                 '}';
     }

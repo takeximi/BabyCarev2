@@ -85,7 +85,7 @@
         input[type="url"],
         textarea,
         select {
-        //background: rgba(255,255,255,0.1);
+
             border: none;
             font-size: 16px;
             height: auto;
@@ -93,7 +93,7 @@
             outline: 0;
             padding: 15px;
             width: 66%;
-        //background-color: #380514;
+
             color: #8a97a0;
             box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
             margin-bottom: 30px;
@@ -107,7 +107,7 @@
             text-align: center;
             font-style: normal;
             border: 1px solid #3ac162;
-        //border-width: 1px 1px 3px;
+
             margin-bottom: 10px;
             overflow: hidden;
         }

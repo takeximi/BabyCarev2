@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<<<<<<< HEAD
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="container mt-3">
@@ -16,56 +15,25 @@
                 </div>
 
                 <section>
-                    <a href="#" class="icon-link">
+<!--                    <a href="#" class="icon-link">
                         <i class="glyphicon glyphicon-user icon"></i>
                         <span class="text">Profile</span>
-                    </a>
+                    </a>-->
                     <a href="changepass" class="icon-link">
-=======
-
-
-
-
-<div class="container mt-3">
-    <form class="needs-validation" novalidate action="updateprofile" method="post" >
-        <div class="row">
-            <div class="col-md-3" style="background-color: hwb(48 90% 2%); border-radius: 10px; width: 180px; height: 250px; margin-right: 20px;">
-                <div>
-                    <div class="col-12">
-                    <div style=" margin: 15px;">
-                        <img style="width: 50px; height: 83%; border-radius: 50%; margin-top: 5px;"src="${avatar}" class="img-fluid" alt="Ảnh cá nhân">
-                    </div>
-                        <h2 style=" font-size:15px; font-weight: 550;">${firstname} ${lastname}</h2>
-                </div>
-                </div>
-
-                <section>
-                    
-                    <a href="totalprofit" class="icon-link">
->>>>>>> 4c889aada80d78c223f84164afa81fa7ba57c58d
                         <i class="glyphicon glyphicon-cloud icon"></i>
                         <span class="text">Change password</span>
                     </a>
                 </section>
             </div>
-<<<<<<< HEAD
             <div class="col-md-9" style="background-color: hwb(319 83% 3%);
-=======
-            <div class="col-md-9" style="background-color: hwb(321 87% 1%);
->>>>>>> 4c889aada80d78c223f84164afa81fa7ba57c58d
                  border-radius: 10px;
                  padding: 1rem;
                  margin-bottom: 2rem;">
                 <div class="row">
                     <div class="col-12" style="border-radius: 10px; text-align: center;">
-<<<<<<< HEAD
                         <h2  style="font-weight: 600;color: white;font-size: 22px ;font-family: 'Roboto', sans-serif;" >Profile information</h2>
                     </div>
                     
-=======
-                        <h2  style="font-weight: 600;color: #664d03;font-size: 23px ;font-family: 'Roboto', sans-serif;" >Profile information</h2>
-                    </div>
->>>>>>> 4c889aada80d78c223f84164afa81fa7ba57c58d
                     <%--input fistname--%>
                     <div class="col-md-8 mb-3" >
                         <div >
@@ -121,16 +89,11 @@
                                 </div>
                             </div>
                         </div>
-<<<<<<< HEAD
 
-=======
-                       
->>>>>>> 4c889aada80d78c223f84164afa81fa7ba57c58d
                     </div>
                     <div class="col-md-4 mb-3">
                         <div>
                             <div style=" margin: 50px;">
-<<<<<<< HEAD
                                 <img style="width: 180px; height: 83%; border-radius: 50%; margin-top: 5px;"src="img/${avatar}" class="img-fluid" alt="Ảnh cá nhân">
                             </div>
                         </div>
@@ -149,25 +112,6 @@
                                 </div>
                     </div>
                                
-=======
-                            <img style="width: 150px; height: 90%; border-radius: 50%; margin-top: 5px;"src="${avatar}" class="img-fluid" alt="Ảnh cá nhân">
-                        </div>
-                        </div>
-                        
-                         <div >
-                            <label for="address">Avatar</label>
-                            <div class="input-group">
-                                <br>
-                                <input id="avatar" type="text" class="form-control" name="avatar" value="${avatar}"  ></input><br>
-                                <br>                              
-
-                            </div>
-                                 <div>
-                                    <p>Đường dẫn lưu trữ ảnh: <%= request.getAttribute("imagePath") %></p>
-                                </div>
-                        </div>
-                    </div>
->>>>>>> 4c889aada80d78c223f84164afa81fa7ba57c58d
 
                     <div class="row">
                         <div class="col-3 offset-3">
@@ -177,19 +121,11 @@
 
                     </div>
 
-<<<<<<< HEAD
                 </div>
             </div>
         </div> 
     </form>
 
-=======
-
-    </form>
-                </div>
-            </div>
-        </div> 
->>>>>>> 4c889aada80d78c223f84164afa81fa7ba57c58d
 </div>
 
 
