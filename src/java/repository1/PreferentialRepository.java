@@ -75,7 +75,55 @@ public class PreferentialRepository {
         }
         return listPreferential;
     }
-    
+    public static ArrayList<Preferential> getListPreferentialPage(String page) {
+        ArrayList<Preferential> listPreferential = new ArrayList<Preferential>();
+        try {
+            String query = "select * from tblPreferential\n" +
+                    "order by Preferential\n" +
+                    "OFFSET (? - 1) * 9 ROWS\n" +
+                    "FETCH NEXT 9 ROWS ONLY;";
+            Connection con = DBConnect.getConnection();
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1,page);
+            ResultSet results = stmt.executeQuery();
+            while (results.next()) {
+               String preferential = results.getString(1);
+                String preferentialName = results.getString(2);
+                String startDay = results.getString(3);
+                String endDay = results.getString(4);
+                int quantity = results.getInt(5);
+                String preferentiaDescription = results.getString(6);
+                String preferentiaImg = results.getString(7);
+                String EmployeeID = results.getString(8);
+   
+                              Preferential preferentials = new Preferential( preferential,  preferentialName,  startDay,  endDay,  quantity,  preferentiaDescription,  preferentiaImg,  EmployeeID);
+
+                listPreferential.add(preferentials);
+
+            }
+        } catch (Exception e) {
+            System.err.println("Loi database method listFood class ProductRepository");
+        }
+        return listPreferential;
+    } 
+
+public  static int gettPreferentialSize(){
+        int size=0;
+        try {
+            String query = "select COUNT(1) from tblPreferential";
+            Connection con = DBConnect.getConnection();
+            PreparedStatement stmt = con.prepareStatement(query);
+
+            ResultSet results = stmt.executeQuery();
+            while (results.next()) {
+               size=results.getInt(1);
+
+            }
+        } catch (Exception e) {
+            System.err.println("Loi database method listFood class ProductRepository");
+        }
+        return size;
+    }
  public static ArrayList<Preferential> getListPreferential() {
         ArrayList<Preferential> listPreferential = new ArrayList<>();
         try {

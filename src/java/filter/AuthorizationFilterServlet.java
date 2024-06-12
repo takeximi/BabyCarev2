@@ -9,9 +9,7 @@ import javax.servlet.annotation.WebFilter;
 @WebFilter(filterName = "HomeFilter", urlPatterns = {
         "/admin",
         "/admin.jsp",
-        "/ShowProductDetails",
-        "/ProductServlet",
-        "/SearchProductServlet"
+
 })
 public class AuthorizationFilterServlet implements Filter {
     @Override
