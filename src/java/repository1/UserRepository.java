@@ -1,6 +1,6 @@
 package repository1;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
 import config.DBConnect;
 import entity.Account;
 import entity.Brand;
@@ -25,7 +25,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import service.MyRandom;
 
 public class UserRepository {
-
+private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getName());
     public static boolean checkUserNameExist(String username) {
         try {
             Connection con = DBConnect.getConnection();
