@@ -6,18 +6,17 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import javax.servlet.annotation.WebFilter;
 
-@WebFilter(filterName = "CTVFilter",urlPatterns = {
-    "/product-list-manager",
-        "/product-add.jsp",
-    "/order-list-manager",
-    "/list-order-accepted",    "/order-list-paid",
-    "/list-order-cancel",
-    "/list-order-accepted",
+@WebFilter(filterName = "EmployeeFilter", urlPatterns = {
+    "/ListBookingEmploye",
+    "/ListBillService",
+    "/ListCustomerPayment",
+    "/ListConfirmedServices",
+    "/ListServiceCancellation",
+        "/preferential-add.jsp",
 
+    "/preferential-list-manager",})
+public class EmployeeFilter implements Filter {
 
-
-})
-public class CTVFilterServlet implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // Khởi tạo bộ lọc, nếu cần
@@ -29,18 +28,17 @@ public class CTVFilterServlet implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         HttpSession session = httpRequest.getSession(false);
-         if (session != null) {
+        if (session != null) {
             User user = (User) session.getAttribute("user");
-            if (user != null && user.getUserId().startsWith("C")) {
+            if (user != null && user.getUserId().startsWith("E")|| user != null && user.getUserId().startsWith("A")) {
                 // User is an admin, allow access
                 chain.doFilter(request, response);
                 return;
             }
         }
+        // Người dùng không đăng nhập hoặc không phải quản trị viên, hiển thị thông báo và chuyển hướng đến trang đăng nhập
         httpRequest.setAttribute("errorMessage", "Bạn không có quyền truy cập tác vụ này, vui lòng đăng nhập lại account ");
-
-        // Người dùng không đăng nhập hoặc không phải quản trị viên, chuyển hướng đến trang đăng nhập
-        httpResponse.sendRedirect(httpRequest.getContextPath() + "/login.jsp");
+        httpRequest.getRequestDispatcher("/login.jsp").forward(httpRequest, httpResponse);
     }
 
     @Override

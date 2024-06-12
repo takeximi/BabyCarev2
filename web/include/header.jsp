@@ -63,17 +63,17 @@
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light navbar-expand-xl py-3">
-                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6">Baby<span class="text-secondary">Care</span></h1></a>
+                    <a href="index.jsp" class="navbar-brand"><h1 class="text-primary display-6">Baby<span class="text-secondary">Care</span></h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="index.html" class="nav-item nav-link active">Home</a>
+                            <a href="index.jsp" class="nav-item nav-link active">Home</a>
                             <a href="about.html" class="nav-item nav-link">About</a>
                             <a href="listService" class="nav-item nav-link">Services</a>
                             <a href="product" class="nav-item nav-link">Sản Phẩm</a>
-                            <a href="event.html" class="nav-item nav-link">Events</a>
+                            <a href="preferential" class="nav-item nav-link">Mã Giảm Giá</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
@@ -112,13 +112,13 @@
 
                                         <c:if test="${sessionScope.user.userId.startsWith('E')}">
                                                                                     
-                                            <a href="listdiscount"  class="dropdown-item">Quản lí mã giảm giá</a>
+                                                                                        <a href="preferential-list-manager"  class="dropdown-item">Quản lí mã giảm giá</a>
+
                                             <a href="ListBookingEmploye" class="dropdown-item">Quản lí dịch vụ</a>
                                         </c:if>
                                             <c:if test="${sessionScope.user.userId.startsWith('C')}">
                                                 <a href="product-list-manager" class="dropdown-item">Quản lí sản phẩm</a>
                                             <a href="order-list-manager" class="dropdown-item">Quản lí đơn hàng</a>                                          
-                                            <a href="listdiscount"  class="dropdown-item">Quản lí mã giảm giá</a>
                                             
                                         </c:if>
                                         
