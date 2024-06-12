@@ -75,8 +75,8 @@
                     <ul class="nav" id="main-menu">
 
                         <li>
-                            <a href="statistics"  class="dropdown-item">Thống kê bán hàng</a>       
-                        </li>                            
+                             <a href="#"  class="dropdown-item">Thống kê bán hàng</a>       
+                        </li>                                
                         <li>
 
                             <a href="" class="dropdown-item">Quản lí tài khoản</a>
