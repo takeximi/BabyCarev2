@@ -24,26 +24,48 @@
                         <p class="mb-4">Hoàn thành dự án hiệu quả và nhanh chóng.</p>
                         <h4 class="sub-title pe-3 mb-0">${service.servicePrice}$</h4>
                     </div>
-                    
-                    
-                </div>
-                   <form action="bookingservlet" method="get">
-    <c:if test="${sessionScope.user != null && sessionScope.user.userId.startsWith('U')}">
-        <div class="buttons">
-            <div>
-                <input type="hidden" name="serviceID" value="${service.serviceID}">
-                <input type="hidden" name="servicePrice" value="${service.servicePrice}">
-                <input type="hidden" name="serviceName" value="${service.serviceName}">
-                <input class="btn btn-primary" type="submit" value="Book Now">
-            </div>
-            <h3>${message}</h3>
-        </div>
-    </c:if>
 
-    <c:if test="${sessionScope.user == null}">
-        <a href="login.jsp" class="btn btn-primary">Đặt lịch ngay</a>
-    </c:if>
-</form>
+
+                </div>
+                <form action="bookingservlet" method="get">
+                    <c:if test="${sessionScope.user != null && sessionScope.user.userId.startsWith('U')}">
+                        <div class="buttons">
+                            <div>
+                                <input type="hidden" name="serviceID" value="${service.serviceID}">
+                                <input type="hidden" name="servicePrice" value="${service.servicePrice}">
+                                <input type="hidden" name="serviceName" value="${service.serviceName}">
+                                <input class="btn btn-primary" type="submit" value="Book Now">
+                            </div>
+                            <h3>${message}</h3>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${sessionScope.user == null}">
+                        <a href="login.jsp" class="btn btn-primary">Đặt lịch ngay</a>
+                    </c:if>
+                </form>
+                <div class="mt-5">
+                    <h1 class="display-3 mb-4">Đánh giá</h1>
+                    <div class="row">
+                        <c:forEach items="${feedbackList}" var="feedback">
+                            <div class="col-md-6 mb-4">
+                                <div class="service-item bg-light d-flex p-4">
+                                    <div>
+                                        <h5 class="text-uppercase mb-3"> Khách hàng: ${feedback.name}</h5>
+       
+                                        <p>${feedback.testimonial}</p>
+                                        <small class="text-secondary">Date: ${feedback.experienceDate}</small><br>
+<!--                                        <small class="text-secondary">Mức độ hài lòng: 
+                                            <div class="stars-outer">
+                                                <div class="stars-inner" style="width:${feedback.satisfactionLevel * 20}%;"></div>
+                                            </div>
+                                        </small>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
 
 
             </div>

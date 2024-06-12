@@ -217,6 +217,10 @@
             display: block;
         }
     </style>
+    
+      <c:if test="${sessionScope.user==null}">
+        <% response.sendRedirect("login.jsp");%>
+        </c:if>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-8">

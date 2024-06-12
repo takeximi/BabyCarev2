@@ -60,7 +60,7 @@
                         <td>${booking.note}</td>
                         <td>${booking.price}.VNĐ</td>
                          <td>
-                            <c:choose>
+<c:choose>
                               
                                  <c:when test="${booking.billStatus == 1}">Đang xủ lý...</c:when>
                                 <c:when test="${booking.billStatus == 2}">Chưa Thanh Toán</c:when>
@@ -84,9 +84,10 @@
                                 </form>
                             </c:if>
                               <c:if test="${booking.bookingStatus == 3}">
-                                <form action="FeedBackServlet" method="post">
+                                <form action="FeedBackServlet" method="get">
                                     
-                                    
+                                    <input type="hidden" name="CustomerID" value="${booking.customerID}">
+                                    <input type="hidden" name="ServiceID" value="${booking.serviceID}">
                                     <button type="submit" class="btn btn-danger btn-sm">Feedback</button>
                                 </form>
                             </c:if>
@@ -106,4 +107,3 @@
         </table>
     </div>
 </div>
-

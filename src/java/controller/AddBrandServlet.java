@@ -102,7 +102,8 @@ public class AddBrandServlet extends HttpServlet {
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error adding brand to the database", e);
             request.setAttribute("thongbao", "Có lỗi xảy ra khi đăng kí cửa hàng. Vui lòng thử lại abc.");
-            request.getRequestDispatcher("registerctv.jsp").forward(request, response);
+//            request.getRequestDispatcher("registerctv.jsp").forward(request, response);
+            response.sendRedirect("registerctv.jsp");
         }
     }
 

@@ -8,6 +8,7 @@ import entity.ServiceBooked;
 
 import entity.Customer;
 import entity.Booking;
+import entity.Feedback;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -952,9 +953,155 @@ public static void sendEmail(String toEmail, String subject, String body) {
             e.printStackTrace();
         }
     }
+public static void saveFeedback(Feedback feedback) {
+    String sql = "INSERT INTO feedback (CustomerID, ServiceID, Testimonial, experience_date, satisfaction_level, name) " +
+                 "VALUES (?, ?, ?, ?, ?, ?)";
+
+    // Use try-with-resources to ensure resources are closed properly
+    try (Connection con = DBConnect.getConnection();
+         PreparedStatement stmt = con.prepareStatement(sql)) {
+
+        // Set parameters
+        stmt.setString(1, feedback.getCustomerID());
+        stmt.setInt(2, feedback.getServiceID());
+        stmt.setString(3, feedback.getTestimonial());
+        stmt.setDate(4, new java.sql.Date(feedback.getExperienceDate().getTime()));
+        stmt.setInt(5, feedback.getSatisfactionLevel());
+        stmt.setString(6, feedback.getName());
+
+        // Execute update
+        stmt.executeUpdate();
+        System.out.println("Feedback saved successfully!");
+
+    } catch (SQLException | ClassNotFoundException e) {
+        System.err.println("Error in database method saveFeedback");
+        e.printStackTrace();
+    }
+}
+public static boolean updateService(Service service) throws SQLException, ClassNotFoundException {
+    try (Connection con = DBConnect.getConnection()) {
+        String query = "UPDATE tblService SET ServiceName=?, ServicePrice=?, ServiceImage=?, Description=? WHERE ServiceID=?";
+        try (PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setString(1, service.getServiceName());
+            stmt.setDouble(2, service.getServicePrice());
+            stmt.setString(3, service.getListImg());
+            stmt.setString(4, service.getDescription());
+            stmt.setInt(5, service.getServiceID());
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+        }
+    } catch (SQLException e) {
+        System.out.println("Error updating service");
+        e.printStackTrace();
+        return false;
+    }
+}
+public static boolean deleteService(int serviceID) throws SQLException, ClassNotFoundException {
+    try (Connection con = DBConnect.getConnection()) {
+        String query = "DELETE FROM tblService WHERE ServiceID=?";
+        try (PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setInt(1, serviceID);
+            int rowsDeleted = stmt.executeUpdate();
+            return rowsDeleted > 0;
+        }
+    } catch (SQLException e) {
+        System.out.println("Error deleting service");
+        e.printStackTrace();
+        return false;
+    }
+}
+public static List<Feedback> getAllFeedback() throws ClassNotFoundException {
+    List<Feedback> feedbackList = new ArrayList<>();
+    try {
+        String query = "SELECT CustomerID, ServiceID, Testimonial, experience_date, satisfaction_level,name FROM feedback";
+
+        try (Connection con = DBConnect.getConnection();
+             PreparedStatement stmt = con.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String customerID = rs.getString("CustomerID");
+                int serviceID = rs.getInt("ServiceID");
+                String testimonial = rs.getString("Testimonial");
+                java.sql.Date experienceDate = rs.getDate("experience_date");  // Updated column name
+                int satisfactionLevel = rs.getInt("satisfaction_level");       // Updated column name
+                String name = rs.getString("name");
+                Feedback feedback = new Feedback(customerID, serviceID, testimonial, experienceDate, satisfactionLevel, name);
+                feedbackList.add(feedback);
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("Error in database method getAllFeedback");
+        e.printStackTrace(); // Optional: This provides more details about the exception.
+    }
+    return feedbackList;
+}
+public static ArrayList<Feedback> getFeedBackByServiceID(String serviceID) {
+        ArrayList<Feedback> feedbackList = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM [dbo].[feedback] WHERE ServiceID = ?";
+            Connection con = DBConnect.getConnection();
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, serviceID);
+            ResultSet results = stmt.executeQuery();
+            while (results.next()) {
+                int id = results.getInt("FeedbackID");
+                String customerID = results.getString("CustomerID");
+                int serviceId = results.getInt("ServiceID");
+                String testimonial = results.getString("Testimonial");
+                Date experienceDate = results.getDate("experience_date");
+                int satisfactionLevel = results.getInt("satisfaction_level");
+                String name = results.getString("name");
+                Feedback feedback = new Feedback(customerID, serviceId, testimonial, experienceDate, satisfactionLevel, name);
+                feedbackList.add(feedback);
+            }
+        } catch (Exception e) {
+            System.err.println("Error in database method getFeedBackByServiceID");
+            e.printStackTrace();
+        }
+        return feedbackList;
+    }
+public static boolean addService(Service service) {
+    Connection con = null;
+    PreparedStatement stmt = null;
+
+    try {
+        con = DBConnect.getConnection();
+        stmt = con.prepareStatement("INSERT INTO tblService(servicename, serviceprice, description, serviceimage) VALUES (?,?,?,?)");
+        stmt.setString(1, service.getServiceName());
+        stmt.setDouble(2, service.getServicePrice());
+        stmt.setString(3, service.getDescription());
+        stmt.setString(4, service.getListImg());
+        stmt.executeUpdate();
+    } catch (Exception e) {
+        System.out.println("Error in addService(Service service)");
+        e.printStackTrace();
+        return false;
+    } finally {
+        try {
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    return true;
+}
 
     public static void main(String[] args) {
-//        
+                         Feedback feedback = new Feedback();
+
+               feedback.setCustomerID("U8516");
+        feedback.setServiceID(1);
+        feedback.setTestimonial("quanquan");
+        feedback.setExperienceDate(new Date());
+        feedback.setSatisfactionLevel(3);
+        feedback.setName("pham trong khoi" );
+        
+        // Lưu phản hồi vào cơ sở dữ liệu
+       
+            saveFeedback(feedback);
+            System.out.println("Feedback saved successfully!");
 // ArrayList<Booking> services = getAllBookingByCustomerID("U8360");
 //
 //        for (Booking service : services) {
@@ -988,12 +1135,7 @@ public static void sendEmail(String toEmail, String subject, String body) {
 //        bookingRepository.insertBooking(booking);
 //
 //    }
-//        
-        ArrayList<ServiceBooked> services = getAllServiceBookingCustomer("U8516");
-
-        for (ServiceBooked service : services) {
-            System.out.println(service);
-        }
+//     
     }
 //     ArrayList<Booking> services = getALLBooking();
 //

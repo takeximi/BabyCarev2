@@ -8,6 +8,7 @@
     <a class="nav-item nav-link active" href="#">Đơn hàng đang chờ</a>
     <a class="nav-item nav-link" href="list-order-accepted">Đơn hàng đã xác nhận</a>
     <a class="nav-item nav-link " href="order-list-paid">Đơn hàng đã thanh toán</a>
+    <a class="nav-item nav-link " href="list-order-succsess">Đơn hàng đã thanh toán</a>
     <a class="nav-item nav-link  " href="list-order-cancel">Đơn hàng đã hủy</a>
 
 </nav>

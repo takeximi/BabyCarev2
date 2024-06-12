@@ -18,6 +18,21 @@ public class ListOrderPaidServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         String CTVID = user.getUserId();
         ArrayList<OrderAccept> listOrder = OrderRepository.getAllOrderPaidByCTVId(CTVID);
+        String thongbao;
+        try{
+            if(!request.getParameter("thongbao").equals(null)){
+                if(request.getParameter("thongbao").equals("1")){
+                    thongbao="Đơn hàng đã được giao thành công";
+                }
+                else {
+                    thongbao = "Đơn hàng không được giao thành công";
+                }
+                request.setAttribute("thongbao",thongbao);
+            }
+        }
+        catch (Exception e){
+
+        }
         request.setAttribute("listOrder",listOrder);
         request.getRequestDispatcher("order-list-paid.jsp").forward(request,response);
     }

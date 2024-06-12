@@ -1,8 +1,13 @@
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<c:if test="${sessionScope.user==null}">
+        <% response.sendRedirect("login.jsp");%>
+        </c:if>
 <nav class="nav nav-pills nav-justified">
     <a class="nav-item nav-link active" href="service-add.jsp">Thêm dịch vụ mới</a>
     <a class="nav-item nav-link" href="ServiceList">Danh sách dịch vụ</a>
 </nav>
+
 <div class="container">
     <div class="row">
         <form class="needs-validation mt-3" novalidate action="addservice" method="post">
