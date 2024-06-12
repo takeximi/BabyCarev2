@@ -1,40 +1,29 @@
 package entity;
 
-import java.text.DecimalFormat;
-
 public class Service {
-    DecimalFormat formatter = new DecimalFormat("#,###,###");
-    private String serviceID,   serviceName;
-    private  double   servicePrice;
-    private int status;
+
+    private int serviceID;
+    private String serviceName;
+    private double servicePrice;
     private String description;
     private String listImg;
-    
+
     public Service() {
     }
 
-    public Service(String serviceID, String serviceName, double servicePrice, String description) {
+    public Service(int serviceID, String serviceName, double servicePrice, String description, String listImg) {
         this.serviceID = serviceID;
         this.serviceName = serviceName;
         this.servicePrice = servicePrice;
-        this.description = description;
-    }
-
-    public Service(String serviceID, String serviceName, double servicePrice, int status, String description, String listImg) {
-        this.serviceID = serviceID;
-        this.serviceName = serviceName;
-        this.servicePrice = servicePrice;
-        this.status = status;
         this.description = description;
         this.listImg = listImg;
     }
 
-   
-    public String getServiceID() {
+    public int getServiceID() {
         return serviceID;
     }
 
-    public void setServiceID(String serviceID) {
+    public void setServiceID(int serviceID) {
         this.serviceID = serviceID;
     }
 
@@ -70,40 +59,15 @@ public class Service {
         this.listImg = listImg;
     }
 
-   
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-    public String getStatusString() {
-        if (this.status == 0 ) {
-            return "Đang chờ";
-        } else if (this.status == 1) {
-            return "Đã thanh toán";
-        } else if (this.status == 2) {
-            return "Đã thanh toán";
-        } else if (this.status == 3 ) {
-            return "Đã hủy";
-        } else {
-            return "Lỗi";
-        }
-    }
-    public String getPriceString() {
-        return formatter.format(servicePrice);
-
-    }
-
     @Override
     public String toString() {
-        return "Service{" + "formatter=" + formatter + ", serviceID=" + serviceID + ", serviceName=" + serviceName + ", servicePrice=" + servicePrice + ", status=" + status + ", description=" + description + ", listImg=" + listImg + '}';
+        return "Service{" + "serviceID=" + serviceID + ", serviceName=" + serviceName + ", servicePrice=" + servicePrice + ", description=" + description + ", listImg=" + listImg + '}';
     }
 
     
 
     
+
+   
 
 }

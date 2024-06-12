@@ -4,13 +4,16 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class DBConnect {
+
     //public static String serverName = "LAPTOP-7UOA152U\\SQLEXPRESS";
     public static String dbName = "BabyCare2";
     public static String portNumber = "1433";
     public static String userID = "sa";
     public static String password = "030303";
 
+  
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
         String url = "jdbc:sqlserver://localhost:1433;" + "databaseName=" + dbName + ";encrypt=false";
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -30,7 +33,6 @@ public class DBConnect {
             System.out.println(ex);
             System.out.println("Error at model.DBContext.DBContext().getConnertion()");
         }
-
 
     }
 }
