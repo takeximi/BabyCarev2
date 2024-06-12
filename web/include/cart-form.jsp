@@ -226,6 +226,7 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th>Chọn</th> <!-- Thêm cột này -->
+                                <th>Shop</th> <!-- Thêm cột này -->
                                 <th>Sản phẩm</th>
                                 <th>Giá</th>
                                 <th>Số lượng</th>
@@ -240,6 +241,10 @@
                                         <input type="checkbox" name="selectedItems" value="${item.product.productId}" class="checkbox">
                                     </td>
                                     <td>
+                                        
+                                        <p>${item.product.CTVID}</p>
+                                    </td>
+                                    <td>
                                         <div class="img">
                                             <img src="img/${item.product.img}" alt="Image">
                                             <p>${item.product.productName}</p>
@@ -248,12 +253,12 @@
                                     <td>${item.product.getPriceString()} </td>
                                     <td>
                                         <div class="qty d-flex">
-                                            <form action="changeammount">
+                                            <form action="changeamount">
                                                 <input name="decrease" value="${item.product.productId}" type="hidden">
                                                 <button type="submit" class="btn-minus"><i class="fa fa-minus"></i></button>
                                             </form>
-                                            <input type="text" value="${item.ammout}">
-                                            <form action="changeammount">
+                                            <input type="text" value="${item.amount}">
+                                            <form action="changeamount">
                                                 <input name="increase" value="${item.product.productId}" type="hidden">
                                                 <button class="btn-plus" href=""><i class="fa fa-plus"></i></button>
                                             </form>
@@ -261,7 +266,7 @@
                                     </td>
                                     <td>${item.getPriceString()}</td>
                                     <td>
-                                        <form action="changeammount">
+                                        <form action="changeamount">
                                             <input name="delete" value="${item.product.productId}" type="hidden">
                                             <button type="submit"><i class="fa fa-trash"></i></button>
                                         </form>
@@ -312,6 +317,8 @@
                                             </div>
                                         </c:if>
                                     </form>
+                                
+                                    </form>
                                     <p>Tạm tính: <span>${sessionScope.cart.getThanhTienString(0)}</span></p>
                                     <p>Tiền ship: <span>30000</span></p>
                                     <c:if test="${sessionScope.cart.discountCode == null}">
@@ -323,10 +330,7 @@
                                     </c:if>
                                 </div>
                                 <div class="cart-btn">
-                                    <form action="makeorder" method="post">
-                                        <c:forEach var="item" items="${sessionScope.cart.cart}">
-                                            <input type="checkbox" name="selectedItems" value="${item.product.productId}" style="display:none;">
-                                        </c:forEach>
+                                    <form action="makeorder" method="get">             
                                         <button type="submit">Đặt hàng</button>
                                     </form>
                                 </div>
