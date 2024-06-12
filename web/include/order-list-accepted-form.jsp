@@ -35,6 +35,8 @@
     <h2>Quản lí danh sách đặt hàng thành công</h2>
     <p>Nhân viên có thể xem được danh sách đặt hàng thành công ở đây</p>
     <input class="form-control" id="myInput" type="text" placeholder="Tìm kiếm">
+        <h3 class="text-center text-danger" >${thongbao}</h3>
+
     <br>
     <table class="table table-bordered" id="data-table">
         <thead>
