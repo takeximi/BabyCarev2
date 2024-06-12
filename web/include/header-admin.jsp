@@ -49,7 +49,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand waves-effect waves-dark" href="index.html"><i class="large material-icons">track_changes</i> <strong>target</strong></a>
+                    <a class="navbar-brand waves-effect waves-dark" href="admin"><i class="large material-icons">track_changes</i> <strong>BabyCare ADMIN</strong></a>
 
                     <div id="sideNav" href=""><i class="material-icons dp48">toc</i></div>
                 </div>
@@ -75,8 +75,10 @@
                     <ul class="nav" id="main-menu">
 
                         <li>
-                          <a href="#"  class="dropdown-item">Thống kê bán hàng</a>       
-                        </li>                                  
+                            <a href="#"  class="dropdown-item">Thống kê bán hàng</a>       
+                        </li>         
+
+
                         <li>
 
                             <a href="" class="dropdown-item">Quản lí tài khoản</a>
