@@ -38,16 +38,14 @@ public class AddPreferentialServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-String preferential = request.getParameter("preferentialCode");
-if (preferential == null || preferential.isEmpty()) {
-    // Hiển thị thông báo lỗi nếu trường Preferential rỗng
-    logger.warning("Preferential value is null or empty.");
-    request.setAttribute("thongbao", "Vui lòng nhập mã giảm giá.");
-    request.getRequestDispatcher("preferential-add.jsp").forward(request, response);
-    return;
-}
-
-// Tiếp tục thực hiện các bước khác như bình thường nếu giá trị là hợp lệ
+        
+        String preferentialCode = request.getParameter("preferentialCode");
+        if (preferentialCode == null || preferentialCode.isEmpty()) {
+            logger.warning("Preferential value is null or empty.");
+            request.setAttribute("thongbao", "Vui lòng nhập mã giảm giá.");
+            request.getRequestDispatcher("preferential-add.jsp").forward(request, response);
+            return;
+        }
 
         String preferentialName = request.getParameter("preferentialName");
         String startDay = request.getParameter("startDay");
@@ -58,7 +56,6 @@ if (preferential == null || preferential.isEmpty()) {
             quantity = Integer.parseInt(quantityStr);
         } catch (NumberFormatException e) {
             logger.warning("Invalid quantity value: " + quantityStr);
-            // Thông báo lỗi về giá trị quantity không hợp lệ
             request.setAttribute("thongbao", "Giá trị số lượng không hợp lệ");
             request.getRequestDispatcher("preferential-add.jsp").forward(request, response);
             return;
@@ -84,7 +81,6 @@ if (preferential == null || preferential.isEmpty()) {
                 logger.info("Uploaded file successfully: " + filename);
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "Error uploading file", e);
-                // Thông báo lỗi về việc tải lên file
                 request.setAttribute("thongbao", "Có lỗi xảy ra khi tải lên file: " + e.getMessage());
                 request.getRequestDispatcher("preferential-add.jsp").forward(request, response);
                 return;
@@ -95,21 +91,17 @@ if (preferential == null || preferential.isEmpty()) {
         User user = (User) session.getAttribute("user");
         String CTVID = user.getUserId();
 
-     try {
-         
-    PreferentialRepository.addPreferential(preferential, preferentialName, startDay, endDay, quantity, preferentialDescription, preferentialImg, CTVID);
-    request.setAttribute("thongbao", "Thêm thành công");
-} catch (SQLException ex) {
-    logger.log(Level.SEVERE, "SQL Error", ex);
-    request.setAttribute("thongbao", "Có lỗi xảy ra khi thêm ưu đãi: " + ex.getMessage());
-} catch (ClassNotFoundException ex) {
-    logger.log(Level.SEVERE, "Class Not Found Error", ex);
-    request.setAttribute("thongbao", "Có lỗi xảy ra khi thêm ưu đãi: " + ex.getMessage());
-    // Forward lại về trang preferential-add.jsp
-    request.getRequestDispatcher("preferential-add.jsp").forward(request, response);
-}
+        try {
+            PreferentialRepository.addPreferential(preferentialCode, preferentialName, startDay, endDay, quantity, preferentialDescription, preferentialImg, CTVID);
+            request.setAttribute("thongbao", "Thêm thành công");
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "SQL Error", ex);
+            request.setAttribute("thongbao", "Có lỗi xảy ra khi thêm ưu đãi: " + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            logger.log(Level.SEVERE, "Class Not Found Error", ex);
+            request.setAttribute("thongbao", "Có lỗi xảy ra khi thêm ưu đãi: " + ex.getMessage());
+        }
 
-        // Forward lại về trang preferential-add.jsp
         request.getRequestDispatcher("preferential-add.jsp").forward(request, response);
     }
 }

@@ -6,11 +6,11 @@
 </nav>
 
 <div class="container">
-    <h2>Thêm Mã Giảm Giá Mới</h2>
+    <h2>Thêm Mã Giảm Giá Mới.</h2>
     <form class="needs-validation" novalidate action="addpreferential" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="preferentialCode">Mã Giảm Giá:</label>
-            <input type="text" class="form-control" id="preferentialCode" name="preferential" required>
+            <input type="text" class="form-control" id="preferentialCode" name="preferentialCode" required>
             <div class="invalid-feedback">Vui lòng nhập mã giảm giá.</div>
         </div>
         <div class="form-group">
@@ -26,7 +26,7 @@
         <div class="form-group">
             <label for="endDay">Ngày Kết Thúc:</label>
             <input type="date" class="form-control" id="endDay" name="endDay" required>
-            <div class="invalid-feedback">Vui lòng chọn ngày kết thúc.</div>
+            <div class="invalid-feedback">Vui lòng chọn ngày kết thúc..</div>
         </div>
         <div class="form-group">
             <label for="quantity">Số Lượng:</label>
@@ -37,7 +37,7 @@
             <label for="description">Mô Tả:</label>
             <textarea class="form-control" id="description" name="preferentialDescription"></textarea>
         </div>
-        <div class="form-group">
+                  <div class="form-group">
             <label for="preferentialImg">Ảnh:</label>
             <input type="file" class="form-control" id="preferentialImg" name="preferentialImg" required>
             <div class="invalid-feedback">Vui lòng chọn ảnh.</div>

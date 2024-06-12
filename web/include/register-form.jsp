@@ -1,8 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
-<head>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,9 +53,6 @@
             }
         }
     </style>
-</head>
-<body>
-
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
 
     <div class="row border rounded-5 p-3 bg-white shadow box-area">
@@ -73,7 +69,7 @@
             <div class="row align-items-center">
                 <div class="header-text mb-4">
                     <h2> Xin chào <i class="fa fa-heart fa-beat-fade" style="color: #ff0000;"></i> </h2>
-                    <p>Chúng tôi rất vui khi có bạn tham gia.${message}</p>
+                    <p>Chúng tôi rất vui khi có bạn tham gia..${message}</p>
                 </div>
 
                 <form class="needs-validation" novalidate action="register" method="post">
@@ -225,5 +221,3 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/fc6bd51969.js" crossorigin="anonymous"></script>
-</body>
-</html>

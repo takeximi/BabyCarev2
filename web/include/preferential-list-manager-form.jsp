@@ -23,8 +23,8 @@
 
 </style>
 <nav class="nav nav-pills nav-justified">
-    <a class="nav-item nav-link active " href="#">Danh sách Mã Giảm Giá</a>
-    <a class="nav-item nav-link " href="pr-add.jsp">Thêm Mã Giảm Giá mới</a>
+    <a class="nav-item nav-link active " href="#">Danh sách Mã Giảm Giá.</a>
+    <a class="nav-item nav-link " href="pr-add.jsp">Thêm Mã Giảm Giá mới.</a>
 </nav>
 <div class="container mt-3">
     <h2>Quản lí danh sách Mã Giảm Giá</h2>

@@ -15,20 +15,17 @@ public class PrefrentialShowServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
+
+        // Get the full list of preferentials
         ArrayList<Preferential> listPreferential = PreferentialRepository.getListPreferential();
-        ArrayList<Preferential> subListPreferential = new ArrayList<>();
 
-        // Ensure not to exceed list size
-        int size = Math.min(4, listPreferential.size());
-        for (int i = 0; i < size; i++) {
-            subListPreferential.add(listPreferential.get(i));
-        }
-
-        request.setAttribute("preferentialList", subListPreferential);
+        // Pass the full list to the JSP
+        request.setAttribute("preferentialList", listPreferential);
         request.getRequestDispatcher("/preferential.jsp").forward(request, response);
     }
-        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Handle POST requests if needed
     }
-
 }

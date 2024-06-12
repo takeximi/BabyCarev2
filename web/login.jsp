@@ -71,7 +71,7 @@ if (errorMessage != null) {
             <div class="featured-image mb-3">
                 <img src="img/logobaby.png" class="img-fluid rounded-circle" style="width: 250px;">
             </div>
-            <p class="fs-2" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;">BabyCare Login</p>
+            <p class="fs-2" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;">BabyCare Login.</p>
             <small class="text-wrap text-center" style="width: 17rem; font-family: 'Courier New', Courier, monospace;">TRẺ EM LÀ MẦM NON CỦA ĐẤT NƯỚC.</small>
         </div>
 

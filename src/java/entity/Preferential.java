@@ -9,7 +9,7 @@ public class Preferential {
     protected int quantity;
     protected String preferentiaDescription;
     protected String preferentiaImg;
-    protected String CTVID;
+    protected String employeeID;
 
     public Preferential(String preferential, String preferentialName, String startDay, String endDay, int quantity, String preferentiaDescription, String preferentiaImg, String CTVID) {
         this.preferential = preferential;
@@ -19,7 +19,7 @@ public class Preferential {
         this.quantity = quantity;
         this.preferentiaDescription = preferentiaDescription;
         this.preferentiaImg = preferentiaImg;
-        this.CTVID = CTVID;
+        this.employeeID = employeeID;
     }
 
     public Preferential(String name, String description, int discount) {
@@ -93,16 +93,18 @@ public class Preferential {
     }
 
     public String getCTVID() {
-        return CTVID;
+        return employeeID;
     }
 
     public void setCTVID(String CTVID) {
-        this.CTVID = CTVID;
+        this.employeeID = CTVID;
     }
 
     @Override
     public String toString() {
-        return "Preferential{" + "preferential=" + preferential + ", preferentialName=" + preferentialName + ", startDay=" + startDay + ", endDay=" + endDay + ", Quantity=" + quantity + ", preferentiaDescription=" + preferentiaDescription + ", preferentiaImg=" + preferentiaImg + ", CTVID=" + CTVID + '}';
+        return "Preferential{" + "preferential=" + preferential + ", preferentialName=" + preferentialName + ", startDay=" + startDay 
+                + ", endDay=" + endDay + ", Quantity=" + quantity + ", preferentiaDescription=" + preferentiaDescription + ", preferentiaImg="
+                + preferentiaImg + ", employeeID=" + employeeID + '}';
     }
 
 

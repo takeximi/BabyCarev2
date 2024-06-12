@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class PreferentialRepository {
 
-   public static void addPreferential(String Preferential, String PreferentialName, String StartDay, String EndDay, int Quantity, String PreferentiaDescription, String PreferentiaImg,String CTVID) throws SQLException, ClassNotFoundException {
-    String sql = "INSERT INTO tblPreferential ( Preferential,  PreferentialName,  StartDay,  EndDay,  Quantity,  PreferentiaDescription,  PreferentiaImg, CTVID) " +
+   public static void addPreferential(String Preferential, String PreferentialName, String StartDay, String EndDay, int Quantity, String PreferentiaDescription, String PreferentiaImg,String EmployeeID) throws SQLException, ClassNotFoundException {
+    String sql = "INSERT INTO tblPreferential ( Preferential,  PreferentialName,  StartDay,  EndDay,  Quantity,  PreferentiaDescription,  PreferentiaImg, EmployeeID) " +
                  "VALUES (?, ?, ?, ?, ?, ?, ?,?)";
     
     try (Connection con = DBConnect.getConnection();
@@ -35,7 +35,7 @@ public class PreferentialRepository {
         stmt.setInt(5, Quantity);
         stmt.setString(6, PreferentiaDescription);
         stmt.setString(7,PreferentiaImg); // Assuming StatusProduct is set to 1 as default
-        stmt.setString(8,CTVID);
+        stmt.setString(8,EmployeeID);
 
         stmt.executeUpdate();
         System.out.println("Preferential added successfully.");
@@ -50,13 +50,13 @@ public class PreferentialRepository {
     }
 }
 
-     public static ArrayList<Preferential> getListPreferentialByCTVID(String CTVID) {
+     public static ArrayList<Preferential> getListPreferentialByEmployeeID(String EmployeeID) {
         ArrayList<Preferential> listPreferential = new ArrayList<>();
         try {
-            String query = "SELECT * FROM tblPreferential WHERE CTVID = ?";
+            String query = "SELECT * FROM tblPreferential WHERE EmployeeID = ?";
             Connection con = DBConnect.getConnection();
             PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, CTVID);
+            stmt.setString(1, EmployeeID);
             ResultSet results = stmt.executeQuery();
 
             while (results.next()) {
@@ -67,11 +67,11 @@ public class PreferentialRepository {
                 int quantity = results.getInt(5);
                 String preferentiaDescription = results.getString(6);
                 String preferentiaImg = results.getString(7);
-                Preferential preferentials = new Preferential(preferential, preferentialName, startDay, endDay, quantity, preferentiaDescription, preferentiaImg, CTVID);
+                Preferential preferentials = new Preferential(preferential, preferentialName, startDay, endDay, quantity, preferentiaDescription, preferentiaImg, EmployeeID);
                 listPreferential.add(preferentials);
             }
         } catch (Exception e) {
-            System.err.println("Lỗi khi lấy danh sách sản phẩm theo CTVID: " + e.getMessage());
+            System.err.println("Lỗi khi lấy danh sách sản phẩm theo EmployeeID: " + e.getMessage());
         }
         return listPreferential;
     }
@@ -91,8 +91,8 @@ public class PreferentialRepository {
                 int quantity = results.getInt(5);
                 String preferentiaDescription = results.getString(6);
                 String preferentiaImg = results.getString(7);
-                String CTVID = results.getString(8);
-                Preferential preferentials = new Preferential( preferential,  preferentialName,  startDay,  endDay,  quantity,  preferentiaDescription,  preferentiaImg,  CTVID);
+                String EmployeeID = results.getString(8);
+                Preferential preferentials = new Preferential( preferential,  preferentialName,  startDay,  endDay,  quantity,  preferentiaDescription,  preferentiaImg,  EmployeeID);
                 listPreferential.add(preferentials);
 
             }
@@ -104,17 +104,17 @@ public class PreferentialRepository {
  
    public static void main(String[] args) {
     try {
-        String preferential = "PREF0012";
+        String preferential = "PREF00121";
         String preferentialName = "Discount 10%";
         String startDay = "2022-01-01";
         String endDay = "2022-12-31";
         int quantity = 100;
         String description = "10% off on all products";
         String imgPath = "image.jpg";
-        String ctvID = "C3551";
+        String EmployeeID = "E0622";
 
         // Gọi hàm addPreferential để kiểm thử
-        addPreferential(preferential, preferentialName, startDay, endDay, quantity, description, imgPath, ctvID);
+        addPreferential(preferential, preferentialName, startDay, endDay, quantity, description, imgPath, EmployeeID);
 
         // Kiểm tra xem liệu dữ liệu có được thêm thành công hay không
         System.out.println("Preferential added successfully.");

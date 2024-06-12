@@ -19,5 +19,5 @@
             </div>
         </c:forEach>
     </div>
-<div class="d-flex justify-content-center "><a href="food" style="margin-bottom: 50px" class="btn btn-primary p-2">Xem thêm</a></div>
+<div class="d-flex justify-content-center "><a href="food" style="margin-bottom: 50px" class="btn btn-primary p-2">Xem thêm.</a></div>
     
