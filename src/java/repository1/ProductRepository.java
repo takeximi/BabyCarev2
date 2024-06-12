@@ -389,7 +389,7 @@ public class ProductRepository {
          ProductRepository productRepository = new ProductRepository();
         
         // Thay thế "txtSearch" bằng từ khóa tìm kiếm thực tế của bạn
-        String txtSearch = "SỮA";
+        String txtSearch = "";
         int index = 1; // Trang đầu tiên
         int size = 10; // Số lượng sản phẩm mỗi trang
 

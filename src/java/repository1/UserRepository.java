@@ -1,6 +1,5 @@
 package repository1;
 
-
 import config.DBConnect;
 import entity.Account;
 import entity.Brand;
@@ -20,12 +19,15 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.mail.PasswordAuthentication;
 import org.apache.tomcat.util.codec.binary.Base64;
 import service.MyRandom;
 
 public class UserRepository {
-private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getName());
+
+    private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getName());
+
     public static boolean checkUserNameExist(String username) {
         try {
             Connection con = DBConnect.getConnection();
@@ -432,9 +434,85 @@ private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getNa
             throw new RuntimeException(e);
         }
     }
+    
+//    public static void sendCodeToEmailSuccsessOrder(String email, String orderiD, String name) {
+//        final String username = "phuongnam121103@gmail.com"; // Thay bằng email của bạn
+//        final String password = "eqna xeml exop mnzc"; // Thay bằng mật khẩu email của bạn
+//
+//        Properties props = new Properties();
+//        props.put("mail.smtp.auth", "true");
+//        props.put("mail.smtp.starttls.enable", "true");
+//        props.put("mail.smtp.host", "smtp.gmail.com");
+//        props.put("mail.smtp.port", "587");
+//
+//        Session session = Session.getInstance(props,
+//                new javax.mail.Authenticator() {
+//            @Override
+//            protected PasswordAuthentication getPasswordAuthentication() {
+//                return new PasswordAuthentication(username, password);
+//            }
+//        });
+//
+//        try {
+//            Message message = new MimeMessage(session);
+//            message.setFrom(new InternetAddress(username));
+//            message.setRecipients(Message.RecipientType.TO,
+//                    InternetAddress.parse(email));
+//            message.setSubject("Đơn hàng " + orderiD + " đã giao hàng thành công");
+//            message.setText("Xin chào " + name + "\n\n đơn hàng "  + orderiD + " đã được giao thành công");
+//            Transport.send(message);
+//            System.out.println("Code sent successfully.");
+//        } catch (MessagingException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+    public static boolean isValidEmail(String email) {
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    Pattern pattern = Pattern.compile(emailRegex);
+    if (email == null) {
+        return false;
+    }
+    return pattern.matcher(email).matches();
+}
+    public static void sendCodeToEmailSuccsessOrder(String email, String orderID, String name) {
+    if (!isValidEmail(email)) {
+        throw new IllegalArgumentException("Invalid email address: " + email);
+    }
+
+    final String username = "phuongnam121103@gmail.com"; // Thay bằng email của bạn
+    final String password = "eqna xeml exop mnzc"; // Thay bằng mật khẩu email của bạn
+
+    Properties props = new Properties();
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.starttls.enable", "true");
+    props.put("mail.smtp.host", "smtp.gmail.com");
+    props.put("mail.smtp.port", "587");
+
+    Session session = Session.getInstance(props,
+            new javax.mail.Authenticator() {
+        @Override
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(username, password);
+        }
+    });
+
+    try {
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(username));
+        message.setRecipients(Message.RecipientType.TO,
+                InternetAddress.parse(email));
+        message.setSubject("Đơn hàng #" + orderID + " đã giao hàng thành công");
+        message.setText("Xin chào " + name + "\n\n đơn hàng #"  + orderID + " đã được giao thành công");
+        Transport.send(message);
+        System.out.println("Code sent successfully.");
+    } catch (MessagingException e) {
+        throw new RuntimeException(e);
+    }
+}
+
 
     // Thêm khách hàng và gửi mã code
-       public static boolean addCustomer(String userID, String firstname, String lastname, String address, String phone, String username, String password, String email) {
+    public static boolean addCustomer(String userID, String firstname, String lastname, String address, String phone, String username, String password, String email) {
         try {
             String code = generateRandomCode();
 
@@ -499,7 +577,8 @@ private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getNa
             return false;
         }
     }
-     public static boolean resendVerificationCode(String userID) {
+
+    public static boolean resendVerificationCode(String userID) {
         try {
             String newCode = generateRandomCode();
 
@@ -625,13 +704,13 @@ private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getNa
             updateAccountStmt.setString(1, newUserID);
             updateAccountStmt.setString(2, oldUserID);
             updateAccountStmt.executeUpdate();
-            
+
             // Delete old customer record
             String deleteCustomerQuery = "DELETE FROM tblCustomer WHERE CustomerID = ?";
             PreparedStatement deleteCustomerStmt = con.prepareStatement(deleteCustomerQuery);
             deleteCustomerStmt.setString(1, oldUserID);
             deleteCustomerStmt.executeUpdate();
-            
+
             // Update CTVID in tblBrand
             String updateBrandQuery = "UPDATE tblBrand SET CTVID = ?, Status = 1 WHERE CTVID = ?";
             PreparedStatement updateBrandStmt = con.prepareStatement(updateBrandQuery);
@@ -651,7 +730,6 @@ private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getNa
             return false;
         }
     }
-    
 
     private static void sendUpdateNotificationEmail(String email, String newUserID) {
         final String username = "phuongnam121103@gmail.com"; // Thay bằng email của bạn
@@ -767,12 +845,14 @@ private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getNa
             return false;
         }
     }
-     private static final Logger logger = Logger.getLogger(UserRepository.class.getName());
-     public static boolean addBrand(String brandID, String brandName, String brandDescription, String brandAddress, String userID) throws SQLException, ClassNotFoundException {
+
+    private static final Logger logger = Logger.getLogger(UserRepository.class.getName());
+
+    public static boolean addBrand(String brandID, String brandName, String brandDescription, String brandAddress, String userID) throws SQLException, ClassNotFoundException {
         boolean result = false;
         String query = "INSERT INTO tblBrand (BrandID, BrandName, BrandDescription, BrandLogo, BrandAddress, CTVID, Status) VALUES (?, ?, ?, ?, ?, ?,?)";
         try (Connection con = DBConnect.getConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
+                PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, brandID);
             ps.setString(2, brandName);
             ps.setString(3, brandDescription);
@@ -794,7 +874,43 @@ private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getNa
         }
         return result;
     }
-   
+
+    public static boolean deleteBrandByCTVID(String ctvID) throws SQLException, ClassNotFoundException {
+        boolean result = false;
+        String query = "DELETE FROM tblBrand WHERE CTVID = ?";
+        try (Connection con = DBConnect.getConnection();
+                PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, ctvID);
+
+            logger.info("Executing query: " + ps.toString());
+
+            result = ps.executeUpdate() > 0;
+            if (result) {
+                logger.info("Brand(s) deleted successfully.");
+            } else {
+                logger.warning("Failed to delete brand(s).");
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error deleting brand(s)", e);
+        }
+        return result;
+    }
+    
+    public static boolean deleteBrandByCTVID1(String ctvID) {
+        try {
+            String query = "DELETE FROM tblBrand WHERE CTVID = ?";
+            Connection con = DBConnect.getConnection();
+            PreparedStatement preSt = con.prepareStatement(query);
+            preSt.setString(1, ctvID);
+            preSt.executeUpdate();
+            con.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static boolean hasPendingRegistration(String userId) {
         boolean hasPending = false;
         try {
@@ -803,44 +919,43 @@ private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getNa
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, userId);
             ResultSet rs = stmt.executeQuery();
-            hasPending = rs.next(); 
+            hasPending = rs.next();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return hasPending;
     }
 
+    public static ArrayList<Brand> getListBrandsWithStatusZero() {
+        ArrayList<Brand> listBrands;
+        try {
+            String query = "SELECT BrandID, BrandName, BrandDescription, BrandLogo, BrandAddress, CTVID, Status "
+                    + "FROM tblBrand "
+                    + "WHERE Status = 0";
 
-     public static ArrayList<Brand> getListBrandsWithStatusZero() {
-    ArrayList<Brand> listBrands;
-    try {
-        String query = "SELECT BrandID, BrandName, BrandDescription, BrandLogo, BrandAddress, CTVID, Status "
-                     + "FROM tblBrand "
-                     + "WHERE Status = 0";
+            Connection con = DBConnect.getConnection();
+            PreparedStatement preSt = con.prepareStatement(query);
+            ResultSet rs = preSt.executeQuery();
+            listBrands = new ArrayList<>();
+            while (rs.next()) {
+                String brandID = rs.getString(1);
+                String brandName = rs.getString(2);
+                String brandDescription = rs.getString(3);
+                String brandLogo = rs.getString(4);
+                String brandAddress = rs.getString(5);
+                String ctvid = rs.getString(6);
+                int status = rs.getInt(7);
 
-        Connection con = DBConnect.getConnection();
-        PreparedStatement preSt = con.prepareStatement(query);
-        ResultSet rs = preSt.executeQuery();
-        listBrands = new ArrayList<>();
-        while (rs.next()) {
-            String brandID = rs.getString(1);
-            String brandName = rs.getString(2);
-            String brandDescription = rs.getString(3);
-            String brandLogo = rs.getString(4);
-            String brandAddress = rs.getString(5);
-            String ctvid = rs.getString(6);
-            int status = rs.getInt(7);
-
-            Brand newBrand = new Brand(brandID, brandName, brandDescription, brandLogo, brandAddress, ctvid, status);
-            listBrands.add(newBrand);
+                Brand newBrand = new Brand(brandID, brandName, brandDescription, brandLogo, brandAddress, ctvid, status);
+                listBrands.add(newBrand);
+            }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        con.close();
-    } catch (Exception e) {
-        e.printStackTrace();
-        return null;
+        return listBrands;
     }
-    return listBrands;
-}
 
     public static ArrayList<Account> getListCTVAccount() {
         ArrayList<Account> listEmpAcc;
@@ -958,12 +1073,8 @@ private static final Logger LOGGER = Logger.getLogger(UserRepository.class.getNa
 //            } else {
 //                System.out.println("No brands found or an error occurred.");
 //            }
-
         boolean a = UserRepository.hasPendingRegistration("U6772");
         System.out.println(a);
-        }
+    }
 
-    
-    
 }
-

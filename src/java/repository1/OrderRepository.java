@@ -286,6 +286,75 @@ public class OrderRepository {
         }
         return true;
     }
+    
+    public static boolean SuccsessOrder(String orderId, String CTVID) {
+
+        try {
+            Connection con = DBConnect.getConnection();
+            String query = "update tblBill set StatusBill=N'Đã hoàn thành',CTVID=? where BillID=?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            String accept = "Đã hoàn thành";
+            stmt.setString(1, CTVID);
+
+            stmt.setString(2, orderId);
+            stmt.executeUpdate();
+            con.close();
+        } catch (Exception e) {
+            System.out.println("==========>ERROR : acceptOrder()<=============");
+            return false;
+        }
+        return true;
+    }
+     public String getEmailByOrderId(String billId) {
+        String query = "SELECT a.Email " +
+                       "FROM tblBill b " +
+                       "JOIN tblCustomer c ON b.CustomerID = c.CustomerID " +
+                       "JOIN tblAccount a ON c.CustomerID = a.UserID " +
+                       "WHERE b.BillID = ?";
+        String email = null;
+
+        try (Connection con = DBConnect.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, billId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    email = rs.getString("Email");
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return email;
+    }
+ 
+     
+     public String getNameByOrderId(String billId) {
+    String query = "SELECT c.FirstnameCus, c.LastnameCus, a.Email " +
+                   "FROM tblBill b " +
+                   "JOIN tblCustomer c ON b.CustomerID = c.CustomerID " +
+                   "JOIN tblAccount a ON c.CustomerID = a.UserID " +
+                   "WHERE b.BillID = ?";
+    String fullName = null;
+
+    try (Connection con = DBConnect.getConnection();
+         PreparedStatement ps = con.prepareStatement(query)) {
+        ps.setString(1, billId);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                String firstName = rs.getString("FirstnameCus");
+                String lastName = rs.getString("LastnameCus");
+                fullName = firstName + " " + lastName;
+            }
+        }
+    } catch (SQLException | ClassNotFoundException e) {
+        e.printStackTrace();
+    }
+
+    return fullName;
+}
 
     public static boolean cancelOrder(String orderId, String CTVID) {
 
@@ -503,6 +572,8 @@ public class OrderRepository {
         }
         return listOrder;
     }
+    
+    
 
     public static ArrayList<OrderAccept> getAllOrderAcceptedByCTVId(String CTVID) {
         ArrayList<OrderAccept> listOrder;
@@ -539,20 +610,54 @@ public class OrderRepository {
         }
         return listOrder;
     }
+    public static ArrayList<OrderAccept> getAllOrderSuccsessByCTVId(String CTVID) {
+        ArrayList<OrderAccept> listOrder;
+        try {
+            listOrder = new ArrayList<>();
+            Connection con = DBConnect.getConnection();
+            String query = "select * from tblBill WHERE CTVID = ? AND StatusBill=N'Đã hoàn thành'\n"
+                    + "order by DateCreate";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, CTVID);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String orderID = rs.getString(1);
+                String username = rs.getString(3);
+                String address = rs.getString(4);
+                String date = rs.getString(5);
+                String preferentialId = rs.getString(6);
+                String status = rs.getString(7);
+                OrderAccept orderAccept = new OrderAccept();
+                orderAccept.setIdOrder(orderID);
+                orderAccept.setUsername(username);
+                orderAccept.setAddress(address);
+                orderAccept.setDate(date);
+                orderAccept.setCTVID(CTVID);
+                orderAccept.setOrderStatus(status);
+                orderAccept.setDiscountId(preferentialId);
+                listOrder.add(orderAccept);
+            }
+
+            con.close();
+        } catch (Exception e) {
+            System.out.println("==========>ERROR : cancelOrder()<=============");
+            return null;
+        }
+        return listOrder;
+    }
 
     public static ArrayList<OrderAccept> getAllOrderCancel(String CTVID) {
         ArrayList<OrderAccept> listOrder;
         try {
             listOrder = new ArrayList<>();
             Connection con = DBConnect.getConnection();
-            String query = "select * from tblBill where StatusBill=N'Đã hủy'\n"
+            String query = "select * from tblBill WHERE CTVID = ? AND StatusBill=N'Đã hủy'\n"
                     + "order by DateCreate desc";
             PreparedStatement stmt = con.prepareStatement(query);
               stmt.setString(1, CTVID);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 String orderID = rs.getString(1);
-              
                 String username = rs.getString(3);
                 String address = rs.getString(4);
                 String date = rs.getString(5);
@@ -968,7 +1073,7 @@ public class OrderRepository {
 //        } else {
 //            System.out.println("Failed to create order.");
 //        }
-//        ArrayList<OrderAccept> orders = getAllOrderByCTVId("C7344");
+//        ArrayList<OrderAccept> orders = getAllOrderCancel("C3117");
 //        if (orders != null) {
 //            for (OrderAccept order : orders) {
 //                System.out.println(order);
@@ -976,7 +1081,7 @@ public class OrderRepository {
 //        } else {
 //            System.out.println("No orders found for the given CTVId.");
 //        }
-//        
+////        
 //        boolean result = OrderRepository.acceptOrder1("1uN6Un8I2n", "C7344");
 //        if (result) {
 //            System.out.println("succsess");
@@ -984,15 +1089,18 @@ public class OrderRepository {
 //            System.out.println("fail");
 //        }
 
-String orderId = "R5Gk4HEmfG";
-        String userId = "U8516";
-
-        boolean result = updateProductByCancelOrder(orderId, userId);
-        if (result) {
-            System.out.println("Order cancellation and product update were successful.");
-        } else {
-            System.out.println("Order cancellation or product update failed.");
-        }
+//String orderId = "R5Gk4HEmfG";
+//        String userId = "U8516";
+//
+//        boolean result = updateProductByCancelOrder(orderId, userId);
+//        if (result) {
+//            System.out.println("Order cancellation and product update were successful.");
+//        } else {
+//            System.out.println("Order cancellation or product update failed.");
+//        }
+            OrderRepository orderRepository = new OrderRepository();
+            String email = orderRepository.getNameByOrderId("NGcEugDQXu");
+                System.out.println("Customer Email: " + email);
     }
 
 }
