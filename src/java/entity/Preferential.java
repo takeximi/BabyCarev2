@@ -6,12 +6,12 @@ public class Preferential {
     protected String preferentialName;
     protected String startDay;
     protected String endDay;
-    protected double quantity;
+    protected int quantity;
     protected String preferentiaDescription;
     protected String preferentiaImg;
     protected String CTVID;
 
-    public Preferential(String preferential, String preferentialName, String startDay, String endDay, double quantity, String preferentiaDescription, String preferentiaImg, String CTVID) {
+    public Preferential(String preferential, String preferentialName, String startDay, String endDay, int quantity, String preferentiaDescription, String preferentiaImg, String CTVID) {
         this.preferential = preferential;
         this.preferentialName = preferentialName;
         this.startDay = startDay;
@@ -26,7 +26,7 @@ public class Preferential {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Preferential(String preferential, String preferentialName, String startDay, String endDay, double quantity, String preferentiaDescription, String preferentiaImg) {
+    public Preferential(String preferential, String preferentialName, String startDay, String endDay, int quantity, String preferentiaDescription, String preferentiaImg) {
               this.preferential = preferential;
         this.preferentialName = preferentialName;
         this.startDay = startDay;
@@ -68,11 +68,11 @@ public class Preferential {
         this.endDay = endDay;
     }
 
-    public double getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

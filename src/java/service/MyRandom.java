@@ -94,7 +94,7 @@ public class MyRandom {
         while(UserRepository.checkExistID(sb.toString()));
         return sb.toString();
     }
-    
+
     public static String generateRandomString() {
         int length = 10;
         String allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
