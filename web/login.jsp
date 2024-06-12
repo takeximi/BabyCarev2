@@ -1,82 +1,141 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet"> 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/vapeShop.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <title>Đăng Nhập</title>
     <style>
-        body {  
+        body {
+            font-family: 'Poppins', sans-serif;
             background: #ffecf2;
-            width: 100%;
         }
-        
-        #box {  
-            border: 1px solid rgb(200, 200, 200);   
-            box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 5px 2px; 
-            background: rgba(200, 200, 200, 0.1);   
-            border-radius: 4px; 
-            top: 150px;
-            right: 160px;
+
+        .box-area {
+            width: 930px;
+            margin: auto;
         }
-        .logo{
-            top : 180px;
-            right: -200px;
+
+        .right-box {
+            padding: 40px 30px 40px 40px;
         }
-        
-        h2 {    
-            text-align: center;  
-            color: #fff;
+
+        .left-box {
+            background: #FF4880;
+            color: white;
+        }
+
+        .rounded-4 {
+            border-radius: 20px;
+        }
+
+        .rounded-5 {
+            border-radius: 30px;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .box-area {
+                margin: 0 10px;
+            }
+            .left-box {
+                height: 100px;
+                overflow: hidden;
+            }
+            .right-box {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container-fluid"> 
-        <div class="row-fluid"> 
-            <div class="logo col-md-4">
-                <img class="img-fluid" src="images/logo.png" alt="">
-                <h1 class="navbar-brand text-primary display-6 " style="font-size: 46px; color: #ff4880">
-                    Baby<span class="text-secondary" style="color: #4d65f9">Care</span>
-                </h1>
+<% 
+String errorMessage = (String) request.getAttribute("errorMessage");
+if (errorMessage != null) {
+%>
+    <div class="alert alert-danger"><%= errorMessage %></div>
+<% 
+}
+%>
+<!-- Phần còn lại của mã HTML trong login.jsp -->
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+
+    <div class="row border rounded-5 p-3 bg-white shadow box-area">
+
+        <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box">
+            <div class="featured-image mb-3">
+                <img src="img/logobaby.png" class="img-fluid rounded-circle" style="width: 250px;">
             </div>
-            <div class="col-md-offset-4 col-md-4" id="box"> 
-                <form class="form-horizontal" action="login" method="post" id="login_form"> 
-                    <fieldset> 
-                        <div class="form-group" style="margin-top: 20px"> 
-                            <div class="col-md-12"> 
-                                <div class="input-group"> 
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user" ></i></span> 
-                                    <input name="username" placeholder="Username" autocomplete="on" class="form-control" type="text" value="${cookie.username.value}"> 
-                                </div> 
-                            </div> 
-                        </div> 
-                        <div class="form-group"> 
-                            <div class="col-md-12"> 
-                                <div class="input-group"> 
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
-                                    <input name="password" type="password" autocomplete="off" placeholder="Password" class="form-control" type="text" value="${cookie.password.value}"> 
-                                </div> 
-                            </div> 
-                        </div> 
-                        <h4 class="bg-warning  text-danger " style="text-align: center;background-color: #fa6342;padding: 2px 2px; font-size: 16px;margin:2px 0px "> ${thongbao}</h4>
-                        <div class="form-group"> 
-                            <div class="col-md-12"> 
-                                <button type="submit" value="Login" class="btn btn-md btn-danger center-block">Đăng nhập</button>        
-                                <a href="forgotpassword.jsp" class="text-center center-block" style="margin-top: 12px; display: block;">Quên mật khẩu?</a>   
-                            </div> 
-                            
-                        </div> 
-                    </fieldset> 
-                </form> 
-                <form action="register.jsp" method="get">
-                    <button id="registerBtn" type="submit" class="btn btn-md btn-danger center-block" style="background: blue; margin-bottom:  20px;">Tạo tài khoản mới</button>
-                </form>
-            </div> 
+            <p class="fs-2" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;">BabyCare Login</p>
+            <small class="text-wrap text-center" style="width: 17rem; font-family: 'Courier New', Courier, monospace;">TRẺ EM LÀ MẦM NON CỦA ĐẤT NƯỚC.</small>
         </div>
+
+        <div class="col-md-6 right-box">
+            <div class="row align-items-center">
+                <div class="header-text mb-4">
+                    <h2> Xin chào <i class="fa fa-heart fa-beat-fade" style="color: #ff0000;"></i> </h2>
+                    <p>Chúng tôi rất vui khi có bạn trở lại.<c:out value="${error}" /></p>
+                </div>
+
+                <form action="login" method="post">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text p-3"><i class="fa fa-user fa-bounce" style="color: #000000;"></i></div>
+                        </div>
+                        <input maxlength="100" type="text" name="username" class="form-control form-control-lg bg-light fs-6 p-1" placeholder=" Địa chỉ email hoặc Người dùng" value="${cookie.username.value}">
+                    </div>
+                    <div class="input-group mb-1">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text p-3"><i class="fa fa-key fa-bounce" style="color: #050505;"></i></div>
+                        </div>
+                        <input maxlength="50" type="password" name="password" id="myInput" class="form-control form-control-lg bg-light fs-6 p-1" placeholder=" Mật Khẩu" value="${cookie.password.value}">
+                    </div>
+
+                    <c:if test="${not empty userOrEmail}">
+                        <div class="alert alert-danger" style="color: red">${userOrEmail}</div>
+                    </c:if>
+                    
+                    <c:if test="${error == 1}">
+                        <div class="alert alert-danger" style="color: red">Tài khoản này đang tạm khóa vui lòng liên hệ admin</div>
+                    </c:if>
+                    <div class="input-group mb-5 d-flex justify-content-between">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="formCheck" onclick="myFunction()">
+                            <label for="formCheck" class="form-check-label text-secondary"><small>Hiện thị mật khẩu</small></label>
+                        </div>
+                        <div class="forgot">
+                            <small><a href="forgotPassword.jsp">Quên mật khẩu?</a></small>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <button class="btn btn-lg btn-primary w-100 fs-6"><i class="fa fa-right-to-bracket fa-beat-fade" style="color: #000000;"></i> Đăng nhập</button>
+                    </div>
+                </form>
+                <div class="row">
+                    <small>Không có tài khoản? <a href="register.jsp">Đăng ký ngay</a></small>
+                </div>
+            </div>
+        </div>
+
     </div>
-    
+</div>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("myInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/fc6bd51969.js" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -81,6 +81,7 @@ public class MyRandom {
         while(ProductRepository.checkExistProductID(String.valueOf(sb)));
         return sb.toString();
     }
+    
    public static void main(String[] args) {
 
     }

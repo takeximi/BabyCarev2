@@ -21,9 +21,9 @@ import java.util.ArrayList;
 
 public class PreferentialRepository {
 
-    public static void addPreferential(String Preferential, String PreferentialName, String StartDay, String EndDay, double Quantity, String PreferentiaDescription, String PreferentiaImg,String CTVID) throws SQLException, ClassNotFoundException {
-    String sql = "INSERT INTO tblPreferential ( Preferential,  PreferentialName,  StartDay,  EndDay,  Quantity,  PreferentiaDescription,  PreferentiaImg) " +
-                 "VALUES (?, ?, ?, ?, ?, ?, ,?,?)";
+   public static void addPreferential(String Preferential, String PreferentialName, String StartDay, String EndDay, int Quantity, String PreferentiaDescription, String PreferentiaImg,String CTVID) throws SQLException, ClassNotFoundException {
+    String sql = "INSERT INTO tblPreferential ( Preferential,  PreferentialName,  StartDay,  EndDay,  Quantity,  PreferentiaDescription,  PreferentiaImg, CTVID) " +
+                 "VALUES (?, ?, ?, ?, ?, ?, ?,?)";
     
     try (Connection con = DBConnect.getConnection();
          PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -32,7 +32,7 @@ public class PreferentialRepository {
         stmt.setString(2, PreferentialName);
         stmt.setString(3, StartDay);
         stmt.setString(4, EndDay);
-        stmt.setDouble(5, Quantity);
+        stmt.setInt(5, Quantity);
         stmt.setString(6, PreferentiaDescription);
         stmt.setString(7,PreferentiaImg); // Assuming StatusProduct is set to 1 as default
         stmt.setString(8,CTVID);
@@ -43,24 +43,13 @@ public class PreferentialRepository {
     } catch (SQLException e) {
         System.out.println("Error in addPreferential");
         e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+        System.out.println("Error in addPreferential");
+        e.printStackTrace();
+        throw e; // Ném lại ngoại lệ để servlet có thể bắt và xử lý
     }
 }
 
-    
-    public static boolean checkExistPreferential(String Preferential) {
-        try {
-            Connection con = DBConnect.getConnection();
-            PreparedStatement stmt = con.prepareStatement("SELECT ProductID FROM tblProduct WHERE Preferential = ?");
-            stmt.setString(1, Preferential);
-            ResultSet resultSet = stmt.executeQuery();
-            return resultSet.next();
-
-        } catch (Exception e) {
-            System.out.println("Error in checkExistProductID(String Preferential)");
-            e.printStackTrace();
-        }
-        return false;
-    }
      public static ArrayList<Preferential> getListPreferentialByCTVID(String CTVID) {
         ArrayList<Preferential> listPreferential = new ArrayList<>();
         try {
@@ -75,7 +64,7 @@ public class PreferentialRepository {
                 String preferentialName = results.getString(2);
                 String startDay = results.getString(3);
                 String endDay = results.getString(4);
-                double quantity = results.getDouble(5);
+                int quantity = results.getInt(5);
                 String preferentiaDescription = results.getString(6);
                 String preferentiaImg = results.getString(7);
                 Preferential preferentials = new Preferential(preferential, preferentialName, startDay, endDay, quantity, preferentiaDescription, preferentiaImg, CTVID);
@@ -99,7 +88,7 @@ public class PreferentialRepository {
                 String preferentialName = results.getString(2);
                 String startDay = results.getString(3);
                 String endDay = results.getString(4);
-                double quantity = results.getDouble(5);
+                int quantity = results.getInt(5);
                 String preferentiaDescription = results.getString(6);
                 String preferentiaImg = results.getString(7);
                 String CTVID = results.getString(8);
@@ -113,39 +102,32 @@ public class PreferentialRepository {
         return listPreferential;
     }
  
-    public static void main(String[] args) {
-        try {
-            // Fetch the list of Preferential
-            ArrayList<Preferential> listPreferential = getListPreferential();
+   public static void main(String[] args) {
+    try {
+        String preferential = "PREF0012";
+        String preferentialName = "Discount 10%";
+        String startDay = "2022-01-01";
+        String endDay = "2022-12-31";
+        int quantity = 100;
+        String description = "10% off on all products";
+        String imgPath = "image.jpg";
+        String ctvID = "C3551";
 
-            // Check if the list is not empty
-            if (listPreferential.isEmpty()) {
-                System.out.println("No preferential data found.");
-            } else {
-                // Loop through the list and print each Preferential
-                for (Preferential preferential : listPreferential) {
-                    System.out.println("Preferential: " + preferential.getPreferential());
-                    System.out.println("Preferential Name: " + preferential.getPreferentialName());
-                    System.out.println("Start Day: " + preferential.getStartDay());
-                    System.out.println("End Day: " + preferential.getEndDay());
-                    System.out.println("Quantity: " + preferential.getQuantity());
-                    System.out.println("Description: " + preferential.getPreferentiaDescription());
-                    System.out.println("Image: " + preferential.getPreferentiaImg());
-                    System.out.println("CTV ID: " + preferential.getCTVID());
-                    System.out.println("-------------------------------------");
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Error while retrieving preferential data: " + e.getMessage());
-            e.printStackTrace();
-        }
+        // Gọi hàm addPreferential để kiểm thử
+        addPreferential(preferential, preferentialName, startDay, endDay, quantity, description, imgPath, ctvID);
+
+        // Kiểm tra xem liệu dữ liệu có được thêm thành công hay không
+        System.out.println("Preferential added successfully.");
+    } catch (SQLException | ClassNotFoundException ex) {
+        System.err.println("Error occurred: " + ex.getMessage());
+        ex.printStackTrace();
     }
-
+}
     public static void addOrUpdatePreferential(Preferential preferential) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-z
 
    
 
 }
+

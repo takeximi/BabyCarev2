@@ -1,4 +1,4 @@
-package controller;
+package filter;
 
 import entity.User;
 import javax.servlet.*;
@@ -6,9 +6,9 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import javax.servlet.annotation.WebFilter;
 
-@WebFilter(filterName = "HomeFilter",urlPatterns = {
+@WebFilter(filterName = "HomeFilter", urlPatterns = {
         "/admin",
-    "/admin.jsp",
+        "/admin.jsp",
         "/ShowProductDetails",
         "/ProductServlet",
         "/SearchProductServlet"
@@ -25,7 +25,7 @@ public class AuthorizationFilterServlet implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         HttpSession session = httpRequest.getSession(false);
-         if (session != null) {
+        if (session != null) {
             User user = (User) session.getAttribute("user");
             if (user != null && user.getUserId().startsWith("A")) {
                 // User is an admin, allow access
@@ -34,8 +34,9 @@ public class AuthorizationFilterServlet implements Filter {
             }
         }
 
-        // Người dùng không đăng nhập hoặc không phải quản trị viên, chuyển hướng đến trang đăng nhập
-        httpResponse.sendRedirect(httpRequest.getContextPath() + "/login.jsp");
+        // Người dùng không đăng nhập hoặc không phải quản trị viên, hiển thị thông báo và chuyển hướng đến trang đăng nhập
+        httpRequest.setAttribute("errorMessage", "Bạn không có quyền truy cập tác vụ này, vui lòng đăng nhập lại account ");
+        httpRequest.getRequestDispatcher("/login.jsp").forward(httpRequest, httpResponse);
     }
 
     @Override
