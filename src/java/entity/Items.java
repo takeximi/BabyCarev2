@@ -1,6 +1,5 @@
 package entity;
 
-
 import java.text.DecimalFormat;
 import repository1.OrderRepository;
 
@@ -8,10 +7,28 @@ public class Items {
     private Product product;
     private int amount;
     DecimalFormat formatter = new DecimalFormat("#,###,###");
-    private boolean selected;  // Thêm thuộc tính này
+    private boolean selected;
     private String OrderId;
+    private boolean commentExists;
+    private String brandName;
 
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
     
+    
+    
+    public boolean isCommentExists() {
+        return commentExists;
+    }
+
+    public void setCommentExists(boolean commentExists) {
+        this.commentExists = commentExists;
+    }
 
     public String getOrderID() {
         return OrderId;
@@ -20,14 +37,13 @@ public class Items {
     public void setOrderID(String OrderId) {
         this.OrderId = OrderId;
     }
-    
 
     public Items() {
     }
 
-    public Items(Product product, int ammout) {
+    public Items(Product product, int amount) {
         this.product = product;
-        this.amount = ammout;
+        this.amount = amount;
     }
 
     public Product getProduct() {
@@ -42,8 +58,8 @@ public class Items {
         return amount;
     }
 
-    public void setAmount(int ammout) {
-        this.amount = ammout;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public boolean isSelected() {
@@ -53,37 +69,28 @@ public class Items {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
-    
 
     public double getPrice() {
         return product.getProductPrice() * amount;
     }
+
     public double getPriceAfterPurchase(String OrderId) {
-        for (int i = 0 ; i < 10 ; i ++) {
-            System.out.println(OrderId);
-            System.out.println(product.getProductId());
-            System.out.println("me");
-            System.out.println(OrderRepository.getPriceOrdered(OrderId,product.getProductId()));
-        }
-        return OrderRepository.getPriceOrdered(OrderId,product.getProductId());
+        return OrderRepository.getPriceOrdered(OrderId, product.getProductId());
     }
+
     public String getPriceString() {
         return formatter.format(getPrice());
-
     }
 
-    public boolean equal(Items item) {
-        if (this.product.productId.compareToIgnoreCase(item.product.productId) == 0) {
-            return true;
-        }
-        return false;
+    public boolean equals(Items item) {
+        return this.product.productId.compareToIgnoreCase(item.product.productId) == 0;
     }
 
     @Override
     public String toString() {
         return "Items{" +
                 "product=" + product +
-                ", ammout=" + amount +
+                ", amount=" + amount +
                 ", formatter=" + formatter +
                 '}';
     }

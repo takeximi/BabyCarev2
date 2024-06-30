@@ -19,7 +19,6 @@ import javax.servlet.http.Part;
 import repository1.ProductRepository;
 import service.MyRandom;
 
-
 @WebServlet(name = "AddProductServlet", value = "/addproduct")
 @MultipartConfig // Annotation để hỗ trợ việc upload file
 public class AddProductServlet extends HttpServlet {
@@ -50,21 +49,20 @@ public class AddProductServlet extends HttpServlet {
         String productID = MyRandom.getRandomProductID();
         String productName = request.getParameter("productName");
         double productPrice = 0;
-       
+
         if (request.getParameter("productPrice").isEmpty()) {
         } else {
             productPrice = Double.parseDouble(request.getParameter("productPrice"));
         }
         String productType = request.getParameter("productType");
-        String productOrigin = request.getParameter("productOrigin");          
+        String productOrigin = request.getParameter("productOrigin");
 
         int productAmount = Integer.parseInt(request.getParameter("productAmount"));
-        
-        String productDescription = request.getParameter("productDescription");  
-//        String productImg = request.getParameter("productImg");
+
+        String productDescription = request.getParameter("productDescription");
         Part part = request.getPart("productImg");
         logger.info("part: " + part);
-        
+
         if (part == null || part.getSize() == 0) {
             logger.warning("Part 'productImg' is missing or empty.");
             request.setAttribute("thongbao", "Vui lòng chọn hình ảnh sản phẩm.");
@@ -76,27 +74,36 @@ public class AddProductServlet extends HttpServlet {
         logger.info("filename: " + filename);
         String productImg = filename; // Lưu trữ tên file ảnh vào biến productImg
 
-        File uploadDir = new File(getServletContext().getRealPath("/") + "img");
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
+        // Tạo thư mục nếu chưa tồn tại
+        File absoluteDir = new File("D:\\FPT_VNI\\Semester 5\\vip3\\BabyCare\\web\\img");
+        if (!absoluteDir.exists()) {
+            absoluteDir.mkdirs();
+        }
+
+        File relativeDir = new File(getServletContext().getRealPath("/") + "img" + File.separator);
+        if (!relativeDir.exists()) {
+            relativeDir.mkdirs();
         }
 
         if (filename != null && !filename.isEmpty()) {
-            String path = getServletContext().getRealPath("/" + "img" + File.separator + filename);
-            request.setAttribute("imagePath", path);
+            String absolutePath = "D:\\FPT_VNI\\Semester 5\\vip3\\BabyCare\\web\\img" + File.separator + filename;
+            String relativePath = getServletContext().getRealPath("/") + "img" + File.separator + filename;
+
+            // Lưu file vào cả hai vị trí
             try (InputStream is = part.getInputStream()) {
-                boolean success = uploadFile(is, path);
-                if (success) {
-                    logger.info("Uploaded file successfully: " + filename);
+                boolean success1 = uploadFile(is, absolutePath);
+                boolean success2 = uploadFile(is, relativePath);
+                if (success1 && success2) {
+                    logger.info("Uploaded file successfully to both locations: " + filename);
                 } else {
-                    logger.warning("Failed to upload file: " + filename);
+                    logger.warning("Failed to upload file to one or both locations: " + filename);
                 }
-            }   
+            }
         }
 
-        logger.info("Thêm " + productID + " " + productName + " " + productPrice + " " + productType + " " + productImg + " " + productOrigin + " "  + CTVID);
+        logger.info("Thêm " + productID + " " + productName + " " + productPrice + " " + productType + " " + productImg + " " + productOrigin + " " + CTVID);
         try {
-            ProductRepository.addProduct(productID, productName, productType, productOrigin, productPrice, productAmount, productImg, CTVID,productDescription);
+            ProductRepository.addProduct(productID, productName, productType, productOrigin, productPrice, productAmount, productImg, CTVID, productDescription);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -122,4 +129,3 @@ public class AddProductServlet extends HttpServlet {
         return test;
     }
 }
-

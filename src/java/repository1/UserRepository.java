@@ -3,12 +3,15 @@ package repository1;
 import config.DBConnect;
 import entity.Account;
 import entity.Brand;
+import entity.User;
 import java.security.MessageDigest;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -244,6 +247,38 @@ public class UserRepository {
             return false;
         }
         return true;
+    }
+    public static ArrayList<Account> getListCusAccount() {
+        ArrayList<Account> listCusAcc;
+        try {
+
+            String query = "select acc.Username,acc.UserID,acc.StatusAcc,cus.FirstnameCus as firstname,cus.LastnameCus as lastname,cus.PhoneCus as phone,acc.Email from tblAccount acc\n" +
+                    "join tblCustomer cus on cus.CustomerID=acc.UserID";
+
+
+            Connection con = DBConnect.getConnection();
+            PreparedStatement preSt = con.prepareStatement(query);
+            ResultSet rs=preSt.executeQuery();
+            listCusAcc=new ArrayList<>();
+            while(rs.next()){
+                String username = rs.getString(1);
+                String userID = rs.getString(2);
+                int status=rs.getInt(3);
+
+                String firstname = rs.getString(4);
+                String lastname = rs.getString(5);
+                String phone = rs.getString(6);
+                String email = rs.getString(7);
+                Account newAcc=new Account( username,  userID,  firstname,  lastname,  phone,  email,  status);
+                listCusAcc.add(newAcc);
+            }
+            con.close();
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return null;
+        }
+        return listCusAcc;
     }
 
     public static ArrayList<Account> getListEmpAccount() {
@@ -673,63 +708,149 @@ public class UserRepository {
         }
     }
 
-    public static boolean updateCustomerToCTV(String oldUserID) {
-        try {
-            // Generate new CTV UserID
-            String newUserID = MyRandom.getRandomCTVID();
+//    public static boolean updateCustomerToCTV(String oldUserID) {
+//        try {
+//            // Generate new CTV UserID
+//            String newUserID = MyRandom.getRandomCTVID();
+//
+//            Connection con = DBConnect.getConnection();
+//
+//            // Get user email before updating
+//            String getEmailQuery = "SELECT Email FROM tblAccount WHERE UserID = ?";
+//            PreparedStatement getEmailStmt = con.prepareStatement(getEmailQuery);
+//            getEmailStmt.setString(1, oldUserID);
+//            ResultSet rs = getEmailStmt.executeQuery();
+//            String userEmail = null;
+//            if (rs.next()) {
+//                userEmail = rs.getString("Email");
+//            }
+//
+//            // Update tblCustomer to tblCTV
+//            String updateCustomerQuery = "INSERT INTO tblCTV (CTVID, FirstnameCTV, LastnameCTV, AddressCTV, Avatar, PhoneCTV) "
+//                    + "SELECT ?, FirstnameCus, LastnameCus, AddressCus, Avatar, PhoneCus FROM tblCustomer WHERE CustomerID = ?";
+//            PreparedStatement updateCustomerStmt = con.prepareStatement(updateCustomerQuery);
+//            updateCustomerStmt.setString(1, newUserID);
+//            updateCustomerStmt.setString(2, oldUserID);
+//            updateCustomerStmt.executeUpdate();
+//                      
+//            
+//            // Update UserID in tblAccount
+//            String updateAccountQuery = "UPDATE tblAccount SET UserID = ? WHERE UserID = ?";
+//            PreparedStatement updateAccountStmt = con.prepareStatement(updateAccountQuery);
+//            updateAccountStmt.setString(1, newUserID);
+//            updateAccountStmt.setString(2, oldUserID);
+//            updateAccountStmt.executeUpdate();
+//
+//            // Delete old customer record
+//            String deleteCustomerQuery = "DELETE FROM tblCustomer WHERE CustomerID = ?";
+//            PreparedStatement deleteCustomerStmt = con.prepareStatement(deleteCustomerQuery);
+//            deleteCustomerStmt.setString(1, oldUserID);
+//            deleteCustomerStmt.executeUpdate();
+//
+//            // Update CTVID in tblBrand
+//            String updateBrandQuery = "UPDATE tblBrand SET CTVID = ?, Status = 1 WHERE CTVID = ?";
+//            PreparedStatement updateBrandStmt = con.prepareStatement(updateBrandQuery);
+//            updateBrandStmt.setString(1, newUserID);
+//            updateBrandStmt.setString(2, oldUserID);
+//            updateBrandStmt.executeUpdate();
+//            // Update UserID in tblAccount
+//           
+//            con.close();
+//
+//            // Send email notification
+//            if (userEmail != null) {
+//                sendUpdateNotificationEmail(userEmail, newUserID);
+//            }
+//
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+   public static boolean updateCustomerToCTV(String oldUserID) {
+    Connection con = null;
+    try {
+        // Generate new CTV UserID
+        String newUserID = MyRandom.getRandomCTVID();
 
-            Connection con = DBConnect.getConnection();
+        con = DBConnect.getConnection();
+        con.setAutoCommit(false); // Bắt đầu giao dịch
 
-            // Get user email before updating
-            String getEmailQuery = "SELECT Email FROM tblAccount WHERE UserID = ?";
-            PreparedStatement getEmailStmt = con.prepareStatement(getEmailQuery);
-            getEmailStmt.setString(1, oldUserID);
-            ResultSet rs = getEmailStmt.executeQuery();
-            String userEmail = null;
-            if (rs.next()) {
-                userEmail = rs.getString("Email");
+        // Get user email before updating
+        String getEmailQuery = "SELECT Email FROM tblAccount WHERE UserID = ?";
+        PreparedStatement getEmailStmt = con.prepareStatement(getEmailQuery);
+        getEmailStmt.setString(1, oldUserID);
+        ResultSet rs = getEmailStmt.executeQuery();
+        String userEmail = null;
+        if (rs.next()) {
+            userEmail = rs.getString("Email");
+        }
+
+        // Create temporary table to store UserID mappings
+        String createTempTableQuery = "CREATE TABLE #TempUserIDs (oldUserID VARCHAR(5), newUserID VARCHAR(5))";
+        PreparedStatement createTempTableStmt = con.prepareStatement(createTempTableQuery);
+        createTempTableStmt.executeUpdate();
+
+        // Insert UserID mappings into temporary table
+        String insertTempTableQuery = "INSERT INTO #TempUserIDs (oldUserID, newUserID) VALUES (?, ?)";
+        PreparedStatement insertTempTableStmt = con.prepareStatement(insertTempTableQuery);
+        insertTempTableStmt.setString(1, oldUserID);
+        insertTempTableStmt.setString(2, newUserID);
+        insertTempTableStmt.executeUpdate();
+
+        // Update tblAccount using temp table
+        String updateAccountQuery = "UPDATE A SET A.UserID = T.newUserID FROM tblAccount A INNER JOIN #TempUserIDs T ON A.UserID = T.oldUserID";
+        PreparedStatement updateAccountStmt = con.prepareStatement(updateAccountQuery);
+        updateAccountStmt.executeUpdate();
+
+        // Update tblBrand using temp table
+        String updateBrandQuery = "UPDATE B SET B.CTVID = T.newUserID, B.Status = 1 FROM tblBrand B INNER JOIN #TempUserIDs T ON B.CTVID = T.oldUserID";
+        PreparedStatement updateBrandStmt = con.prepareStatement(updateBrandQuery);
+        updateBrandStmt.executeUpdate();
+
+        // Delete old customer record
+        String deleteCustomerQuery = "DELETE FROM tblCustomer WHERE CustomerID = ?";
+        PreparedStatement deleteCustomerStmt = con.prepareStatement(deleteCustomerQuery);
+        deleteCustomerStmt.setString(1, oldUserID);
+        deleteCustomerStmt.executeUpdate();
+
+        con.commit(); // Hoàn thành giao dịch
+
+        // Drop temporary table
+        String dropTempTableQuery = "DROP TABLE #TempUserIDs";
+        PreparedStatement dropTempTableStmt = con.prepareStatement(dropTempTableQuery);
+        dropTempTableStmt.executeUpdate();
+
+        // Send email notification
+        if (userEmail != null) {
+            sendUpdateNotificationEmail(userEmail, newUserID);
+        }
+
+        return true;
+    } catch (Exception e) {
+        if (con != null) {
+            try {
+                con.rollback(); // Rollback giao dịch nếu có lỗi xảy ra
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
-
-            // Update tblCustomer to tblCTV
-            String updateCustomerQuery = "INSERT INTO tblCTV (CTVID, FirstnameCTV, LastnameCTV, AddressCTV, Avatar, PhoneCTV) "
-                    + "SELECT ?, FirstnameCus, LastnameCus, AddressCus, Avatar, PhoneCus FROM tblCustomer WHERE CustomerID = ?";
-            PreparedStatement updateCustomerStmt = con.prepareStatement(updateCustomerQuery);
-            updateCustomerStmt.setString(1, newUserID);
-            updateCustomerStmt.setString(2, oldUserID);
-            updateCustomerStmt.executeUpdate();
-
-            // Update UserID in tblAccount
-            String updateAccountQuery = "UPDATE tblAccount SET UserID = ? WHERE UserID = ?";
-            PreparedStatement updateAccountStmt = con.prepareStatement(updateAccountQuery);
-            updateAccountStmt.setString(1, newUserID);
-            updateAccountStmt.setString(2, oldUserID);
-            updateAccountStmt.executeUpdate();
-
-            // Delete old customer record
-            String deleteCustomerQuery = "DELETE FROM tblCustomer WHERE CustomerID = ?";
-            PreparedStatement deleteCustomerStmt = con.prepareStatement(deleteCustomerQuery);
-            deleteCustomerStmt.setString(1, oldUserID);
-            deleteCustomerStmt.executeUpdate();
-
-            // Update CTVID in tblBrand
-            String updateBrandQuery = "UPDATE tblBrand SET CTVID = ?, Status = 1 WHERE CTVID = ?";
-            PreparedStatement updateBrandStmt = con.prepareStatement(updateBrandQuery);
-            updateBrandStmt.setString(1, newUserID);
-            updateBrandStmt.setString(2, oldUserID);
-            updateBrandStmt.executeUpdate();
-            con.close();
-
-            // Send email notification
-            if (userEmail != null) {
-                sendUpdateNotificationEmail(userEmail, newUserID);
+        }
+        e.printStackTrace();
+        return false;
+    } finally {
+        if (con != null) {
+            try {
+                con.setAutoCommit(true); // Quay lại chế độ auto commit
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
     }
+}
+
+
 
     private static void sendUpdateNotificationEmail(String email, String newUserID) {
         final String username = "phuongnam121103@gmail.com"; // Thay bằng email của bạn
@@ -848,7 +969,7 @@ public class UserRepository {
 
     private static final Logger logger = Logger.getLogger(UserRepository.class.getName());
 
-    public static boolean addBrand(String brandID, String brandName, String brandDescription, String brandAddress, String userID) throws SQLException, ClassNotFoundException {
+    public static boolean addBrand(String brandID, String brandName, String brandDescription,String logo, String brandAddress, String userID) throws SQLException, ClassNotFoundException {
         boolean result = false;
         String query = "INSERT INTO tblBrand (BrandID, BrandName, BrandDescription, BrandLogo, BrandAddress, CTVID, Status) VALUES (?, ?, ?, ?, ?, ?,?)";
         try (Connection con = DBConnect.getConnection();
@@ -856,7 +977,7 @@ public class UserRepository {
             ps.setString(1, brandID);
             ps.setString(2, brandName);
             ps.setString(3, brandDescription);
-            ps.setString(4, "avatar.png");
+            ps.setString(4, logo);
             ps.setString(5, brandAddress);
             ps.setString(6, userID);
             ps.setInt(7, 0);
@@ -989,6 +1110,145 @@ public class UserRepository {
         }
         return listEmpAcc;
     }
+    
+    
+//    public static User getUserByProductId(String productId) {
+//    User user = null;
+//
+//    try {
+//        Connection con = DBConnect.getConnection();
+//
+//        
+//        String sql = "SELECT tblCustomer.* "
+//                   + "FROM tblProductComment "
+//                   + "JOIN tblCustomer ON tblProductComment.UserID = tblCustomer.CustomerID "
+//                   + "WHERE tblProductComment.ProductID = ?";
+//        PreparedStatement stmt = con.prepareStatement(sql);
+//        stmt.setString(1, productId);
+//        ResultSet rs = stmt.executeQuery();
+//
+//         if (rs.next()) {
+//                user = new User(rs.getString(1),
+//                        rs.getString(2),
+//                        rs.getString(3),
+//                        rs.getString(4),
+//                        rs.getString(5),
+//                        rs.getString(6));
+//            } else {
+//                // If no result from customerQuery, check CTVID
+//                String ctvQuery = "SELECT tblCTV.*"
+//                        + "FROM tblBill "
+//                        + "JOIN tblCTV ON tblProductComment.UserID = tblCTV.CTVID "
+//                        + "WHERE tblBill.BillID = ?";
+//                stmt = con.prepareStatement(ctvQuery);
+//                stmt.setString(1, productId);
+//                rs = stmt.executeQuery();
+//
+//                if (rs.next()) {
+//                    user = new User(rs.getString(1),
+//                            rs.getString(2),
+//                            rs.getString(3),
+//                            rs.getString(4),
+//                            rs.getString(5),
+//                            rs.getString(6));
+//                }
+//            }
+//
+//        con.close();
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//        return null;
+//    }
+//    return user;
+//}
+//   public static User getUserDetailsByCommentId(String CommentID) {
+//    User user = null;
+//
+//  try {
+//        Connection con = DBConnect.getConnection();
+//
+//        
+//            String sql = "SELECT c.*, ctv.*, a.*\n" +
+//                "FROM tblProductComment pc \n" +
+//                "LEFT JOIN tblAccount a ON pc.UserID = a.UserID\n" +
+//                "LEFT JOIN tblCustomer c ON a.UserID = c.CustomerID \n" +
+//                "LEFT JOIN tblCTV ctv ON a.UserID = ctv.CTVID  \n" +
+//                "WHERE pc.CommentID = ?";
+//        PreparedStatement stmt = con.prepareStatement(sql);
+//        stmt.setString(1, CommentID );
+//        ResultSet rs = stmt.executeQuery();
+//
+//         if (rs.next()) {
+//                user = new User(rs.getString(1),
+//                        rs.getString(2),
+//                        rs.getString(3),
+//                        rs.getString(4),
+//                        rs.getString(5),
+//                        rs.getString(6));
+//            }
+//
+//        con.close();
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//        return null;
+//    }
+//    return user;
+//}
+   public static User getUserDetailsByCommentId(String CommentID) {
+    User user = null;
+
+    try {
+        Connection con = DBConnect.getConnection();
+
+        String sql = "SELECT a.*, " +
+                     "c.CustomerID, c.FirstnameCus, c.LastnameCus, c.Avatar AS CustomerAvatar,c.AddressCus, c.PhoneCus ," +
+                     "ctv.CTVID, ctv.FirstnameCTV, ctv.LastnameCTV, ctv.Avatar AS CTVAvatar, ctv.AddressCTV, ctv.PhoneCTV " +
+                     "FROM tblProductComment pc " +
+                     "LEFT JOIN tblAccount a ON pc.UserID = a.UserID " +
+                     "LEFT JOIN tblCustomer c ON a.UserID = c.CustomerID " +
+                     "LEFT JOIN tblCTV ctv ON a.UserID = ctv.CTVID " +
+                     "WHERE pc.CommentID = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, CommentID);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            // Check if user is from tblCustomer
+            String firstName = rs.getString("FirstnameCus");
+            String lastName = rs.getString("LastnameCus");
+            String avatar = rs.getString("CustomerAvatar");
+            String address = rs.getString("AddressCus");
+            String phone = rs.getString("PhoneCus");
+
+
+            if (firstName == null && lastName == null && avatar == null) {
+                // User is from tblCTV
+                firstName = rs.getString("FirstnameCTV");
+                lastName = rs.getString("LastnameCTV");
+                avatar = rs.getString("CTVAvatar");
+                address = rs.getString("AddressCTV");
+                phone = rs.getString("PhoneCTV");
+            }
+
+            user = new User(rs.getString("UserID"),
+                            firstName,
+                            lastName,
+                            address,
+                            avatar,
+                            phone); // assuming User class has these fields
+        }
+
+        con.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+    return user;
+}
+ 
+
+
+
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 //        String userID = "U223";
@@ -1073,8 +1333,30 @@ public class UserRepository {
 //            } else {
 //                System.out.println("No brands found or an error occurred.");
 //            }
-        boolean a = UserRepository.hasPendingRegistration("U6772");
-        System.out.println(a);
+//        boolean a = UserRepository.hasPendingRegistration("U6772");
+//        System.out.println(a);
+//
+//try {
+//            String commentId = "CM5977"; // Thay bằng CommentID cụ thể
+//            User user = getUserDetailsByCommentId(commentId);
+//            if (user != null) {
+//                System.out.println(user);
+//            } else {
+//                System.out.println("No user found for the given commentId.");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    String userID = "U4871"; // Thay thế bằng userID thực tế của bạn
+        boolean result = updateCustomerToCTV(userID);
+
+        if (result) {
+            System.out.println("Update thành công!");
+        } else {
+            System.out.println("Update không thành công!");
+        }
+    
+
     }
 
 }

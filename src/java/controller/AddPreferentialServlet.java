@@ -51,6 +51,7 @@ public class AddPreferentialServlet extends HttpServlet {
         String startDay = request.getParameter("startDay");
         String endDay = request.getParameter("endDay");
         String quantityStr = request.getParameter("quantity");
+        double rate = Double.parseDouble(request.getParameter("rate"));
         int quantity = 0;
         try {
             quantity = Integer.parseInt(quantityStr);
@@ -92,7 +93,7 @@ public class AddPreferentialServlet extends HttpServlet {
         String CTVID = user.getUserId();
 
         try {
-            PreferentialRepository.addPreferential(preferentialCode, preferentialName, startDay, endDay, quantity, preferentialDescription, preferentialImg, CTVID);
+            PreferentialRepository.addPreferential(preferentialCode, preferentialName, startDay, endDay, quantity, rate, preferentialDescription, preferentialImg, CTVID);
             request.setAttribute("thongbao", "Thêm thành công");
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "SQL Error", ex);

@@ -34,8 +34,8 @@ public class Isvalid {
         Pattern pattern = Pattern.compile(usernameRegex);
         return pattern.matcher(username).matches();
     }
-    public static String getCurrentDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static String getCurrentDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateFormat.format(new Date());
     }
 }

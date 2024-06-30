@@ -10,7 +10,6 @@ import repository1.UserRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,18 +47,23 @@ public class UpdateProfileServlet extends HttpServlet {
         // Update in database
         UserRepository.updateUser1(userID, firstname, lastname, address, phone);
         
-    Part part = request.getPart("avatar");
-    String filename = part.getSubmittedFileName();
-    if (filename != null && !filename.isEmpty()) {
-       String path = getServletContext().getRealPath("/" + "img" + File.separator + filename);
-       request.setAttribute("imagePath", path);
-        try (InputStream is = part.getInputStream()) {
-            boolean success = uploadFile(is, path);
-                if (success) {
+        Part part = request.getPart("avatar");
+        String filename = part.getSubmittedFileName();
+        if (filename != null && !filename.isEmpty()) {
+            // Đường dẫn tuyệt đối trên hệ thống
+            String absolutePath = "D:\\FPT_VNI\\Semester 5\\vip3\\BabyCare\\web\\img" + File.separator + filename;
+            // Đường dẫn tương đối trong thư mục của dự án
+            String relativePath = getServletContext().getRealPath("/") + "img" + File.separator + filename;
+
+            request.setAttribute("imagePath", absolutePath);
+            request.setAttribute("imagePathRelative", relativePath);
+            try (InputStream is = part.getInputStream()) {
+                boolean success1 = uploadFile(is, absolutePath);
+                boolean success2 = uploadFile(is, relativePath);
+                if (success1 && success2) {
                     // Update avatar in session and database if upload is successful
                     oldUser.setAvatar(filename);
                     session.setAttribute("user", oldUser);
-                    
                     try {
                         UserRepository.updateAvatar(userID, filename);
                     } catch (SQLException ex) {
@@ -67,30 +71,28 @@ public class UpdateProfileServlet extends HttpServlet {
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(UpdateProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                } else {
+                    // Handle the case where one or both uploads fail
+                    Logger.getLogger(UpdateProfileServlet.class.getName()).log(Level.WARNING, "Failed to upload file to one or both locations: " + filename);
                 }
-        }   
-    }
-    
-   
-    
-    response.sendRedirect("profile");
-      
-       
+            }   
+        }
+        response.sendRedirect("profile");
     }
 
-        public boolean uploadFile(InputStream is, String path) {
-            boolean test = false;
-            try {
-                byte[] bytes = new byte[is.available()];
-                is.read(bytes);
-                try (FileOutputStream fos = new FileOutputStream(path)) {
-                    fos.write(bytes);
-                    fos.flush();
-                }
-                test = true;
-            } catch (Exception e) {
-                e.printStackTrace();
+    public boolean uploadFile(InputStream is, String path) {
+        boolean test = false;
+        try {
+            byte[] bytes = new byte[is.available()];
+            is.read(bytes);
+            try (FileOutputStream fos = new FileOutputStream(path)) {
+                fos.write(bytes);
+                fos.flush();
             }
-            return test;
+            test = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return test;
+    }
 }

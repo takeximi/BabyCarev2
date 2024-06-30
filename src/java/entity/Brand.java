@@ -10,6 +10,7 @@ public class Brand {
     private String CTVID;
     private int Status;
     
+    
     public Brand() {
     }
 

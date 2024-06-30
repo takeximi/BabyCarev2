@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import entity.Preferential;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import static repository1.CartRepository.removeCartItemFromDatabase;
 import static repository1.CartRepository.updateCartItemQuantity;
 import repository1.OrderRepository;
@@ -22,6 +24,23 @@ public class Cart {
     private String date;
     private int paymentType = 0; //0 la COD , 1 la CK
     private Map<String, List<Items>> orderItemsMap; 
+    
+    private boolean canCancel;
+     public boolean isCanCancel() {
+        return canCancel;
+    }
+
+    public void setCanCancel(boolean canCancel) {
+        this.canCancel = canCancel;
+    }
+     public List<Items> getItems() {
+        return cart;
+    }
+
+    public void setItems(List<Items> items) {
+        this.cart = items;
+    }
+
     
     private Map<String, Double> orderTotalPriceMap; // Map lưu trữ tổng giá trị của từng đơn hàng
 
@@ -98,99 +117,102 @@ public class Cart {
             return "=========>CART : add Thanh Cong<==========";
         
     }
-    public double getThanhTien(double phatsinh) {
+    public double getThanhTien() {
         double tong = 0;
         for (Items item : cart) {
             tong += item.getPrice();
         }
-        return tong + phatsinh;
-    }
-    public double getThanhTienAfterPurchase(double phatsinh) {
+        return tong ;
+    }  
+    public double getThanhTienByShip() {
         double tong = 0;
-        for (Items item : cart) {
-            tong += item.getPriceAfterPurchase(orderedId);
-        }
-        return tong + phatsinh;
-    }
-    public double getThanhTienAfterPurchaseDiscount(double phatsinh) {
-        double tong = 0;
-        for (Items item : cart) {
-            tong += item.getPriceAfterPurchase(orderedId);
-        }
-         Preferential pr = new Preferential();
-        double discountPercent = OrderRepository.getDiscountPercent(pr.getId());
-        return (tong + phatsinh) - (tong*discountPercent);
-    }
-    public String getThanhTienString(double phatsinh) {
-        if (cart.isEmpty()) {
-            return "0";
-        }
-        return formatter.format(getThanhTien(phatsinh));
-
-    }
-    public String getThanhTienStringDiscount(double phatsinh) {
-        if (cart.isEmpty()) {
-            return "0";
-        }
-        return formatter.format(getThanhTienDiscount(phatsinh));
-
-    }
-    public double getThanhTienDiscount(double phatsinh) {
-        Preferential pr = new Preferential();
-        double tong = 0;
-        double discountPercent = OrderRepository.getDiscountPercent(pr.getId());
         for (Items item : cart) {
             tong += item.getPrice();
         }
-        double x = (tong - tong *discountPercent) + phatsinh;
-        System.out.println(x);
-        
-        return x;
-    }
-    public String getThanhTienStringAfterPurchase(double phatsinh) {
-        if (cart.isEmpty()) {
-            return "0";
+        return tong + getThanhTienShip();
+    } 
+    
+    public double getThanhTienShip() {
+    double tong = 0;
+    Set<String> ctvIds = new HashSet<>();
+    
+    for (Items item : cart) {
+        Product product = item.getProduct();
+        if (product != null && product.getCTVID() != null && !product.getCTVID().isEmpty()) {
+            if (!ctvIds.contains(product.getCTVID())) {
+                ctvIds.add(product.getCTVID());
+                tong += 30000;
+            }
         }
-        return formatter.format(getThanhTienAfterPurchase(phatsinh));
-
     }
-    public String getThanhTienStringAfterPurchaseDiscount(double phatsinh) {
-        if (cart.isEmpty()) {
-            return "0";
-        }
-        return formatter.format(getThanhTienAfterPurchaseDiscount(phatsinh));
-
+    return tong;
     }
-    public double getThanhTienAfterPurchase(String orderId, double phatsinh) {
+    
+    public double getThanhTienDiscount() {
         double tong = 0;
         for (Items item : cart) {
-            tong += item.getPriceAfterPurchase(orderId);
+            tong += item.getPrice();
         }
-        return tong + phatsinh;
-    }
+        return (tong - (tong  * discountPercent) + getThanhTienShip());
+    } 
     
-    public double getThanhTienAfterPurchaseDiscount(String orderId, double phatsinh) {
+    public String getThanhTienDiscountString() {
+        if (cart.isEmpty()) {
+            return "0";
+        }
+        return formatter.format(getThanhTienDiscount());
+
+    }
+    public double tongGiamGia() {
         double tong = 0;
         for (Items item : cart) {
-            tong += item.getPriceAfterPurchase(orderId);
+            tong += item.getPrice();
         }
-        Preferential pr = new Preferential();
-        double discountPercent = OrderRepository.getDiscountPercent(pr.getId());
-        return (tong + phatsinh) - (tong * discountPercent);
-    }
-    
-    public String getThanhTienStringAfterPurchase(String orderId, double phatsinh) {
+        return (tong  * discountPercent) ;
+    }  
+    public String tongGiamGiaString() {
         if (cart.isEmpty()) {
             return "0";
         }
-        return formatter.format(getThanhTienAfterPurchase(orderId, phatsinh));
+        return formatter.format(tongGiamGia());
+
     }
-    
-    public String getThanhTienStringAfterPurchaseDiscount(String orderId, double phatsinh) {
+//    public double getThanhTienAfterPurchase(double phatsinh) {
+//        double tong = 0;
+//        for (Items item : cart) {
+//            tong += item.getPriceAfterPurchase(orderedId);
+//        }
+//        return tong + phatsinh;
+//    }
+//    public double getThanhTienAfterPurchaseDiscount(double phatsinh) {
+//        double tong = 0;
+//        for (Items item : cart) {
+//            tong += item.getPriceAfterPurchase(orderedId);
+//        }
+//         Preferential pr = new Preferential();
+//        double discountPercent = OrderRepository.getDiscountPercent(pr.get());
+//        return (tong + phatsinh) - (tong*discountPercent);
+//    }
+    public String getThanhTienString() {
         if (cart.isEmpty()) {
             return "0";
         }
-        return formatter.format(getThanhTienAfterPurchaseDiscount(orderId, phatsinh));
+        return formatter.format(getThanhTien());
+
+    }
+    public String getThanhTienByShipString() {
+        if (cart.isEmpty()) {
+            return "0";
+        }
+        return formatter.format(getThanhTienByShip());
+
+    }
+    public String getThanhTienShipString() {
+        if (cart.isEmpty()) {
+            return "0";
+        }
+        return formatter.format(getThanhTienShip());
+
     }
     
         public void setOrderItems(String orderId, List<Items> items) {
@@ -242,43 +264,6 @@ public class Cart {
     }
 
     
-//    public double getThanhTien(double phatsinh) {
-//    double tong = 0;
-//    for (Items item : selectedItems) {  // Sử dụng danh sách các sản phẩm được chọn
-//        tong += item.getPrice();
-//    }
-//    return tong + phatsinh;
-//}
-//
-//public double getThanhTienDiscount(double phatsinh) {
-//    Preferential pr = new Preferential();
-//    double tong = 0;
-//    double discountPercent = OrderRepository.getDiscountPercent(pr.getId());
-//    for (Items item : selectedItems) {  // Sử dụng danh sách các sản phẩm được chọn
-//        tong += item.getPrice();
-//    }
-//    return (tong - tong * discountPercent) + phatsinh;
-//}
-//
-//// Các phương thức tương tự cho after purchase
-//public double getThanhTienAfterPurchase(double phatsinh) {
-//    double tong = 0;
-//    for (Items item : selectedItems) {  // Sử dụng danh sách các sản phẩm được chọn
-//        tong += item.getPriceAfterPurchase(orderedId);
-//    }
-//    return tong + phatsinh;
-//}
-//
-//public double getThanhTienAfterPurchaseDiscount(double phatsinh) {
-//    double tong = 0;
-//    Preferential pr = new Preferential();
-//    double discountPercent = OrderRepository.getDiscountPercent(pr.getId());
-//    for (Items item : selectedItems) {  // Sử dụng danh sách các sản phẩm được chọn
-//        tong += item.getPriceAfterPurchase(orderedId);
-//    }
-//    return (tong + phatsinh) - (tong * discountPercent);
-//}
-
 
     public List<Items> getCart() {
         return cart;
@@ -344,6 +329,9 @@ public class Cart {
 
     public void setDiscountCode(String discountCode) {
         this.discountCode = discountCode;
+    }
+    public void removeDiscountCode() {
+        this.discountCode = null;
     }
 
     public double getDiscountPercent() {

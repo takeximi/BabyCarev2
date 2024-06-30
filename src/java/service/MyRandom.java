@@ -81,6 +81,20 @@ public class MyRandom {
         while(ProductRepository.checkExistProductID(String.valueOf(sb)));
         return sb.toString();
     }
+    
+    public static String getRandomDiscountID(){
+        StringBuilder sb ;
+        do {
+            sb = new StringBuilder();
+            sb.append("DC");
+
+            for (int i = 1; i <= LENGTH; i++) {
+                sb.append(new Random().nextInt(10));
+            }
+        }
+        while(ProductRepository.checkExistProductID(String.valueOf(sb)));
+        return sb.toString();
+    }
     public static String getRandomCommentID() {
         StringBuilder sb ;
         do {

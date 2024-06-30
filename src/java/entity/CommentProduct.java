@@ -1,6 +1,7 @@
 package entity;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class CommentProduct {
 
@@ -8,20 +9,64 @@ public class CommentProduct {
     private String productID;
     private String comment;
     private String userID;
+    private int rating;
     private String commentImg;
-    private Date createdAt;
+    private Timestamp  createdAt;
+    private String BillID;
+    private User user;
 
-    public CommentProduct(String commentID, String productID, String comment, String userID, String commentImg, Date createdAt) {
+    // Constructor, getters và setters cho các trường hiện có
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    
+    public CommentProduct(String commentID, String productID, String comment, String userID, String commentImg, int rating) {
         this.commentID = commentID;
         this.productID = productID;
         this.comment = comment;
         this.userID = userID;
         this.commentImg = commentImg;
+        this.rating = rating;
+    }
+
+    public CommentProduct(String commentID, String productID, String comment, String userID, int rating, String commentImg, Timestamp createdAt) {
+        this.commentID = commentID;
+        this.productID = productID;
+        this.comment = comment;
+        this.userID = userID;
+        this.rating = rating;
+        this.commentImg = commentImg;
         this.createdAt = createdAt;
     }
 
-    public CommentProduct() {
+    public CommentProduct(String commentID, String productID, String comment, int rating, String userID, String fileName) {
+        this.commentID = commentID;
+        this.productID = productID;
+        this.comment = comment;
+        this.userID = userID;
+        this.commentImg = fileName;
+        this.rating = rating;
     }
+    
+ public CommentProduct() {
+    }
+
+   
+    
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+    
 
     public String getCommentID() {
         return commentID;
@@ -63,13 +108,22 @@ public class CommentProduct {
         this.commentImg = commentImg;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp  getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp  createdAt) {
         this.createdAt = createdAt;
     }
+
+    public String getBillID() {
+        return BillID;
+    }
+
+    public void setBillID(String BillID) {
+        this.BillID = BillID;
+    }
+    
 
     @Override
     public String toString() {

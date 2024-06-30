@@ -39,7 +39,7 @@ public class VerificodeServlet extends HttpServlet {
                 // Nếu mã code không đúng, thông báo lỗi
                 request.setAttribute("thongbao", "Mã xác minh không hợp lệ");
                 UserRepository.deleteCustomer(userID);
-                request.getRequestDispatcher("register.jsp").forward(request, response);
+                request.getRequestDispatcher("verificode.jsp").forward(request, response);
             }
 
     }

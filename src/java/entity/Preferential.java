@@ -7,6 +7,7 @@ public class Preferential {
     protected String startDay;
     protected String endDay;
     protected int quantity;
+    protected double rate;
     protected String preferentiaDescription;
     protected String preferentiaImg;
     protected String employeeID;
@@ -36,6 +37,19 @@ public class Preferential {
         this.preferentiaImg = preferentiaImg;
     }
 
+    public Preferential(String preferential, String preferentialName, String startDay, String endDay, int quantity, double rate, String preferentiaDescription, String preferentiaImg, String employeeID) {
+        this.preferential = preferential;
+        this.preferentialName = preferentialName;
+        this.startDay = startDay;
+        this.endDay = endDay;
+        this.quantity = quantity;
+        this.rate = rate;
+        this.preferentiaDescription = preferentiaDescription;
+        this.preferentiaImg = preferentiaImg;
+        this.employeeID = employeeID;
+    }
+    
+    
     public String getPreferential() {
         return preferential;
     }
@@ -100,6 +114,22 @@ public class Preferential {
         this.employeeID = CTVID;
     }
 
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    public String getEmployeeID() {
+        return employeeID;
+    }
+
+    public void setEmployeeID(String employeeID) {
+        this.employeeID = employeeID;
+    }
+    
     @Override
     public String toString() {
         return "Preferential{" + "preferential=" + preferential + ", preferentialName=" + preferentialName + ", startDay=" + startDay 

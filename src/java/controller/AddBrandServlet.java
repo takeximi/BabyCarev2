@@ -3,27 +3,29 @@ package controller;
 import entity.User;
 import java.io.File;
 import java.io.FileOutputStream;
-import repository1.UserRepository;
-import service.MyRandom;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import repository1.UserRepository;
+import service.MyRandom;
 
 @WebServlet(name = "AddBrandServlet", urlPatterns = {"/addBrand"})
+@MultipartConfig // Annotation để hỗ trợ việc upload file
 public class AddBrandServlet extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(AddBrandServlet.class.getName());
 
-     @Override
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -54,35 +56,55 @@ public class AddBrandServlet extends HttpServlet {
             return;
         }
 
-
         String userID = user.getUserId();
-       
 
         String brandName = request.getParameter("brandName");
         System.out.println(brandName);
         String brandDescription = request.getParameter("brandDescription");
         System.out.println(brandDescription);
-//        Part part = request.getPart("brandLogo");
-//        String filename = (part != null) ? part.getSubmittedFileName() : null;
-//        String brandLogo = (filename != null && !filename.isEmpty()) ? filename : "avatar.png"; // Default logo if none selected
-//
-//        // Save image if selected
-//        if (filename != null && !filename.isEmpty()) {
-//            String path = getServletContext().getRealPath("/" + "img" + File.separator + filename);
-//            request.setAttribute("imagePath", path);
-//            try (InputStream is = part.getInputStream()) {
-//                boolean success = uploadFile(is, path);
-//                if (success) {
-//                    logger.info("Uploaded file successfully: " + filename);
-//                } else {
-//                    logger.warning("Failed to upload file: " + filename);
-//                }
-//            } catch (Exception e) {
-//                logger.log(Level.SEVERE, "File upload error", e);
-//            }
-//        }
+        Part part = request.getPart("logo");
+        logger.info("part: " + part);
+
+        if (part == null || part.getSize() == 0) {
+            logger.warning("Part 'logo' is missing or empty.");
+            request.setAttribute("thongbao", "Vui lòng chọn hình ảnh sản phẩm.");
+            request.getRequestDispatcher("registerctv.jsp").forward(request, response);
+            return;
+        }
+
+        String filename = part.getSubmittedFileName();
+        logger.info("filename: " + filename);
+        String logo = filename; // Lưu trữ tên file ảnh vào biến logo
+
+        // Tạo thư mục nếu chưa tồn tại
+        File absoluteDir = new File("D:\\FPT_VNI\\Semester 5\\vip3\\BabyCare\\web\\img\\brand");
+        if (!absoluteDir.exists()) {
+            absoluteDir.mkdirs();
+        }
+
+        File relativeDir = new File(getServletContext().getRealPath("/") + "img" + File.separator + "brand");
+        if (!relativeDir.exists()) {
+            relativeDir.mkdirs();
+        }
+
+        if (filename != null && !filename.isEmpty()) {
+            String absolutePath = "D:\\FPT_VNI\\Semester 5\\vip3\\BabyCare\\web\\img\\brand" + File.separator + filename;
+            String relativePath = getServletContext().getRealPath("/") + "img" + File.separator + "brand" + File.separator + filename;
+
+            // Lưu file vào cả hai vị trí
+            try (InputStream is = part.getInputStream()) {
+                boolean success1 = uploadFile(is, absolutePath);
+                boolean success2 = uploadFile(is, relativePath);
+                if (success1 && success2) {
+                    logger.info("Uploaded file successfully to both locations: " + filename);
+                } else {
+                    logger.warning("Failed to upload file to one or both locations: " + filename);
+                }
+            }
+        }
+
         String brandAddress = request.getParameter("brandAddress");
-        logger.info("Parameters: brandName=" + brandName + ", brandDescription=" + brandDescription +  ", brandAddress=" + brandAddress);
+        logger.info("Parameters: brandName=" + brandName + ", brandDescription=" + brandDescription + ", brandAddress=" + brandAddress);
 
         try {
             if (UserRepository.checkBrandNameExist(brandName)) {
@@ -91,10 +113,10 @@ public class AddBrandServlet extends HttpServlet {
             } else {
                 String brandID = MyRandom.getRandomBrandID();
 
-                logger.info("Registering Brand: " + brandID + " " + brandName + " " + brandDescription + " " );
-                boolean added = UserRepository.addBrand(brandID, brandName, brandDescription, brandAddress, userID);
-                
-                if (added == false) {              
+                logger.info("Registering Brand: " + brandID + " " + brandName + " " + brandDescription + " " + logo + " " + brandAddress);
+                boolean added = UserRepository.addBrand(brandID, brandName, brandDescription, logo, brandAddress, userID);
+                request.setAttribute("thongbao", "Chúng tôi đã tiếp nhận thông tin của bạn. Chúng tôi sẽ thông báo qua email của bạn trong vòng 7 ngày..");
+                if (added == false) {
                     request.setAttribute("thongbao", "Có lỗi xảy ra khi đăng kí cửa hàng. Vui lòng thử lại.");
                 }
                 request.getRequestDispatcher("registerctv.jsp").forward(request, response);
@@ -102,25 +124,23 @@ public class AddBrandServlet extends HttpServlet {
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error adding brand to the database", e);
             request.setAttribute("thongbao", "Có lỗi xảy ra khi đăng kí cửa hàng. Vui lòng thử lại abc.");
-//            request.getRequestDispatcher("registerctv.jsp").forward(request, response);
-            response.sendRedirect("registerctv.jsp");
+            response.sendRedirect("addBrand");
         }
     }
 
-//    public boolean uploadFile(InputStream is, String path) {
-//        boolean test = false;
-//        try {
-//            byte[] bytes = new byte[is.available()];
-//            is.read(bytes);
-//            try (FileOutputStream fos = new FileOutputStream(path)) {
-//                fos.write(bytes);
-//                fos.flush();
-//            }
-//            test = true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            logger.log(Level.SEVERE, "File upload failed", e);
-//        }
-//        return test;
-//    }
+    public boolean uploadFile(InputStream is, String path) {
+        boolean test = false;
+        try {
+            byte[] bytes = new byte[is.available()];
+            is.read(bytes);
+            try (FileOutputStream fos = new FileOutputStream(path)) {
+                fos.write(bytes);
+                fos.flush();
+            }
+            test = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return test;
+    }
 }
