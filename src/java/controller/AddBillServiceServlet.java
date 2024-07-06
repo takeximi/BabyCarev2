@@ -16,6 +16,9 @@ public class AddBillServiceServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        response.setCharacterEncoding("utf-8");
+        request.setCharacterEncoding("utf-8");
         HttpSession session = request.getSession();
 
         Integer bookingID = (Integer) session.getAttribute("bookingID");
@@ -32,7 +35,7 @@ public class AddBillServiceServlet extends HttpServlet {
         bill.setCustomerID(customerID);
         bill.setBillDate(new java.util.Date());
         bill.setTotalAmount(servicePrice);
-        bill.setBillStatus(1); // Assuming status is 1 for new bills
+        bill.setBillStatus(3); // Assuming status is 1 for new bills
 
         ServiceRespository serviceRepository = new ServiceRespository();
         int billID = serviceRepository.addBill(bill);
