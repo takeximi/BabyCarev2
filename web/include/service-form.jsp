@@ -30,30 +30,47 @@
              <c:forEach items="${ListS}" var="S">
             <div class="col-md-6">
                
-                <div class="row">
-                    <div class="col-4">
-                        <img src="${S.listImg}" style="width: 200px; height: 180px" >
-                    </div>
-                    <div class="col-8">
-                         <div class="service-item bg-light d-flex p-4">
-                       
-                        <div>
-                            <h5 class="text-uppercase mb-3">${S.serviceName}</h5>
-                            <p>${S.description}</p>
+                
+                   
+                <div >
+                    <div class="service-item bg-light d-flex p-4">
+                        <div class="row">
+                            <div class="col-5">
+                                 <img src="${S.listImg}" style="width: 200px; height: 180px" >
+                            </div>
+                            <div class="col-lg-7">
+                            <h4 class="sub-title pe-3 mb-0">${S.serviceName} </h4>
+                            <h5  style="color: red">${S.getServicePrice()}đ</h5>
+                            
+                            
                             <a class="text-primary text-uppercase" href="getservicedetail?serviceID=${S.serviceID}">Xem thêm<i class="bi bi-chevron-right"></i></a>
-                        </div>
-                    </div>
+                           </div>
+                          </div>
                     </div>
                 </div>
+              
                 
             </div>
                         </c:forEach>
         </div>
     </div>
 </div>
+                           
 
 <!-- Services End -->
-
+<div class="row mt-5">
+            <div class="col-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <c:forEach var="i" begin="1" end="${numberPage}">
+                            <li class="page-item <c:if test="${i == currentPage}">active</c:if>">
+                                <a class="page-link" href="listService?page=${i}">${i}</a>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </nav>
+            </div>
+        </div>
 
 <div class="container-fluid about bg-light py-5">
                 <div class="container py-5">

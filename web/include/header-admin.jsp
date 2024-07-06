@@ -75,8 +75,11 @@
                     <ul class="nav" id="main-menu">
 
                         <li>
-                            <a href="#"  class="dropdown-item">Thống kê bán hàng</a>       
-                        </li>         
+                            <a href="statisticspage.jsp"  class="dropdown-item">Thống kê bán hàng</a>       
+                        </li>  
+                         <li>
+                            <a href="ProfitServiceServlet"  class="dropdown-item">Thống Kê Doanh Thu</a>       
+                        </li>  
 
 
                         <li>
@@ -92,7 +95,9 @@
                                 <li>
                                     <a href="#">quản lý tài khoản khách hàng</a>
                                 </li>
-
+                                  <li>
+                                    <a href="ListCustomerRefundServlet">Danh sách khách hàng hoàn trả tiền</a>
+                                </li>
                             </ul>
                         </li>
 

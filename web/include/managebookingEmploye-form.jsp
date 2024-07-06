@@ -96,7 +96,7 @@
                     </td>
                     <td>
                         <c:if test="${booking.bookingStatus == 1}">
-                            <form action="StatusBookingServlet" method="post" onsubmit="return confirm('Bạn chắc chắn muốn chấp nhận lịch của khách hàng này ?');">
+                            <form action="StatusBookingServlet" method="post" ;">
                                 <input type="hidden" name="bookingID" value="${booking.bookingID}">
                                 <input type="hidden" name="name" value="${booking.name}">
                                 <input type="hidden" name="serviceName" value="${booking.serviceName}">

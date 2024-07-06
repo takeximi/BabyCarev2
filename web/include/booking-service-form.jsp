@@ -3,6 +3,21 @@
     Created on : May 26, 2024, 6:42:01 AM
     Author     : ACER
 --%>
+<script>
+    function validateDate() {
+        const bookingDate = document.getElementById('bookingDate').value;
+        const today = new Date();
+        const selectedDate = new Date(bookingDate);
+        const twoDaysFromNow = new Date();
+        twoDaysFromNow.setDate(today.getDate() + 2);
+
+        if (selectedDate < twoDaysFromNow) {
+            alert('Ngày đặt lịch phải trước ít nhất hai ngày.');
+            return false;
+        }
+        return true;
+    }
+</script>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -26,14 +41,15 @@
                                     <h5 class="mb-3"><i class="fa fa-check text-primary me-2"></i>Đa dạng và linh hoạt</h5>
                                     <p class="mb-0">Chúng tôi cung cấp nhiều gói trang trí sinh nhật với giá cả phải chăng, từ đơn giản đến cao cấp, phục vụ mọi nhu cầu và túi tiền. </p>
                                 </div>
-                               
+
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="video h-100">
-                                <img src="images/y/y4.jpg" class="img-fluid rounded w-100 h-100" style="object-fit: cover;" alt="">
+                            <div>
+                                <img src="${serviceIMG}" class="img-fluid rounded w-100 h-100" style="object-fit: cover;" alt="">
 
                             </div>
+                                
                         </div>
                     </div>
                 </div>
@@ -42,6 +58,7 @@
                 <div class="appointment-form rounded p-5">
                     <p class="fs-4 text-uppercase text-primary">Liên lạc</p>
                     <h1 class="display-5 mb-4">Đặt Lịch</h1>
+                    <h5 class="mb-3"><i class="fa me-2" style="font-size: 24px">${serviceName}</i></h5>
 
                     <% if (request.getAttribute("errorMessage") != null) {%>
                     <div class="alert alert-danger" role="alert">
@@ -51,47 +68,49 @@
                     <form action="bookingservlet" method="post" onsubmit="return validateDate();">
                         <div class="row gy-3 gx-4">
                             <div class="col-md-6 offset-3 mb-3">
+                               
                                 <div class="input-group">
                                     <input type="hidden" class="form-control" id="serviceID" name="serviceID" value="${serviceID}" aria-describedby="inputGroupPrepend" required>
                                     <input type="hidden" class="form-control" id="servicePrice" name="servicePrice" value="${servicePrice}" aria-describedby="inputGroupPrepend" required>
                                     <input type="hidden" class="form-control" id="serviceName" name="serviceName" value="${serviceName}" aria-describedby="inputGroupPrepend" required>
                                     <div class="invalid-feedback"></div>
+                                  
                                 </div>
                             </div>
                             <div class="col-xl-6">
-                                <input type="text" class="form-control py-3 border-primary bg-transparent text-dark" placeholder="Tên" name="name" required>
+                                <input type="text" class="form-control py-3 border-primary bg-transparent text-dark" placeholder="Tên" name="name" value="${param.name}" required>
                             </div>
                             <div class="col-xl-6">
-                                <input type="text" class="form-control py-3 border-primary bg-transparent text-dark" placeholder="Địa chỉ" name="address" required>
+                                <input type="text" class="form-control py-3 border-primary bg-transparent text-dark" placeholder="Địa chỉ" name="address" value="${param.address}" required>
                             </div>
                             <div class="col-xl-6">
-                                <input type="text" class="form-control py-3 border-primary bg-transparent text-dark" placeholder="Điện Thoại" name="phone" pattern="\d{10}" maxlength="10" required>
+                                <input type="text" class="form-control py-3 border-primary bg-transparent text-dark" placeholder="Điện Thoại" name="phone" pattern="\d{10}" maxlength="10" value="${param.phone}" required>
                                 <div class="invalid-feedback">Please enter a valid 10-digit phone number.</div>
                             </div>
                             <div class="col-xl-6">
                                 <select class="form-select py-3 border-primary bg-transparent text-dark" name="slot" required>
                                     <option selected disabled>Slot</option>
-                                    <option value="Slot 1 (7:00 - 9:00)">Slot 1 (7:00 - 9:00)</option>
-                                    <option value="Slot 2 (9:00 - 11:00)">Slot 2 (9:00 - 11:00)</option>
-                                    <option value="Slot 3 (13:00 - 15:00)">Slot 3 (13:00 - 15:00)</option>
-                                    <option value="Slot 4 (15:00 - 18:00)">Slot 4 (15:00 - 18:00)</option>
+                                    <option value="Slot 1 (7:00 - 9:00)" <%= "Slot 1 (7:00 - 9:00)".equals(request.getParameter("slot")) ? "selected" : ""%>>Slot 1 (7:00 - 9:00)</option>
+                                    <option value="Slot 2 (9:00 - 11:00)" <%= "Slot 2 (9:00 - 11:00)".equals(request.getParameter("slot")) ? "selected" : ""%>>Slot 2 (9:00 - 11:00)</option>
+                                    <option value="Slot 3 (13:00 - 15:00)" <%= "Slot 3 (13:00 - 15:00)".equals(request.getParameter("slot")) ? "selected" : ""%>>Slot 3 (13:00 - 15:00)</option>
+                                    <option value="Slot 4 (15:00 - 18:00)" <%= "Slot 4 (15:00 - 18:00)".equals(request.getParameter("slot")) ? "selected" : ""%>>Slot 4 (15:00 - 18:00)</option>
                                 </select>
                             </div>
                             <div class="col-xl-6">
-                                <input type="date" class="form-control py-3 border-primary bg-transparent text-dark" id="bookingDate" name="bookingDate" required>
+                                <input type="date" class="form-control py-3 border-primary bg-transparent text-dark" id="bookingDate" name="bookingDate" value="${param.bookingDate}" required>
                             </div>
                             <div class="col-xl-6">
                                 <select class="form-select py-3 border-primary bg-transparent text-dark" name="sex" required>
                                     <option selected disabled>Giới tính em bé</option>
-                                    <option value="Nam">Nam</option>
-                                    <option value="Nữ">Nữ</option>
+                                    <option value="Nam" <%= "Nam".equals(request.getParameter("sex")) ? "selected" : ""%>>Nam</option>
+                                    <option value="Nữ" <%= "Nữ".equals(request.getParameter("sex")) ? "selected" : ""%>>Nữ</option>
                                 </select>
                             </div>
                             <div class="col-xl-6">
-                                <input type="email" class="form-control py-3 border-primary bg-transparent text-dark" placeholder="Email" name="email" required>
+                                <input type="email" class="form-control py-3 border-primary bg-transparent text-dark" placeholder="Email" name="email" value="${param.email}" required>
                             </div>
                             <div class="col-12">
-                                <textarea class="form-control py-3 border-primary bg-transparent text-dark" name="note" placeholder="Ghi chú" rows="4"></textarea>
+                                <textarea class="form-control py-3 border-primary bg-transparent text-dark" name="note" placeholder="Ghi chú" rows="4">${param.note}</textarea>
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary text-white w-100 py-3 px-5">Đặt Ngay</button>
