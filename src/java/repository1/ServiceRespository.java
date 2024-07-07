@@ -8,6 +8,7 @@ import entity.ServiceBooked;
 
 import entity.Customer;
 import entity.Booking;
+import entity.CustomerRefund;
 import entity.Feedback;
 
 import java.sql.Connection;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import javax.mail.Message;
@@ -123,58 +125,9 @@ public class ServiceRespository {
         return handleNum;
     }
 
-    public static int getBookedNumberOfSlot(String serviceID, String shiftID, String setDay) {
-        int bookedNum = 0;
-        try {
-            Connection con = DBConnect.getConnection();
-            String query = "select ShiftID,ServiceID,SetDay,SUM(Amount) as Amount from tblServiceBill\n"
-                    + "    where StatusBill='1' or StatusBill = '2'\n"
-                    + "     group by ShiftID,ServiceID,SetDay \n"
-                    + "  having  (ShiftID=? and ServiceID=? and SetDay=?)";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, shiftID);
-            stmt.setString(2, serviceID);
-            stmt.setString(3, setDay);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                bookedNum = rs.getInt(4);
-            }
-            con.close();
-        } catch (Exception e) {
-            System.out.println("===========>Loi getBookedNumberOfSlot trong ServiceRepository");
-            e.printStackTrace();
-        }
-        return bookedNum;
-    }
+   
 
-    public static boolean createCheckout(String billID, String customerID, String dateCreate, String serviceID, String shiftID, String setDay, int ammount, String priceAtPurchase) {
-
-        try {
-            Connection con = DBConnect.getConnection();
-            String query = "insert into  tblServiceBill(BillID, CustomerID,DateCreate,ServiceID,ShiftID,SetDay,StatusBill,Amount,PriceAtPurchase) values (?,?,?,?,?,?,?,?,?)";
-
-//            String query = "values\n" +
-//                    "(?,NULL,?,?,'SH001','S0001','2023-06-13',0,12)";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, billID);
-            stmt.setString(2, customerID);
-            stmt.setString(3, dateCreate);
-            stmt.setString(4, serviceID);
-            stmt.setString(5, shiftID);
-            stmt.setString(6, setDay);
-            stmt.setInt(7, 0);
-            stmt.setInt(8, ammount);
-
-            stmt.setString(9, String.valueOf(Double.parseDouble(priceAtPurchase) * ammount));
-            stmt.executeUpdate();
-            con.close();
-        } catch (Exception e) {
-            System.out.println("===========>Loi createCheckout trong ServiceRepository");
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
+   
 
     
    
@@ -226,133 +179,6 @@ public class ServiceRespository {
 
 
 
-//    public static ArrayList<ServiceBill> getAllServiceOrder() {
-//        ArrayList<ServiceBill> listServiceBill = null;
-//        try {
-//            Connection con = DBConnect.getConnection();
-//            String query = "select * from tblServiceBill where StatusBill=0";
-//
-//            PreparedStatement stmt = con.prepareStatement(query);
-//            ResultSet rs = stmt.executeQuery();
-//            listServiceBill = new ArrayList<>();
-//            while (rs.next()) {
-//                String billID = rs.getString(1);
-//                String employeeID = rs.getString(2);
-//                String customerID = rs.getString(3);
-//                String dateCreate = rs.getString(4);
-//                String shiftID = rs.getString(5);
-//                String serviceID = rs.getString(6);
-//                String day = rs.getString(7);
-//                int status = rs.getInt(8);
-//                int amount = rs.getInt(9);
-//                ServiceBill serviceBill = new ServiceBill(billID, employeeID, customerID, dateCreate, shiftID, serviceID, day, status, amount);
-//                listServiceBill.add(serviceBill);
-//
-//            }
-//
-//        } catch (Exception e) {
-//            System.out.println("loi getAllServiceOrder() servicerespository");
-//            e.printStackTrace();
-//            return null;
-//        }
-//        return listServiceBill;
-//    }
-
-//    public static ArrayList<ServiceBill> getAllServiceAcceptedOrder() {
-//        ArrayList<ServiceBill> listServiceBill = null;
-//        try {
-//            Connection con = DBConnect.getConnection();
-//            String query = "select * from tblServiceBill where StatusBill=1";
-//
-//            PreparedStatement stmt = con.prepareStatement(query);
-//            ResultSet rs = stmt.executeQuery();
-//            listServiceBill = new ArrayList<>();
-//            while (rs.next()) {
-//                String billID = rs.getString(1);
-//                String employeeID = rs.getString(2);
-//                String customerID = rs.getString(3);
-//                String dateCreate = rs.getString(4);
-//                String shiftID = rs.getString(5);
-//                String serviceID = rs.getString(6);
-//                String day = rs.getString(7);
-//                int status = rs.getInt(8);
-//                int amount = rs.getInt(9);
-//                ServiceBill serviceBill = new ServiceBill(billID, employeeID, customerID, dateCreate, shiftID, serviceID, day, status, amount);
-//                listServiceBill.add(serviceBill);
-//
-//            }
-//
-//        } catch (Exception e) {
-//            System.out.println("loi getAllServiceOrder() servicerespository");
-//            e.printStackTrace();
-//            return null;
-//        }
-//        return listServiceBill;
-//    }
-
-//    public static ArrayList<ServiceBill> getAllServiceCancelOrder() {
-//        ArrayList<ServiceBill> listServiceBill = null;
-//        try {
-//            Connection con = DBConnect.getConnection();
-//            String query = "select * from tblServiceBill where StatusBill=3";
-//
-//            PreparedStatement stmt = con.prepareStatement(query);
-//            ResultSet rs = stmt.executeQuery();
-//            listServiceBill = new ArrayList<>();
-//            while (rs.next()) {
-//                String billID = rs.getString(1);
-//                String employeeID = rs.getString(2);
-//                String customerID = rs.getString(3);
-//                String dateCreate = rs.getString(4);
-//                String shiftID = rs.getString(5);
-//                String serviceID = rs.getString(6);
-//                String day = rs.getString(7);
-//                int status = rs.getInt(8);
-//                int amount = rs.getInt(9);
-//                ServiceBill serviceBill = new ServiceBill(billID, employeeID, customerID, dateCreate, shiftID, serviceID, day, status, amount);
-//                listServiceBill.add(serviceBill);
-//
-//            }
-//
-//        } catch (Exception e) {
-//            System.out.println("loi getAllServiceOrder() servicerespository");
-//            e.printStackTrace();
-//            return null;
-//        }
-//        return listServiceBill;
-//    }
-
-//    public static ArrayList<ServiceBill> getAllServicePaidOrder() {
-//        ArrayList<ServiceBill> listServiceBill = null;
-//        try {
-//            Connection con = DBConnect.getConnection();
-//            String query = "select * from tblServiceBill where StatusBill=2";
-//
-//            PreparedStatement stmt = con.prepareStatement(query);
-//            ResultSet rs = stmt.executeQuery();
-//            listServiceBill = new ArrayList<>();
-//            while (rs.next()) {
-//                String billID = rs.getString(1);
-//                String employeeID = rs.getString(2);
-//                String customerID = rs.getString(3);
-//                String dateCreate = rs.getString(4);
-//                String shiftID = rs.getString(5);
-//                String serviceID = rs.getString(6);
-//                String day = rs.getString(7);
-//                int status = rs.getInt(8);
-//                int amount = rs.getInt(9);
-//                ServiceBill serviceBill = new ServiceBill(billID, employeeID, customerID, dateCreate, shiftID, serviceID, day, status, amount);
-//                listServiceBill.add(serviceBill);
-//
-//            }
-//
-//        } catch (Exception e) {
-//            System.out.println("loi getAllServiceOrder() servicerespository");
-//            e.printStackTrace();
-//            return null;
-//        }
-//        return listServiceBill;
-//    }
 
     public static boolean acceptBill(String billID) {
 
@@ -424,11 +250,10 @@ public class ServiceRespository {
         ArrayList<ServiceBooked> listServiceBooked = new ArrayList<>();
         try {
             Connection con = DBConnect.getConnection();
-            String query = "SELECT B.BookingID, B.CustomerID, B.ServiceID, B.Name, B.PhoneNumber, B.Address, B.Sex, B.BookingDate, "
-                    + "B.Slot, B.BookingStatus, B.Note, B.Price, BS.BillID, BS.BillStatus "
-                    + "FROM tblBooking B "
-                    + "JOIN tblBillServiec BS ON B.BookingID = BS.BookingID "
-                    + "WHERE B.CustomerID = ?";
+            String query = "SELECT B.BookingID, B.CustomerID, B.ServiceID, B.Name, B.PhoneNumber, B.Address, B.Sex, B.BookingDate,B.Slot, B.BookingStatus, B.Note, B.Price,B.ServiceName, BS.BillID, BS.BillStatus\n" +
+"                     FROM tblBooking B \n" +
+"                     JOIN tblBillServiec BS ON B.BookingID = BS.BookingID \n" +
+"					 WHERE B.CustomerID =?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, customerID);
             ResultSet rs = stmt.executeQuery();
@@ -436,7 +261,7 @@ public class ServiceRespository {
                 ServiceBooked serviceBooked = new ServiceBooked();
                 serviceBooked.setBookingID(rs.getInt("BookingID"));
                 serviceBooked.setCustomerID(rs.getString("CustomerID"));
-                serviceBooked.setServiceID(rs.getString("ServiceID"));
+                serviceBooked.setServiceID(rs.getInt("ServiceID"));
                 serviceBooked.setName(rs.getString("Name"));
                 serviceBooked.setPhoneNumber(rs.getString("PhoneNumber"));
                 serviceBooked.setAddress(rs.getString("Address"));
@@ -446,6 +271,7 @@ public class ServiceRespository {
                 serviceBooked.setBookingStatus(rs.getInt("BookingStatus"));
                 serviceBooked.setNote(rs.getString("Note"));
                 serviceBooked.setPrice(rs.getDouble("Price"));
+                serviceBooked.setServiceName(rs.getString("ServiceName"));
                 serviceBooked.setBillID(rs.getInt("BillID"));
                 serviceBooked.setBillStatus(rs.getInt("BillStatus"));
                 listServiceBooked.add(serviceBooked);
@@ -472,7 +298,7 @@ public static ArrayList<ServiceBooked> getAllServiceBooking() {
             ServiceBooked serviceBooked = new ServiceBooked();
             serviceBooked.setBookingID(rs.getInt("BookingID"));
             serviceBooked.setCustomerID(rs.getString("CustomerID"));
-            serviceBooked.setServiceID(rs.getString("ServiceID"));
+            serviceBooked.setServiceID(rs.getInt("ServiceID"));
             serviceBooked.setName(rs.getString("Name"));
             serviceBooked.setPhoneNumber(rs.getString("PhoneNumber"));
             serviceBooked.setAddress(rs.getString("Address"));
@@ -496,6 +322,57 @@ public static ArrayList<ServiceBooked> getAllServiceBooking() {
     }
     return listServiceBooked;
 }
+
+public static ArrayList<ServiceBooked> getBillService() {
+    ArrayList<ServiceBooked> listServiceBooked = new ArrayList<>();
+    try {
+        Connection con = DBConnect.getConnection();
+        String query = "SELECT B.BookingID, B.CustomerID, B.Name, B.Price, B.ServiceName, BS.BillID, BS.BillStatus ,BS.BillDate\n" +
+"                  FROM tblBooking B \n" +
+"                  JOIN tblBillServiec BS ON B.BookingID = BS.BookingID\n" +
+"WHERE BS.BillStatus = 3;";
+        PreparedStatement stmt = con.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            ServiceBooked serviceBooked = new ServiceBooked();
+            serviceBooked.setBookingID(rs.getInt("BookingID"));
+            serviceBooked.setCustomerID(rs.getString("CustomerID"));  
+            serviceBooked.setName(rs.getString("Name"));
+            serviceBooked.setPrice(rs.getDouble("Price"));
+            serviceBooked.setServiceName(rs.getString("ServiceName"));
+            serviceBooked.setBillID(rs.getInt("BillID"));
+            serviceBooked.setBillStatus(rs.getInt("BillStatus"));
+            serviceBooked.setBillDate(rs.getDate("BillDate"));
+            
+            listServiceBooked.add(serviceBooked);
+        }
+        con.close();
+    } catch (Exception e) {
+        System.out.println("Error in ServiceRepository.getAllServiceBooking");
+        e.printStackTrace();
+    }
+    return listServiceBooked;
+}
+ public static HashMap<String, Integer> countServiceBookings() {
+    HashMap<String, Integer> serviceCountMap = new HashMap<>();
+    try {
+        Connection con = DBConnect.getConnection();
+        String query = "SELECT ServiceName, COUNT(*) AS count FROM tblBooking GROUP BY ServiceName;";
+        PreparedStatement stmt = con.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            String serviceName = rs.getString("ServiceName");
+            int count = rs.getInt("count");
+            serviceCountMap.put(serviceName, count);
+        }
+        con.close();
+    } catch (Exception e) {
+        System.out.println("Error in ServiceRepository.countServiceBookings");
+        e.printStackTrace();
+    }
+    return serviceCountMap;
+}
+
 public static ArrayList<ServiceBooked> getAllServiceBookingStatus() {
     ArrayList<ServiceBooked> listServiceBooked = new ArrayList<>();
     try {
@@ -511,7 +388,7 @@ public static ArrayList<ServiceBooked> getAllServiceBookingStatus() {
             ServiceBooked serviceBooked = new ServiceBooked();
             serviceBooked.setBookingID(rs.getInt("BookingID"));
             serviceBooked.setCustomerID(rs.getString("CustomerID"));
-            serviceBooked.setServiceID(rs.getString("ServiceID"));
+            serviceBooked.setServiceID(rs.getInt("ServiceID"));
             serviceBooked.setName(rs.getString("Name"));
             serviceBooked.setPhoneNumber(rs.getString("PhoneNumber"));
             serviceBooked.setAddress(rs.getString("Address"));
@@ -550,7 +427,7 @@ public static ArrayList<ServiceBooked> getAllServiceBookingCancel() {
             ServiceBooked serviceBooked = new ServiceBooked();
             serviceBooked.setBookingID(rs.getInt("BookingID"));
             serviceBooked.setCustomerID(rs.getString("CustomerID"));
-            serviceBooked.setServiceID(rs.getString("ServiceID"));
+            serviceBooked.setServiceID(rs.getInt("ServiceID"));
             serviceBooked.setName(rs.getString("Name"));
             serviceBooked.setPhoneNumber(rs.getString("PhoneNumber"));
             serviceBooked.setAddress(rs.getString("Address"));
@@ -586,7 +463,7 @@ public static ArrayList<ServiceBooked> getAllServiceBookingStatus2() {
             ServiceBooked serviceBooked = new ServiceBooked();
             serviceBooked.setBookingID(rs.getInt("BookingID"));
             serviceBooked.setCustomerID(rs.getString("CustomerID"));
-            serviceBooked.setServiceID(rs.getString("ServiceID"));
+            serviceBooked.setServiceID(rs.getInt("ServiceID"));
             serviceBooked.setName(rs.getString("Name"));
             serviceBooked.setPhoneNumber(rs.getString("PhoneNumber"));
             serviceBooked.setAddress(rs.getString("Address"));
@@ -622,7 +499,7 @@ public static ArrayList<ServiceBooked> getAllServiceBookingPayment() {
             ServiceBooked serviceBooked = new ServiceBooked();
             serviceBooked.setBookingID(rs.getInt("BookingID"));
             serviceBooked.setCustomerID(rs.getString("CustomerID"));
-            serviceBooked.setServiceID(rs.getString("ServiceID"));
+            serviceBooked.setServiceID(rs.getInt("ServiceID"));
             serviceBooked.setName(rs.getString("Name"));
             serviceBooked.setPhoneNumber(rs.getString("PhoneNumber"));
             serviceBooked.setAddress(rs.getString("Address"));
@@ -983,7 +860,7 @@ public static boolean updateService(Service service) throws SQLException, ClassN
         String query = "UPDATE tblService SET ServiceName=?, ServicePrice=?, ServiceImage=?, Description=? WHERE ServiceID=?";
         try (PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setString(1, service.getServiceName());
-            stmt.setDouble(2, service.getServicePrice());
+            stmt.setString(2, service.getServicePrice());
             stmt.setString(3, service.getListImg());
             stmt.setString(4, service.getDescription());
             stmt.setInt(5, service.getServiceID());
@@ -1069,7 +946,7 @@ public static boolean addService(Service service) {
         con = DBConnect.getConnection();
         stmt = con.prepareStatement("INSERT INTO tblService(servicename, serviceprice, description, serviceimage) VALUES (?,?,?,?)");
         stmt.setString(1, service.getServiceName());
-        stmt.setDouble(2, service.getServicePrice());
+        stmt.setString(2, service.getServicePrice());
         stmt.setString(3, service.getDescription());
         stmt.setString(4, service.getListImg());
         stmt.executeUpdate();
@@ -1087,34 +964,232 @@ public static boolean addService(Service service) {
     }
     return true;
 }
+public static boolean insertCustomerRefund(CustomerRefund customerRefund) {
+        boolean result = false;
+        Connection con = null;
+        PreparedStatement stmt = null;
+
+        try {
+            String query = "INSERT INTO tblCustomerRefund (BookingID, CustomerID, Name, ServiceName, AccountNumber, BankName, RefundAmount, RefundDate, RefundStatus, Note, AccountName) " +
+                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            con = DBConnect.getConnection();
+            stmt = con.prepareStatement(query);
+
+            stmt.setInt(1, customerRefund.getBookingID());
+            stmt.setString(2, customerRefund.getCustomerID());
+            stmt.setString(3, customerRefund.getName());
+            stmt.setString(4, customerRefund.getServiceName());
+            stmt.setString(5, customerRefund.getAccountNumber());
+            stmt.setString(6, customerRefund.getBankName());
+            stmt.setDouble(7, customerRefund.getRefundAmount());
+            stmt.setString(8, customerRefund.getRefundDate());
+            stmt.setInt(9, customerRefund.getRefundStatus());
+            stmt.setString(10,customerRefund.getNote());
+            stmt.setString(11,customerRefund.getAccountName());
+
+            int rowsAffected = stmt.executeUpdate();
+            result = rowsAffected > 0;
+
+        } catch (Exception e) {
+            System.err.println("Error in database method insertCustomerRefund");
+            e.printStackTrace(); // Optional: This provides more details about the exception.
+        } finally {
+            // Clean up resources
+            try {
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+public static List<CustomerRefund> getCustomerIDRefund(String customerID) {
+    List<CustomerRefund> customerRefunds = new ArrayList<>();
+    Connection con = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+
+    try {
+        String query = "SELECT * FROM tblCustomerRefund WHERE CustomerID = ?";
+        con = DBConnect.getConnection();
+        stmt = con.prepareStatement(query);
+        stmt.setString(1, customerID);
+        rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            CustomerRefund customerRefund = new CustomerRefund();
+            customerRefund.setBookingID(rs.getInt("BookingID"));
+            customerRefund.setCustomerID(rs.getString("CustomerID"));
+            customerRefund.setName(rs.getString("Name"));
+            customerRefund.setServiceName(rs.getString("ServiceName"));
+            customerRefund.setAccountNumber(rs.getString("AccountNumber"));
+            customerRefund.setBankName(rs.getString("BankName"));
+            customerRefund.setRefundAmount(rs.getDouble("RefundAmount"));
+            customerRefund.setRefundDate(rs.getString("RefundDate"));
+            customerRefund.setRefundStatus(rs.getInt("RefundStatus"));
+            customerRefund.setNote(rs.getString("Note"));
+            customerRefund.setAccountName(rs.getString("AccountName"));
+
+            customerRefunds.add(customerRefund);
+        }
+
+    } catch (Exception e) {
+        System.err.println("Error in database method getCustomerIDRefund");
+        e.printStackTrace(); // Optional: This provides more details about the exception.
+    } finally {
+        // Clean up resources
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    return customerRefunds;
+}
+public static List<CustomerRefund> getAllCustomerRefund() {
+    List<CustomerRefund> customerRefunds = new ArrayList<>();
+    Connection con = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+
+    try {
+        String query = "SELECT * FROM tblCustomerRefund";
+        con = DBConnect.getConnection();
+        stmt = con.prepareStatement(query);
+        rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            CustomerRefund customerRefund = new CustomerRefund();
+            customerRefund.setRefundID(rs.getInt("RefundID"));
+            customerRefund.setBookingID(rs.getInt("BookingID"));
+            customerRefund.setCustomerID(rs.getString("CustomerID"));
+            customerRefund.setName(rs.getString("Name"));
+            customerRefund.setServiceName(rs.getString("ServiceName"));
+            customerRefund.setAccountNumber(rs.getString("AccountNumber"));
+            customerRefund.setBankName(rs.getString("BankName"));
+            customerRefund.setRefundAmount(rs.getDouble("RefundAmount"));
+            customerRefund.setRefundDate(rs.getString("RefundDate"));
+            customerRefund.setRefundStatus(rs.getInt("RefundStatus"));
+            customerRefund.setNote(rs.getString("Note"));
+            customerRefund.setAccountName(rs.getString("AccountName"));
+
+            customerRefunds.add(customerRefund);
+        }
+
+    } catch (Exception e) {
+        System.err.println("Error in database method getAllCustomerRefund");
+        e.printStackTrace(); // Optional: This provides more details about the exception.
+    } finally {
+        // Clean up resources
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    return customerRefunds;
+}
+
+public static boolean updateStatusCustomerRefund(int refundID, int newRefundStatus) {
+    boolean result = false;
+    Connection con = null;
+    PreparedStatement stmt = null;
+
+    try {
+        String query = "UPDATE tblCustomerRefund SET RefundStatus = ? WHERE refundID = ?";
+        con = DBConnect.getConnection();
+        stmt = con.prepareStatement(query);
+        stmt.setInt(1, newRefundStatus);
+        stmt.setInt(2, refundID);
+
+        int rowsAffected = stmt.executeUpdate();
+        result = rowsAffected > 0;
+
+    } catch (Exception e) {
+        System.err.println("Error in database method updateRefundStatusCustomerRefund");
+        e.printStackTrace(); // Optional: This provides more details about the exception.
+    } finally {
+        // Clean up resources
+        try {
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    return result;
+}
 
     public static void main(String[] args) {
-                         Feedback feedback = new Feedback();
-
-               feedback.setCustomerID("U8516");
-        feedback.setServiceID(1);
-        feedback.setTestimonial("quanquan");
-        feedback.setExperienceDate(new Date());
-        feedback.setSatisfactionLevel(3);
-        feedback.setName("pham trong khoi" );
-        
-        // Lưu phản hồi vào cơ sở dữ liệu
-       
-            saveFeedback(feedback);
-            System.out.println("Feedback saved successfully!");
+//                         Feedback feedback = new Feedback();
+//
+//               feedback.setCustomerID("U8516");
+//        feedback.setServiceID(1);
+//        feedback.setTestimonial("quanquan");
+//        feedback.setExperienceDate(new Date());
+//        feedback.setSatisfactionLevel(3);
+//        feedback.setName("pham trong khoi" );
+//        
+//        // Lưu phản hồi vào cơ sở dữ liệu
+//       
+//            saveFeedback(feedback);
+//            System.out.println("Feedback saved successfully!");
 // ArrayList<Booking> services = getAllBookingByCustomerID("U8360");
 //
 //        for (Booking service : services) {
 //            System.out.println(service);
 //        }
 //    }
-//   ArrayList<ServiceBooked> services = getAllServiceBookingPayment();
+//CustomerRefund customerRefund = new CustomerRefund();
+//        
+//        // Set the properties of the CustomerRefund instance
+//        customerRefund.setBookingID(26);
+//        customerRefund.setCustomerID("U9776");
+//        customerRefund.setName("John Doe");
+//        customerRefund.setServiceName("Hotel Booking");
+//        customerRefund.setAccountNumber("123456789");
+//        customerRefund.setBankName("Bank of Example");
+//        customerRefund.setRefundAmount(1500.00);
+//        customerRefund.setRefundDate("2023-06-26"); // Use the appropriate date format
+//        customerRefund.setRefundStatus(1);
+//        customerRefund.setNote("This is a test refund.");
+//        customerRefund.setAccountName("PhanDinhQuan");
 //
-//        for (ServiceBooked service : services) {
-//            System.out.println(service);
+//        // Call the insertCustomerRefund method
+//        boolean isInserted = ServiceRespository.insertCustomerRefund(customerRefund);
+//        
+//        // Check the result
+//        if (isInserted) {
+//            System.out.println("Customer refund inserted successfully.");
+//        } else {
+//            System.out.println("Failed to insert customer refund.");
 //        }
 //    }
-       
+//   ArrayList<ServiceBooked> services = getAllServiceBooking();
+//
+//        for (ServiceBooked service : services) {
+//            System.out.println(service.getAddress());
+//        }
+//        System.out.println("123");
+    }}
+    
+//         HashMap<Integer, Integer> serviceCounts = ServiceRespository.countServiceBookings();
+//
+//        // Print the results
+//        System.out.println("ServiceID : Count");
+//        for (Integer serviceID : serviceCounts.keySet()) {
+//            System.out.println(serviceID + " : " + serviceCounts.get(serviceID));
+//        }
+//    }
 //       
 //        Booking booking = new Booking();
 //        booking.setCustomerID("U8360");
@@ -1136,7 +1211,7 @@ public static boolean addService(Service service) {
 //
 //    }
 //     
-    }
+//    }
 //     ArrayList<Booking> services = getALLBooking();
 //
 //        for (Booking service : services) {
@@ -1200,4 +1275,4 @@ public static boolean addService(Service service) {
 //            System.out.println(s);
 //
 //    }
-}
+

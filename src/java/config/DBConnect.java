@@ -8,11 +8,10 @@ import java.util.logging.Logger;
 public class DBConnect {
 
     //public static String serverName = "LAPTOP-7UOA152U\\SQLEXPRESS";
-    public static String dbName = "BabyCare3";
+     public static String dbName = "BabyCare";
     public static String portNumber = "1433";
     public static String userID = "sa";
-    public static String password = "030303";
-
+    public static String password = "123";
   
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
         String url = "jdbc:sqlserver://localhost:1433;" + "databaseName=" + dbName + ";encrypt=false";

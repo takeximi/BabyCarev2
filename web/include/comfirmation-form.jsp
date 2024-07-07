@@ -24,14 +24,32 @@ Author     : ACER
 %>
 
 <!DOCTYPE html>
+<style>
+    .container{
+        margin: 20px;
+     
+    }
     
+     .card {
+            margin-top: 30px;
+        }
+        .card-header h2 {
+            font-weight: bold;
+             text-align: center;
+        }
+        .btn-back-home {
+            margin-top: 10px;
+            display: block;
+            width: 150px;
+            text-align: center;
+</style>
     <body>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">
-                            Xác nhận Đặt Lịch
+                            <h2>Đặt lịch thành công</h2>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">Cảm ơn bạn đã đặt dịch vụ này, <%= name%>!</h5>
@@ -50,21 +68,11 @@ Author     : ACER
                                 <li class="list-group-item"><strong>Mã dịch vụ:</strong> <%= bookingID%></li>
                                 <li class="list-group-item"><strong>Email:</strong> <%= email%></li>
                             </ul>
-                          
-                             <h5 class="card-title">Xin vui lòng quét Mã QR lại đây để thanh toán</h5>
-                            <img src="images/y/bill.jpg"alt="Image" width="200px" height="250px">
-                            <div class="row">
-                        <div class="col">
-                            <a href="index.jsp" class="btn btn-primary">Về Trang Chủ</a>
+                                                      <div style=" margin-top: 10px">
+                                                          <a href="index.jsp" class="btn btn-primary btn-back-home">Về Trang Chủ</a>
+                                  
                         </div>
-                        <div class="col">
-                            <form action="DeleteBillBookingServlet" method="post" onsubmit="return confirm('Bạn chắc chắn muốn hủy bill này?');">
-                                <input type="hidden" name="bookingID" value="<%= bookingID%>">
-                                <input type="hidden" name="billID" value="<%= billID%>">
-                                <button type="submit" class="btn btn-danger">Hủy</button>
-                            </form>
-                        </div>
-                    </div>
+                           
 
                         </div>
                     </div>

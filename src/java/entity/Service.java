@@ -1,7 +1,7 @@
 package entity;
-
+import java.text.DecimalFormat;
 public class Service {
-
+  DecimalFormat formatter = new DecimalFormat("#,###,###.##");
     private int serviceID;
     private String serviceName;
     private double servicePrice;
@@ -22,7 +22,12 @@ public class Service {
     public int getServiceID() {
         return serviceID;
     }
-
+      public DecimalFormat getFormatter() {
+        return formatter;
+    }
+public void setFormatter(DecimalFormat formatter) {
+        this.formatter = formatter;
+    }
     public void setServiceID(int serviceID) {
         this.serviceID = serviceID;
     }
@@ -35,8 +40,8 @@ public class Service {
         this.serviceName = serviceName;
     }
 
-    public double getServicePrice() {
-        return servicePrice;
+    public String getServicePrice() {
+        return formatter.format(servicePrice);
     }
 
     public void setServicePrice(double servicePrice) {

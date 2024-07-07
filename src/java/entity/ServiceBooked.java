@@ -1,9 +1,11 @@
 package entity;
 
+import java.util.Date;
+
 public class ServiceBooked {
     private int bookingID;
     private String customerID;
-    private String serviceID;
+    private int serviceID;
     private String name;
     private String phoneNumber;
     private String address;
@@ -17,11 +19,11 @@ public class ServiceBooked {
     private String serviceName;
     private int billID;
     private int billStatus;
-
+    private Date billDate;
     public ServiceBooked() {
     }
 
-    public ServiceBooked(int bookingID, String customerID, String serviceID, String name, String phoneNumber, String address, String sex, String bookingDate, String slot, int bookingStatus, String note, double price, String email, String serviceName, int billID, int billStatus) {
+    public ServiceBooked(int bookingID, String customerID, int serviceID, String name, String phoneNumber, String address, String sex, String bookingDate, String slot, int bookingStatus, String note, double price, String email, String serviceName, int billID, int billStatus) {
         this.bookingID = bookingID;
         this.customerID = customerID;
         this.serviceID = serviceID;
@@ -56,11 +58,11 @@ public class ServiceBooked {
         this.customerID = customerID;
     }
 
-    public String getServiceID() {
+    public int getServiceID() {
         return serviceID;
     }
 
-    public void setServiceID(String serviceID) {
+    public void setServiceID(int serviceID) {
         this.serviceID = serviceID;
     }
 
@@ -168,10 +170,17 @@ public class ServiceBooked {
         this.billStatus = billStatus;
     }
 
+    public Date getBillDate() {
+        return billDate;
+    }
+
+    public void setBillDate(Date billDate) {
+        this.billDate = billDate;
+    }
+
     @Override
     public String toString() {
-        return "ServiceBooked{" + "bookingID=" + bookingID + ", customerID=" + customerID + ", serviceID=" + serviceID + ", name=" + name + ", phoneNumber=" + phoneNumber + ", address=" + address + ", sex=" + sex + ", bookingDate=" + bookingDate + ", slot=" + slot + ", bookingStatus=" + bookingStatus + ", note=" + note + ", price=" + price + ", email=" + email + ", serviceName=" + serviceName + ", billID=" + billID + ", billStatus=" + billStatus + '}';
+        return "ServiceBooked{" + "bookingID=" + bookingID + ", customerID=" + customerID + ", serviceID=" + serviceID + ", name=" + name + ", phoneNumber=" + phoneNumber + ", address=" + address + ", sex=" + sex + ", bookingDate=" + bookingDate + ", slot=" + slot + ", bookingStatus=" + bookingStatus + ", note=" + note + ", price=" + price + ", email=" + email + ", serviceName=" + serviceName + ", billID=" + billID + ", billStatus=" + billStatus + ", billDate=" + billDate + '}';
     }
-    
     
     }

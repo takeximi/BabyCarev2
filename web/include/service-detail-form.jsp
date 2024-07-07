@@ -13,16 +13,11 @@
             <div class="col-lg-7 wow fadeInRight" data-wow-delay="0.4s">
                 <div class="section-title text-start mb-5">
 
-                    <h1 class="display-3 mb-4">${service.serviceName}</h1>
-                    <p class="mb-4">${service.description}</p>
+                    <h1 class="display-3 mb-4" style=" font-size: 50px">${service.serviceName}</h1>
+                    <p class="mb-4 text-primary auto-line-break  ">${service.description}</p>
                     <div class="mb-4">
-                        <p class="text-secondary"><i class="fa fa-check text-primary me-2"></i> Tư vấn và thiết kế</p>
-                        <p class="mb-4">Tư vấn trực tiếp với khách hàng để hiểu nhu cầu và sở thích của họ.</p>
-                        <p class="text-secondary"><i class="fa fa-check text-primary me-2"></i> Cung cấp và lắp đặt</p>
-                        <p class="mb-4">Cung cấp đồ trang trí, nội thất và phụ kiện theo yêu cầu.</p>
-                        <p class="text-secondary"><i class="fa fa-check text-primary me-2"></i> Tối ưu hóa thời gian</p>
-                        <p class="mb-4">Hoàn thành dự án hiệu quả và nhanh chóng.</p>
-                        <h4 class="sub-title pe-3 mb-0">${service.servicePrice}$</h4>
+                       
+                        <h4 class="sub-title pe-3 mb-0">${service.servicePrice}đ</h4>
                     </div>
 
 
@@ -31,10 +26,11 @@
                     <c:if test="${sessionScope.user != null && sessionScope.user.userId.startsWith('U')}">
                         <div class="buttons">
                             <div>
+                                <input type="hidden" name="serviceIMG" value="${service.listImg}">
                                 <input type="hidden" name="serviceID" value="${service.serviceID}">
                                 <input type="hidden" name="servicePrice" value="${service.servicePrice}">
                                 <input type="hidden" name="serviceName" value="${service.serviceName}">
-                                <input class="btn btn-primary" type="submit" value="Book Now">
+                                <input class="btn btn-primary" type="submit" value="Đặt Ngay">
                             </div>
                             <h3>${message}</h3>
                         </div>
@@ -44,7 +40,7 @@
                         <a href="login.jsp" class="btn btn-primary">Đặt lịch ngay</a>
                     </c:if>
                 </form>
-                <div class="mt-5">
+<!--                <div class="mt-5">
                     <h1 class="display-3 mb-4">Đánh giá</h1>
                     <div class="row">
                         <c:forEach items="${feedbackList}" var="feedback">
@@ -55,20 +51,28 @@
        
                                         <p>${feedback.testimonial}</p>
                                         <small class="text-secondary">Date: ${feedback.experienceDate}</small><br>
-<!--                                        <small class="text-secondary">Mức độ hài lòng: 
+                                        <small class="text-secondary">Mức độ hài lòng: 
                                             <div class="stars-outer">
                                                 <div class="stars-inner" style="width:${feedback.satisfactionLevel * 20}%;"></div>
                                             </div>
-                                        </small>-->
+                                        </small>
                                     </div>
                                 </div>
                             </div>
                         </c:forEach>
                     </div>
-                </div>
+                </div>-->
 
 
             </div>
         </div>
     </div>
 </div>
+                 <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const paragraphs = document.querySelectorAll('.auto-line-break');
+                paragraphs.forEach(p => {
+                    p.innerHTML = p.innerHTML.replace(/\./g, '.<br>');
+                });
+            });
+        </script>
